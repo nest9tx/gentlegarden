@@ -26,6 +26,10 @@ export type Database = {
           journey_start_date: string | null
           meditation_progress: number
           last_active: string | null
+          tier: 'seeker' | 'gardener' | 'guardian'
+          monthly_messages_used: number
+          daily_messages_used: number
+          last_message_date: string | null
         }
         Insert: {
           id: string
@@ -34,6 +38,10 @@ export type Database = {
           journey_start_date?: string | null
           meditation_progress?: number
           last_active?: string | null
+          tier?: 'seeker' | 'gardener' | 'guardian'
+          monthly_messages_used?: number
+          daily_messages_used?: number
+          last_message_date?: string | null
         }
         Update: {
           id?: string
@@ -42,6 +50,10 @@ export type Database = {
           journey_start_date?: string | null
           meditation_progress?: number
           last_active?: string | null
+          tier?: 'seeker' | 'gardener' | 'guardian'
+          monthly_messages_used?: number
+          daily_messages_used?: number
+          last_message_date?: string | null
         }
       }
       garden_guide_conversations: {

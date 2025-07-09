@@ -12,6 +12,6 @@ export async function GET(request: NextRequest) {
     await supabase.auth.exchangeCodeForSession(code)
   }
 
-  // Redirect to the garden dashboard after authentication
-  return NextResponse.redirect(new URL('/garden', requestUrl.origin))
+  // Let the client-side page handle the rest
+  return NextResponse.redirect(new URL('/auth/callback', requestUrl.origin))
 }

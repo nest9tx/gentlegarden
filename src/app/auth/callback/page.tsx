@@ -13,21 +13,36 @@ export default function AuthCallback() {
         const { createClient } = await import('../../../../lib/supabase')
         const supabase = createClient()
 
-        // Handle the auth callback
-        const { data, error } = await supabase.auth.getSession()
+        // Handle the auth state change - this will process the URL fragments
+        const { data: { session } } = await supabase.auth.getSession()
         
-        if (error) {
-          console.error('Auth error:', error)
-          router.push('/enter?message=Authentication failed, please try again')
-          return
-        }
+        // Set up an auth listener to catch the callback
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+          if (event === 'SIGNED_IN' && session) {
+            // Successfully authenticated, redirect to garden
+            router.push('/garden')
+          } else if (event === 'SIGNED_OUT' || !session) {
+            // No session or signed out, redirect back to enter
+            router.push('/enter?message=Please check your email and click the magic link')
+          }
+        })
 
-        if (data.session) {
-          // Successfully authenticated, redirect to garden
+        // If we already have a session, go to garden immediately
+        if (session) {
           router.push('/garden')
         } else {
-          // No session, redirect back to enter
-          router.push('/enter?message=Please check your email and click the magic link')
+          // Give it a moment for the auth callback to process
+          setTimeout(async () => {
+            const { data: { session: updatedSession } } = await supabase.auth.getSession()
+            if (!updatedSession) {
+              router.push('/enter?message=Authentication link may have expired, please try again')
+            }
+          }, 3000)
+        }
+
+        // Cleanup subscription
+        return () => {
+          subscription.unsubscribe()
         }
       } catch (error) {
         console.error('Callback error:', error)

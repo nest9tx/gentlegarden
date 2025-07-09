@@ -2,6 +2,13 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 export const createClient = () => createClientComponentClient()
 
+// Type for conversation messages
+export type ConversationMessage = {
+  role: 'user' | 'assistant'
+  content: string
+  timestamp: string
+}
+
 export type Database = {
   public: {
     Tables: {
@@ -35,21 +42,21 @@ export type Database = {
         Row: {
           id: string
           user_id: string
-          conversation_history: any
+          conversation_history: ConversationMessage[]
           created_at: string
           updated_at: string
         }
         Insert: {
           id?: string
           user_id: string
-          conversation_history: any
+          conversation_history: ConversationMessage[]
           created_at?: string
           updated_at?: string
         }
         Update: {
           id?: string
           user_id?: string
-          conversation_history?: any
+          conversation_history?: ConversationMessage[]
           created_at?: string
           updated_at?: string
         }

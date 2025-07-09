@@ -29,7 +29,7 @@ export default function EnterPage() {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          emailRedirectTo: `${window.location.origin}/garden`,
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
         },
       });
 

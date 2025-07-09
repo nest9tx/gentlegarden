@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
@@ -41,9 +43,11 @@ export default function Home() {
 
           {/* Journey Begins */}
           <div className="space-y-6">
-            <button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-8 py-4 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-purple-500/25">
-              Begin Your Sacred Journey
-            </button>
+            <Link href="/enter">
+              <button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-8 py-4 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-purple-500/25">
+                Begin Your Sacred Journey
+              </button>
+            </Link>
             
             <div className="text-purple-300 text-sm">
               <p>✧ Voice-guided meditations ✧ Gentle awakening wisdom ✧ 24/7 AI companion ✧</p>

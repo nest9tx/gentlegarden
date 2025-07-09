@@ -1,6 +1,12 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
-export const createClient = () => createClientComponentClient()
+export const createClient = () => {
+  // Check if environment variables are available
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    throw new Error('Supabase environment variables not configured');
+  }
+  return createClientComponentClient();
+}
 
 // Type for conversation messages
 export type ConversationMessage = {

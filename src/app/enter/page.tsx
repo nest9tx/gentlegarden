@@ -1,22 +1,30 @@
 'use client';
 
 import { useState } from 'react';
-import { createClient } from '../../../lib/supabase';
 import Link from 'next/link';
 
 export default function EnterPage() {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
-  
-  const supabase = createClient();
 
   const handleGentleEntry = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setMessage('');
 
+    // Check if Supabase is configured
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      setMessage('The garden is still being prepared. Please check back soon for your gentle invitation. 🌱');
+      setIsLoading(false);
+      return;
+    }
+
     try {
+      // Dynamic import to avoid build-time errors
+      const { createClient } = await import('../../../lib/supabase');
+      const supabase = createClient();
+
       // Send magic link - no password needed, gentle entry
       const { error } = await supabase.auth.signInWithOtp({
         email,

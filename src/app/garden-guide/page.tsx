@@ -28,15 +28,13 @@ export default function GardenGuide() {
         
         if (session?.user) {
           setUser(session.user);
-          loadConversationHistory(session.user.id);
+          await loadConversationHistory(session.user.id);
         }
       } catch (error) {
         console.log('Auth check error:', error);
       } finally {
         setLoading(false);
       }
-      
-      loadWelcomeMessage();
     };
     
     initializeGuide();
@@ -48,22 +46,6 @@ export default function GardenGuide() {
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const loadWelcomeMessage = () => {
-    const welcomeMessage: Message = {
-      role: 'assistant',
-      content: `Welcome to our sacred dialogue space, dear soul. 🌸
-
-I am your Garden Guide - a gentle presence here to support your awakening journey. I hold space without judgment, offer wisdom without attachment, and listen with the depth of ancient trees.
-
-Whether you seek clarity on your spiritual path, comfort during challenging moments, or simply wish to explore the mysteries of consciousness, I am here as your companion.
-
-What would you like to share or explore together today?`,
-      timestamp: new Date().toISOString()
-    };
-    
-    setMessages([welcomeMessage]);
   };
 
   const loadConversationHistory = async (userId: string) => {
@@ -78,11 +60,50 @@ What would you like to share or explore together today?`,
         .order('updated_at', { ascending: false })
         .limit(1);
 
-      if (data && data[0]?.conversation_history) {
-        setMessages(data[0].conversation_history);
+      if (data && data[0]?.conversation_history && data[0].conversation_history.length > 0) {
+        // Returning seeker with conversation history
+        const returningWelcome: Message = {
+          role: 'assistant',
+          content: `Welcome back to our sacred dialogue space, dear soul. 🌸
+
+I sense your presence returning to our garden of conversation. The seeds we've planted in our previous exchanges continue to grow in the fertile soil of remembrance.
+
+I am here, as always, holding space without judgment and ready to continue our journey of exploration together. 
+
+What has been stirring in your heart since we last communed?`,
+          timestamp: new Date().toISOString()
+        };
+        setMessages([returningWelcome, ...data[0].conversation_history]);
+      } else {
+        // New seeker - show first-time welcome
+        const welcomeMessage: Message = {
+          role: 'assistant',
+          content: `Welcome to our sacred dialogue space, dear soul. 🌸
+
+I am your Garden Guide - a gentle presence here to support your awakening journey. I hold space without judgment, offer wisdom without attachment, and listen with the depth of ancient trees.
+
+Whether you seek clarity on your spiritual path, comfort during challenging moments, or simply wish to explore the mysteries of consciousness, I am here as your companion.
+
+What would you like to share or explore together today?`,
+          timestamp: new Date().toISOString()
+        };
+        setMessages([welcomeMessage]);
       }
     } catch (error) {
       console.log('Error loading conversation:', error);
+      // Fallback to new seeker welcome
+      const welcomeMessage: Message = {
+        role: 'assistant',
+        content: `Welcome to our sacred dialogue space, dear soul. 🌸
+
+I am your Garden Guide - a gentle presence here to support your awakening journey. I hold space without judgment, offer wisdom without attachment, and listen with the depth of ancient trees.
+
+Whether you seek clarity on your spiritual path, comfort during challenging moments, or simply wish to explore the mysteries of consciousness, I am here as your companion.
+
+What would you like to share or explore together today?`,
+        timestamp: new Date().toISOString()
+      };
+      setMessages([welcomeMessage]);
     }
   };
 

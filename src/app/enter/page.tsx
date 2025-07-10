@@ -86,11 +86,12 @@ export default function EnterPage() {
           {/* Sacred Message */}
           <div className="mb-8 text-purple-200 leading-relaxed">
             <p className="text-lg mb-4">
-              The garden welcomes you as you are.
+              Whether this is your first time entering or you are returning to gently tend to your garden, 
+              please provide your email so that a gentle entry access may be granted.
             </p>
             <p className="text-sm italic opacity-90">
-              No explanations needed. No past required.<br />
-              Simply share your email to receive a gentle invitation.
+              This garden does not hold your past against you, but welcomes a new season of bloom.<br />
+              No explanations needed - simply your willingness to remember.
             </p>
           </div>
 

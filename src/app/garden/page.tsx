@@ -23,10 +23,18 @@ export default function GardenDashboard() {
       if (session?.user) {
         setUser(session.user);
         
-        // Calculate journey days
-        const userCreated = new Date(session.user.created_at);
+        // Calculate journey days from when they first entered the garden
+        let journeyStart = new Date();
+        
+        // Try to get journey start from user metadata, otherwise use created_at
+        if (session.user.user_metadata?.journey_start) {
+          journeyStart = new Date(session.user.user_metadata.journey_start);
+        } else if (session.user.created_at) {
+          journeyStart = new Date(session.user.created_at);
+        }
+        
         const today = new Date();
-        const diffTime = Math.abs(today.getTime() - userCreated.getTime());
+        const diffTime = Math.abs(today.getTime() - journeyStart.getTime());
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
         setJourneyDays(diffDays);
       }

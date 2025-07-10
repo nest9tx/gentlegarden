@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-type FrequencyType = '432hz' | '528hz' | '741hz' | 'nature' | 'off';
+type FrequencyType = '432hz' | '528hz' | '741hz' | 'harmonicFlow' | 'off';
 
 interface SacredFrequenciesProps {
   defaultEnabled?: boolean;
@@ -19,6 +19,11 @@ export default function SacredFrequencies({
   const audioContextRef = useRef<AudioContext | null>(null);
   const oscillatorRef = useRef<OscillatorNode | null>(null);
   const gainNodeRef = useRef<GainNode | null>(null);
+  const harmonicFlowRef = useRef<{
+    oscillators: OscillatorNode[];
+    gainNodes: GainNode[];
+    intervalId?: NodeJS.Timeout;
+  }>({ oscillators: [], gainNodes: [] });
 
   // Initialize Web Audio API
   useEffect(() => {
@@ -37,14 +42,36 @@ export default function SacredFrequencies({
     };
   }, []);
 
+  // Stop harmonic flow
+  const stopHarmonicFlow = useCallback(() => {
+    const harmonics = harmonicFlowRef.current;
+    
+    if (harmonics.intervalId) {
+      clearInterval(harmonics.intervalId);
+      harmonics.intervalId = undefined;
+    }
+
+    harmonics.oscillators.forEach(osc => {
+      try {
+        osc.stop();
+      } catch {
+        // Oscillator may already be stopped
+      }
+    });
+
+    harmonics.oscillators = [];
+    harmonics.gainNodes = [];
+  }, []);
+
   // Create sacred tone
   const createSacredTone = useCallback((frequency: number) => {
     if (!audioContextRef.current) return;
 
-    // Stop existing oscillator
+    // Stop existing oscillator and harmonic flow
     if (oscillatorRef.current) {
       oscillatorRef.current.stop();
     }
+    stopHarmonicFlow();
 
     const audioContext = audioContextRef.current;
     const oscillator = audioContext.createOscillator();
@@ -67,7 +94,54 @@ export default function SacredFrequencies({
 
     oscillatorRef.current = oscillator;
     gainNodeRef.current = gainNode;
-  }, [volume]);
+  }, [volume, stopHarmonicFlow]);
+
+  // Create harmonic flow - gentle musical composition with sacred frequencies
+  const createHarmonicFlow = useCallback(() => {
+    if (!audioContextRef.current) return;
+
+    stopHarmonicFlow();
+    
+    const audioContext = audioContextRef.current;
+    const frequencies = [432, 528, 741]; // Sacred frequencies
+    const harmonics = harmonicFlowRef.current;
+
+    // Create oscillators for each frequency with very gentle volumes
+    frequencies.forEach((freq, index) => {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+
+      // Each frequency at different gentle volumes for harmonic blend
+      const frequencyVolume = (volume * 0.3) * (1 - index * 0.2); // Decreasing volume for each harmonic
+      gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+      gainNode.gain.linearRampToValueAtTime(frequencyVolume, audioContext.currentTime + 5 + index * 2); // Staggered fade-ins
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      oscillator.start();
+
+      harmonics.oscillators.push(oscillator);
+      harmonics.gainNodes.push(gainNode);
+    });
+
+    // Gentle volume modulation for flowing effect
+    const modulate = () => {
+      if (!audioContextRef.current || harmonics.gainNodes.length === 0) return;
+
+      harmonics.gainNodes.forEach((gainNode, index) => {
+        const time = Date.now() * 0.001; // Convert to seconds
+        const modulation = Math.sin(time * 0.1 + index * Math.PI / 3) * 0.1 + 0.9; // Very gentle modulation
+        const baseVolume = (volume * 0.3) * (1 - index * 0.2);
+        gainNode.gain.setValueAtTime(baseVolume * modulation, audioContextRef.current!.currentTime);
+      });
+    };
+
+    // Set up gentle modulation interval
+    harmonics.intervalId = setInterval(modulate, 100);
+  }, [volume, stopHarmonicFlow]);
 
   // Stop the tone with fade-out
   const stopTone = () => {
@@ -87,38 +161,49 @@ export default function SacredFrequencies({
   // Handle frequency changes
   useEffect(() => {
     if (isEnabled && currentFrequency !== 'off') {
-      let frequency: number;
-      
-      switch (currentFrequency) {
-        case '432hz':
-          frequency = 432; // Nature's frequency
-          break;
-        case '528hz':
-          frequency = 528; // Love frequency
-          break;
-        case '741hz':
-          frequency = 741; // Awakening frequency
-          break;
-        default:
-          return;
-      }
+      if (currentFrequency === 'harmonicFlow') {
+        // Create harmonic flow composition
+        if (audioContextRef.current?.state === 'suspended') {
+          audioContextRef.current.resume();
+        }
+        createHarmonicFlow();
+      } else {
+        // Create single frequency tone
+        let frequency: number;
+        
+        switch (currentFrequency) {
+          case '432hz':
+            frequency = 432; // Nature's frequency
+            break;
+          case '528hz':
+            frequency = 528; // Love frequency
+            break;
+          case '741hz':
+            frequency = 741; // Awakening frequency
+            break;
+          default:
+            return;
+        }
 
-      // Resume audio context if suspended (browser autoplay policy)
-      if (audioContextRef.current?.state === 'suspended') {
-        audioContextRef.current.resume();
-      }
+        // Resume audio context if suspended (browser autoplay policy)
+        if (audioContextRef.current?.state === 'suspended') {
+          audioContextRef.current.resume();
+        }
 
-      createSacredTone(frequency);
+        createSacredTone(frequency);
+      }
     } else {
       stopTone();
+      stopHarmonicFlow();
     }
 
     return () => {
       if (!isEnabled) {
         stopTone();
+        stopHarmonicFlow();
       }
     };
-  }, [isEnabled, currentFrequency, volume]);
+  }, [isEnabled, currentFrequency, volume, createSacredTone, createHarmonicFlow, stopHarmonicFlow]);
 
   // Handle volume changes
   useEffect(() => {
@@ -178,6 +263,7 @@ export default function SacredFrequencies({
                 <option value="432hz">432Hz - Nature&apos;s Harmony</option>
                 <option value="528hz">528Hz - Love Frequency</option>
                 <option value="741hz">741Hz - Awakening</option>
+                <option value="harmonicFlow">Harmonic Flow - Sacred Composition</option>
               </select>
             </div>
 
@@ -202,6 +288,7 @@ export default function SacredFrequencies({
               {currentFrequency === '432hz' && "Resonates with Earth&apos;s natural vibration"}
               {currentFrequency === '528hz' && "Frequency of transformation and healing"}
               {currentFrequency === '741hz' && "Awakens intuition and inner wisdom"}
+              {currentFrequency === 'harmonicFlow' && "Gentle musical weaving of sacred frequencies"}
             </div>
           </div>
         )}

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { User } from '@supabase/auth-helpers-nextjs';
+import SacredFrequencies from '../../components/SacredFrequencies';
 
 export default function GardenDashboard() {
   const [user, setUser] = useState<User | null>(null);
@@ -244,6 +245,9 @@ export default function GardenDashboard() {
       <div className="absolute top-32 right-20 text-2xl animate-float" style={{animationDelay: '1s'}}>🦋</div>
       <div className="absolute bottom-32 right-10 text-2xl animate-float" style={{animationDelay: '2s'}}>🌺</div>
       <div className="absolute top-40 left-20 text-2xl animate-float" style={{animationDelay: '3s'}}>🕊️</div>
+      
+      {/* Sacred Frequencies Component */}
+      <SacredFrequencies />
       
       <style jsx>{`
         @keyframes float {

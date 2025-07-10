@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { User } from '@supabase/auth-helpers-nextjs';
+import SacredFrequencies from '../../components/SacredFrequencies';
 
 type Message = {
   role: 'user' | 'assistant';
@@ -411,6 +412,9 @@ Consider joining as a Gardener ($7/month) for 77 monthly messages, or as a Guard
       <div className="absolute bottom-10 left-10 text-xl animate-float">🌿</div>
       <div className="absolute top-32 right-20 text-xl animate-float" style={{animationDelay: '1s'}}>🕊️</div>
       <div className="absolute bottom-32 right-10 text-xl animate-float" style={{animationDelay: '2s'}}>🌺</div>
+      
+      {/* Sacred Frequencies Component */}
+      <SacredFrequencies defaultEnabled={false} />
       
       <style jsx>{`
         @keyframes float {

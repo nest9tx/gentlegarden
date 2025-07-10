@@ -16,6 +16,8 @@ export default function GardenGuide() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [messageCount, setMessageCount] = useState(0);
+  const [dailyMessageCount, setDailyMessageCount] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -53,12 +55,52 @@ export default function GardenGuide() {
       const { createClient } = await import('../../../lib/supabase');
       const supabase = createClient();
       
+      // Load conversation history
       const { data } = await supabase
         .from('garden_guide_conversations')
         .select('conversation_history')
         .eq('user_id', userId)
         .order('updated_at', { ascending: false })
         .limit(1);
+
+      // Load or create usage tracking
+      const { data: usageData } = await supabase
+        .from('garden_guide_usage')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+
+      const today = new Date().toISOString().split('T')[0];
+      
+      if (usageData) {
+        // Update daily count if new day
+        if (usageData.last_message_date !== today) {
+          await supabase
+            .from('garden_guide_usage')
+            .update({
+              daily_message_count: 0,
+              last_message_date: today
+            })
+            .eq('user_id', userId);
+          setDailyMessageCount(0);
+        } else {
+          setDailyMessageCount(usageData.daily_message_count);
+        }
+        setMessageCount(usageData.monthly_message_count);
+      } else {
+        // Create new usage record
+        await supabase
+          .from('garden_guide_usage')
+          .insert({
+            user_id: userId,
+            monthly_message_count: 0,
+            daily_message_count: 0,
+            last_message_date: today,
+            subscription_tier: 'seeker'
+          });
+        setMessageCount(0);
+        setDailyMessageCount(0);
+      }
 
       if (data && data[0]?.conversation_history && data[0].conversation_history.length > 0) {
         // Returning seeker with conversation history
@@ -107,7 +149,7 @@ What would you like to share or explore together today?`,
     }
   };
 
-  const saveConversation = async () => {
+  const saveConversation = async (conversationToSave: Message[]) => {
     if (!user) return;
 
     try {
@@ -118,7 +160,7 @@ What would you like to share or explore together today?`,
         .from('garden_guide_conversations')
         .upsert({
           user_id: user.id,
-          conversation_history: messages,
+          conversation_history: conversationToSave,
           updated_at: new Date().toISOString()
         });
     } catch (error) {
@@ -128,6 +170,19 @@ What would you like to share or explore together today?`,
 
   const sendMessage = async () => {
     if (!inputMessage.trim() || isTyping) return;
+
+    // Check usage limits for free tier (3 messages per day)
+    if (dailyMessageCount >= 3) {
+      const limitMessage: Message = {
+        role: 'assistant',
+        content: `Dear soul, you've shared 3 sacred messages today. The garden invites you to reflect on our exchanges and return tomorrow for continued communion. 🌸
+
+Consider joining as a Gardener ($7/month) for 77 monthly messages, or as a Guardian ($15/month) for unlimited sacred dialogue.`,
+        timestamp: new Date().toISOString()
+      };
+      setMessages(prev => [...prev, limitMessage]);
+      return;
+    }
 
     const userMessage: Message = {
       role: 'user',
@@ -139,6 +194,26 @@ What would you like to share or explore together today?`,
     setMessages(updatedMessages);
     setInputMessage('');
     setIsTyping(true);
+
+    // Update usage counts
+    const newDailyCount = dailyMessageCount + 1;
+    const newMonthlyCount = messageCount + 1;
+    setDailyMessageCount(newDailyCount);
+    setMessageCount(newMonthlyCount);
+
+    // Update usage in database
+    if (user) {
+      const { createClient } = await import('../../../lib/supabase');
+      const supabase = createClient();
+      await supabase
+        .from('garden_guide_usage')
+        .update({
+          daily_message_count: newDailyCount,
+          monthly_message_count: newMonthlyCount,
+          updated_at: new Date().toISOString()
+        })
+        .eq('user_id', user.id);
+    }
 
     try {
       const response = await fetch('/api/garden-guide', {
@@ -169,8 +244,8 @@ What would you like to share or explore together today?`,
       const finalMessages = [...updatedMessages, assistantMessage];
       setMessages(finalMessages);
       
-      // Save conversation to Supabase
-      setTimeout(() => saveConversation(), 1000);
+      // Save conversation to Supabase with the complete message history
+      setTimeout(() => saveConversation(finalMessages), 1000);
 
     } catch (error) {
       console.error('Error:', error);
@@ -252,6 +327,9 @@ What would you like to share or explore together today?`,
           <div className="text-center">
             <div className="text-2xl">🤖</div>
             <h1 className="text-white text-lg font-light">Garden Guide</h1>
+            <div className="text-purple-300 text-xs mt-1">
+              {dailyMessageCount}/3 daily messages used
+            </div>
           </div>
           <div className="w-24"></div> {/* Spacer for centering */}
         </div>

@@ -198,8 +198,8 @@ export default function GardenDashboard() {
               </div>
             </Link>
 
-            {/* Profile Garden */}
-            <Link href="/profile">
+            {/* Personal Garden */}
+            <Link href="/garden/personal">
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 hover:bg-white/15 transition-all duration-300 group cursor-pointer">
                 <div className="text-3xl mb-4 group-hover:animate-pulse">🌿</div>
                 <h3 className="text-xl text-white mb-2">Personal Garden</h3>

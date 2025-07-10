@@ -285,7 +285,7 @@ export default function SacredFrequencies({
 
             {/* Sacred Description */}
             <div className="text-xs text-purple-300/80 italic">
-              {currentFrequency === '432hz' && "Resonates with Earth&apos;s natural vibration"}
+              {currentFrequency === '432hz' && "Resonates with Earth's natural vibration"}
               {currentFrequency === '528hz' && "Frequency of transformation and healing"}
               {currentFrequency === '741hz' && "Awakens intuition and inner wisdom"}
               {currentFrequency === 'harmonicFlow' && "Gentle musical weaving of sacred frequencies"}

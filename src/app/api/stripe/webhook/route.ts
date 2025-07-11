@@ -56,86 +56,147 @@ export async function POST(req: NextRequest) {
       }
     );
 
+    // Helper function to handle subscription updates
+    async function handleSubscriptionUpdate(
+      stripe: Stripe,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      supabase: any,
+      customerEmail: string | null,
+      sessionOrInvoiceId: string,
+      eventType: 'checkout' | 'invoice',
+      amount?: number
+    ) {
+      console.log('=== SUBSCRIPTION UPDATE DEBUG ===');
+      console.log('Event type:', eventType);
+      console.log('Customer email:', customerEmail);
+      console.log('Session/Invoice ID:', sessionOrInvoiceId);
+      console.log('Amount:', amount);
+
+      if (!customerEmail) {
+        console.error('No customer email provided');
+        return { error: 'No customer email' };
+      }
+
+      // Find user by email
+      const { data: userData, error: userError } = await supabase.auth.admin.listUsers();
+      if (userError) {
+        console.error('Error fetching users:', userError);
+        return { error: 'Database error' };
+      }
+
+      console.log('Found', userData.users.length, 'total users in database');
+      const user = userData.users.find((u: { email: string }) => u.email === customerEmail);
+      if (!user) {
+        console.error('User not found for email:', customerEmail);
+        console.log('Available users:', userData.users.map((u: { email: string }) => u.email));
+        return { error: 'User not found' };
+      }
+
+      console.log('Found user:', user.id, user.email);
+
+      // Determine subscription tier based on amount
+      let subscriptionTier = 'seeker';
+      let messageLimit = 3;
+      let stripeCustomerId = '';
+      let stripeSubscriptionId = '';
+      
+      let finalAmount = amount;
+      
+      if (eventType === 'checkout') {
+        // For checkout sessions, get line items and customer info
+        const session = await stripe.checkout.sessions.retrieve(sessionOrInvoiceId);
+        const lineItems = await stripe.checkout.sessions.listLineItems(sessionOrInvoiceId);
+        const firstItem = lineItems.data[0];
+        finalAmount = firstItem?.price?.unit_amount || 0;
+        stripeCustomerId = session.customer as string || '';
+        stripeSubscriptionId = session.subscription as string || '';
+      }
+      
+      console.log('Final amount to check:', finalAmount);
+      
+      if (finalAmount) {
+        if (finalAmount === 700) { // $7.00 - Gardener
+          subscriptionTier = 'gardener';
+          messageLimit = 77;
+        } else if (finalAmount === 1500) { // $15.00 - Guardian
+          subscriptionTier = 'guardian';  
+          messageLimit = -1;
+        }
+      }
+
+      console.log('Determined tier:', subscriptionTier, 'with limit:', messageLimit);
+
+      // Update user subscription tier
+      const updateData: {
+        user_id: string;
+        subscription_tier: string;
+        monthly_message_limit: number;
+        daily_message_count: number;
+        monthly_message_count: number;
+        last_message_date: string;
+        updated_at: string;
+        stripe_customer_id?: string;
+        stripe_subscription_id?: string;
+      } = {
+        user_id: user.id,
+        subscription_tier: subscriptionTier,
+        monthly_message_limit: messageLimit,
+        daily_message_count: 0,
+        monthly_message_count: 0,
+        last_message_date: new Date().toISOString().split('T')[0],
+        updated_at: new Date().toISOString()
+      };
+
+      // Add Stripe IDs if available
+      if (stripeCustomerId) updateData.stripe_customer_id = stripeCustomerId;
+      if (stripeSubscriptionId) updateData.stripe_subscription_id = stripeSubscriptionId;
+
+      const { error: updateError } = await supabase
+        .from('garden_guide_usage')
+        .upsert(updateData, {
+          onConflict: 'user_id'
+        });
+
+      if (updateError) {
+        console.error('Error updating subscription:', updateError);
+        return { error: 'Failed to update subscription' };
+      }
+
+      console.log(`✅ Successfully updated user ${user.email} to ${subscriptionTier} tier`);
+      console.log('=== END SUBSCRIPTION UPDATE DEBUG ===');
+      return { success: true };
+    }
+
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
+        console.log('🎯 Processing checkout.session.completed');
+        console.log('Session details:', {
+          id: session.id,
+          customer: session.customer,
+          customer_email: session.customer_details?.email,
+          amount_total: session.amount_total,
+          mode: session.mode
+        });
+        await handleSubscriptionUpdate(stripe, supabase, session.customer_details?.email || null, session.id, 'checkout');
+        break;
+      }
+
+      case 'invoice.payment_succeeded': {
+        const invoice = event.data.object as Stripe.Invoice;
+        console.log('💰 Processing invoice.payment_succeeded');
+        console.log('Invoice details:', {
+          id: invoice.id,
+          customer: invoice.customer,
+          amount_paid: invoice.amount_paid,
+          amount_due: invoice.amount_due
+        });
         
-        console.log('=== WEBHOOK DEBUG ===');
-        console.log('Session ID:', session.id);
-        console.log('Customer email:', session.customer_details?.email);
-        console.log('Session mode:', session.mode);
-        console.log('Payment status:', session.payment_status);
+        // Get customer email from the invoice
+        const customer = await stripe.customers.retrieve(invoice.customer as string);
+        const customerEmail = (customer as Stripe.Customer).email || null;
         
-        // Get customer email
-        const customerEmail = session.customer_details?.email;
-        if (!customerEmail) {
-          console.error('No customer email in session');
-          return NextResponse.json({ error: 'No customer email' }, { status: 400 });
-        }
-
-        console.log('Looking for user with email:', customerEmail);
-
-        // Find user by email
-        const { data: userData, error: userError } = await supabase.auth.admin.listUsers();
-        if (userError) {
-          console.error('Error fetching users:', userError);
-          return NextResponse.json({ error: 'Database error' }, { status: 500 });
-        }
-
-        console.log('Found', userData.users.length, 'total users in database');
-        const user = userData.users.find((u) => u.email === customerEmail);
-        if (!user) {
-          console.error('User not found for email:', customerEmail);
-          console.log('Available users:', userData.users.map(u => u.email));
-          return NextResponse.json({ error: 'User not found' }, { status: 404 });
-        }
-
-        console.log('Found user:', user.id, user.email);
-
-        // Determine subscription tier based on price
-        let subscriptionTier = 'seeker';
-        let messageLimit = 3; // daily for seekers
-        
-        const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
-        const firstItem = lineItems.data[0];
-        
-        console.log('Line item price:', firstItem?.price?.unit_amount);
-        
-        if (firstItem?.price?.unit_amount) {
-          const amount = firstItem.price.unit_amount; // amount in cents
-          
-          if (amount === 700) { // $7.00 - Gardener
-            subscriptionTier = 'gardener';
-            messageLimit = 77; // monthly for gardeners
-          } else if (amount === 1500) { // $15.00 - Guardian
-            subscriptionTier = 'guardian';  
-            messageLimit = -1; // unlimited for guardians
-          }
-        }
-
-        console.log('Determined tier:', subscriptionTier, 'with limit:', messageLimit);
-
-        // Update user subscription tier in garden_guide_usage table
-        const { error: updateError } = await supabase
-          .from('garden_guide_usage')
-          .upsert({
-            user_id: user.id,
-            subscription_tier: subscriptionTier,
-            monthly_message_limit: messageLimit,
-            stripe_customer_id: session.customer as string,
-            stripe_subscription_id: session.subscription as string,
-            updated_at: new Date().toISOString()
-          }, {
-            onConflict: 'user_id'
-          });
-
-        if (updateError) {
-          console.error('Error updating subscription:', updateError);
-          return NextResponse.json({ error: 'Failed to update subscription' }, { status: 500 });
-        }
-
-        console.log(`✅ Successfully updated user ${user.email} to ${subscriptionTier} tier`);
-        console.log('=== END WEBHOOK DEBUG ===');
+        await handleSubscriptionUpdate(stripe, supabase, customerEmail, invoice.id || '', 'invoice', invoice.amount_paid);
         break;
       }
 

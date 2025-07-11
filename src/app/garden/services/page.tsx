@@ -20,7 +20,7 @@ export default function ServicesPage() {
         'Enhanced personal garden features'
       ],
       ideal: 'Perfect for souls ready to deepen their daily spiritual practice',
-      checkoutUrl: 'https://buy.stripe.com/prod_Sf3xDEqrTHSDV9'
+      checkoutUrl: 'https://buy.stripe.com/4gMfZh4Zc0z60eW0HXfIs00'
     },
     {
       id: 'guardian',
@@ -37,7 +37,7 @@ export default function ServicesPage() {
         'Priority support and guidance'
       ],
       ideal: 'For awakening souls seeking unlimited guidance and personal mentoring',
-      checkoutUrl: 'https://buy.stripe.com/prod_Sf3zrRsUDYJ8E8'
+      checkoutUrl: 'https://buy.stripe.com/cNifZhdvI1Dae5M62hfIs01'
     }
   ];
 
@@ -58,7 +58,7 @@ export default function ServicesPage() {
         'Follow-up resources for continued growth'
       ],
       ideal: 'Souls seeking personalized guidance through spiritual transitions',
-      checkoutUrl: 'https://buy.stripe.com/prod_Sf45eUeDiPGJQV'
+      checkoutUrl: 'https://buy.stripe.com/14A8wPbnA95C5zg62hfIs02'
     },
     {
       id: 'akashic',
@@ -76,7 +76,7 @@ export default function ServicesPage() {
         'Written summary for ongoing reflection'
       ],
       ideal: 'Seekers ready to understand their soul\'s deeper purpose and patterns',
-      checkoutUrl: 'https://buy.stripe.com/prod_Sf47Q5NLADWDj0'
+      checkoutUrl: 'https://buy.stripe.com/14AaEX63g0z6e5M3U9fIs03'
     },
     {
       id: 'energy',
@@ -94,7 +94,7 @@ export default function ServicesPage() {
         'Integration practices for ongoing balance'
       ],
       ideal: 'Those feeling energetically blocked or seeking vibrational harmony',
-      checkoutUrl: 'https://buy.stripe.com/prod_Sf4BD3kpXCyL17'
+      checkoutUrl: 'https://buy.stripe.com/7sY9AT8bo4Pm4vc2Q5fIs04'
     },
     {
       id: 'reflection',
@@ -112,7 +112,7 @@ export default function ServicesPage() {
         'Resources for continued self-reflection'
       ],
       ideal: 'Souls beginning their conscious awakening journey',
-      checkoutUrl: 'https://buy.stripe.com/prod_Sf4GoCy6jK0Xvu'
+      checkoutUrl: 'https://buy.stripe.com/eVq5kD2R4a9GgdU2Q5fIs05'
     }
   ];
 

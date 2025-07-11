@@ -44,12 +44,20 @@ export async function POST(req: NextRequest) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
         
+        console.log('=== WEBHOOK DEBUG ===');
+        console.log('Session ID:', session.id);
+        console.log('Customer email:', session.customer_details?.email);
+        console.log('Session mode:', session.mode);
+        console.log('Payment status:', session.payment_status);
+        
         // Get customer email
         const customerEmail = session.customer_details?.email;
         if (!customerEmail) {
           console.error('No customer email in session');
           return NextResponse.json({ error: 'No customer email' }, { status: 400 });
         }
+
+        console.log('Looking for user with email:', customerEmail);
 
         // Find user by email
         const { data: userData, error: userError } = await supabase.auth.admin.listUsers();
@@ -58,11 +66,15 @@ export async function POST(req: NextRequest) {
           return NextResponse.json({ error: 'Database error' }, { status: 500 });
         }
 
+        console.log('Found', userData.users.length, 'total users in database');
         const user = userData.users.find((u) => u.email === customerEmail);
         if (!user) {
           console.error('User not found for email:', customerEmail);
+          console.log('Available users:', userData.users.map(u => u.email));
           return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
+
+        console.log('Found user:', user.id, user.email);
 
         // Determine subscription tier based on price
         let subscriptionTier = 'seeker';
@@ -70,6 +82,8 @@ export async function POST(req: NextRequest) {
         
         const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
         const firstItem = lineItems.data[0];
+        
+        console.log('Line item price:', firstItem?.price?.unit_amount);
         
         if (firstItem?.price?.unit_amount) {
           const amount = firstItem.price.unit_amount; // amount in cents
@@ -82,6 +96,8 @@ export async function POST(req: NextRequest) {
             messageLimit = -1; // unlimited for guardians
           }
         }
+
+        console.log('Determined tier:', subscriptionTier, 'with limit:', messageLimit);
 
         // Update user subscription tier in garden_guide_usage table
         const { error: updateError } = await supabase
@@ -102,7 +118,8 @@ export async function POST(req: NextRequest) {
           return NextResponse.json({ error: 'Failed to update subscription' }, { status: 500 });
         }
 
-        console.log(`Successfully updated user ${user.email} to ${subscriptionTier} tier`);
+        console.log(`✅ Successfully updated user ${user.email} to ${subscriptionTier} tier`);
+        console.log('=== END WEBHOOK DEBUG ===');
         break;
       }
 

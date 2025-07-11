@@ -11,6 +11,7 @@ export async function POST(req: NextRequest) {
     // Initialize Stripe with environment variables
     const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!stripeSecretKey) {
       console.error('STRIPE_SECRET_KEY not found in environment variables');
@@ -19,6 +20,11 @@ export async function POST(req: NextRequest) {
 
     if (!webhookSecret) {
       console.error('STRIPE_WEBHOOK_SECRET not found in environment variables');
+      return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
+    }
+
+    if (!supabaseServiceKey) {
+      console.error('SUPABASE_SERVICE_ROLE_KEY not found in environment variables');
       return NextResponse.json({ error: 'Server configuration error' }, { status: 500 });
     }
 
@@ -37,8 +43,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Webhook signature verification failed' }, { status: 400 });
     }
 
-    const { createClient } = await import('../../../../../lib/supabase');
-    const supabase = createClient();
+    // Create Supabase client with service role key for admin operations
+    const { createClient } = await import('@supabase/supabase-js');
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      supabaseServiceKey,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    );
 
     switch (event.type) {
       case 'checkout.session.completed': {

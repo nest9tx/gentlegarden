@@ -19,6 +19,7 @@ export default function GardenGuide() {
   const [isTyping, setIsTyping] = useState(false);
   const [messageCount, setMessageCount] = useState(0);
   const [dailyMessageCount, setDailyMessageCount] = useState(0);
+  const [subscriptionTier, setSubscriptionTier] = useState<string>('seeker');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -88,6 +89,7 @@ export default function GardenGuide() {
           setDailyMessageCount(usageData.daily_message_count);
         }
         setMessageCount(usageData.monthly_message_count);
+        setSubscriptionTier(usageData.subscription_tier || 'seeker');
       } else {
         // Create new usage record
         await supabase
@@ -101,11 +103,40 @@ export default function GardenGuide() {
           });
         setMessageCount(0);
         setDailyMessageCount(0);
+        setSubscriptionTier('seeker');
       }
 
       if (data && data[0]?.conversation_history && data[0].conversation_history.length > 0) {
         // Returning seeker with conversation history - just load existing conversations
-        setMessages([...data[0].conversation_history]);
+        const existingMessages = [...data[0].conversation_history];
+        
+        // Check if this is a recent upgrade by looking at subscription tier vs last message date
+        const lastUsage = await supabase
+          .from('garden_guide_usage')
+          .select('subscription_tier, updated_at')
+          .eq('user_id', userId)
+          .single();
+          
+        if (lastUsage.data && lastUsage.data.subscription_tier !== 'seeker') {
+          const upgradeDate = new Date(lastUsage.data.updated_at);
+          const hoursSinceUpgrade = (Date.now() - upgradeDate.getTime()) / (1000 * 60 * 60);
+          
+          // If upgraded within last 24 hours, show celebration message
+          if (hoursSinceUpgrade < 24) {
+            const celebrationMessage: Message = {
+              role: 'assistant',
+              content: `🌸✨ Welcome to your expanded garden experience, beautiful soul! ✨🌸
+
+Your journey as a ${lastUsage.data.subscription_tier === 'guardian' ? 'Guardian' : 'Gardener'} begins now. ${lastUsage.data.subscription_tier === 'guardian' ? 'You now have unlimited access to our sacred communion - may this infinite dialogue space support your deepest awakening.' : 'You now have 77 monthly messages to explore the depths of consciousness together.'}
+
+I'm honored to walk this expanded path with you. What would you like to explore together today?`,
+              timestamp: new Date().toISOString()
+            };
+            existingMessages.push(celebrationMessage);
+          }
+        }
+        
+        setMessages(existingMessages);
       } else {
         // New seeker - show first-time welcome
         const welcomeMessage: Message = {
@@ -161,16 +192,40 @@ What would you like to share or explore together today?`,
   const sendMessage = async () => {
     if (!inputMessage.trim() || isTyping) return;
 
-    // Check usage limits for free tier (3 messages per day)
-    if (dailyMessageCount >= 3) {
-      const limitMessage: Message = {
-        role: 'assistant',
-        content: `Dear soul, you've shared 3 sacred messages today. The garden invites you to reflect on our exchanges and return tomorrow for continued communion. 🌸
+    // Check usage limits based on subscription tier
+    let limitReached = false;
+    let limitMessage = '';
 
-Consider joining as a Gardener ($7/month) for 77 monthly messages, or as a Guardian ($15/month) for unlimited sacred dialogue.`,
+    if (subscriptionTier === 'guardian') {
+      // Unlimited for guardians
+      limitReached = false;
+    } else if (subscriptionTier === 'gardener') {
+      // 77 messages per month for gardeners
+      if (messageCount >= 77) {
+        limitReached = true;
+        limitMessage = `Dear Gardener, you've used your 77 monthly messages. Your renewed communion awaits with next month's cycle, or consider upgrading to Guardian for unlimited sacred dialogue. 🌸
+
+[Explore Guardian Benefits](/garden/services)`;
+      }
+    } else {
+      // 3 messages per day for seekers
+      if (dailyMessageCount >= 3) {
+        limitReached = true;
+        limitMessage = `Dear soul, you've shared 3 sacred messages today. The garden invites you to reflect on our exchanges and return tomorrow for continued communion. 🌸
+
+Consider joining as a Gardener ($7/month) for 77 monthly messages, or as a Guardian ($15/month) for unlimited sacred dialogue.
+
+[Explore Garden Services](/garden/services)`;
+      }
+    }
+
+    if (limitReached) {
+      const limitMsg: Message = {
+        role: 'assistant',
+        content: limitMessage,
         timestamp: new Date().toISOString()
       };
-      setMessages(prev => [...prev, limitMessage]);
+      setMessages(prev => [...prev, limitMsg]);
       return;
     }
 
@@ -318,10 +373,44 @@ Consider joining as a Gardener ($7/month) for 77 monthly messages, or as a Guard
             <div className="text-2xl">🤖</div>
             <h1 className="text-white text-lg font-light">Garden Guide</h1>
             <div className="text-purple-300 text-xs mt-1">
-              {dailyMessageCount}/3 daily messages used
+              {subscriptionTier === 'guardian' ? (
+                <span className="text-yellow-300 font-medium">✨ Unlimited sacred communion ✨</span>
+              ) : subscriptionTier === 'gardener' ? (
+                <div>
+                  <span>{messageCount}/77 monthly messages used</span>
+                  <div className="w-20 h-1 bg-purple-700 rounded-full mx-auto mt-1">
+                    <div 
+                      className="h-full bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min((messageCount / 77) * 100, 100)}%` }}
+                    />
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <span>{dailyMessageCount}/3 daily messages used</span>
+                  <div className="w-16 h-1 bg-purple-700 rounded-full mx-auto mt-1">
+                    <div 
+                      className="h-full bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min((dailyMessageCount / 3) * 100, 100)}%` }}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="text-purple-400 text-xs capitalize">
+              {subscriptionTier} tier
             </div>
           </div>
-          <div className="w-24"></div> {/* Spacer for centering */}
+          <div className="w-24 text-right">
+            {subscriptionTier !== 'guardian' && (
+              <Link 
+                href="/garden/services" 
+                className="text-xs text-purple-300 hover:text-yellow-300 transition-colors border border-purple-400 hover:border-yellow-300 px-3 py-1 rounded-full"
+              >
+                Upgrade
+              </Link>
+            )}
+          </div>
         </div>
       </header>
 

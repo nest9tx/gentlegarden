@@ -212,6 +212,20 @@ export default function GardenDashboard() {
               </div>
             </Link>
 
+            {/* Sacred Services */}
+            <Link href="/garden/services">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 hover:bg-white/15 transition-all duration-300 group cursor-pointer">
+                <div className="text-3xl mb-4 group-hover:animate-pulse">🔮</div>
+                <h3 className="text-xl text-white mb-2">Sacred Services</h3>
+                <p className="text-purple-200 text-sm">
+                  Explore offerings for deeper spiritual support and guidance.
+                </p>
+                <div className="mt-4 text-purple-300 text-xs">
+                  → Discover sacred pathways
+                </div>
+              </div>
+            </Link>
+
             {/* Today's Intention */}
             <div className="bg-gradient-to-br from-purple-600/30 to-indigo-600/30 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30">
               <div className="text-3xl mb-4">🌸</div>

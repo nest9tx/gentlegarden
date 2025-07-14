@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import SacredFrequencies from '@/components/SacredFrequencies';
+import Link from 'next/link';
 
 interface PersonalGardenData {
   dailyIntention: string;
@@ -52,9 +53,11 @@ const sacredIntentions = [
 const sacredSymbols = ['🌸', '🌿', '✨', '🌙', '🔮', '🕉️', '🧿', '💫', '🌺', '🦋'];
 
 export default function PersonalGarden() {
-  const { user } = { user: null }; // Temporary auth placeholder
   const [isLoading, setIsLoading] = useState(true);
   const [gardenData, setGardenData] = useState<PersonalGardenData | null>(null);
+  // Demo data - will be replaced with real user data when Supabase integration is fixed
+  const [subscriptionTier] = useState<string>('gardener'); // Demo: Set to 'seeker', 'gardener', or 'guardian' to test
+  const [messageUsage] = useState({ daily: 2, monthly: 23 }); // Demo usage stats
   const [newIntention, setNewIntention] = useState('');
   const [isEditingIntention, setIsEditingIntention] = useState(false);
   const [newReflection, setNewReflection] = useState('');
@@ -62,9 +65,39 @@ export default function PersonalGarden() {
 
   useEffect(() => {
     loadPersonalGarden();
-  }, [user]);
+  }, []);
 
-  const loadPersonalGarden = () => {
+  const loadPersonalGarden = async () => {
+    try {
+      // TODO: Fix Supabase import path and uncomment this section
+      // Load auth and subscription data
+      // const { createClient } = await import('../../../lib/supabase');
+      // const supabase = createClient();
+      
+      // const { data: { session } } = await supabase.auth.getSession();
+      
+      // if (session?.user) {
+      //   setUser(session.user);
+        
+      //   // Load subscription tier and usage
+      //   const { data: usageData } = await supabase
+      //     .from('garden_guide_usage')
+      //     .select('*')
+      //     .eq('user_id', session.user.id)
+      //     .single();
+          
+      //   if (usageData) {
+      //     setSubscriptionTier(usageData.subscription_tier || 'seeker');
+      //     setMessageUsage({
+      //       daily: usageData.daily_message_count || 0,
+      //       monthly: usageData.monthly_message_count || 0
+      //     });
+      //   }
+      // }
+    } catch (error) {
+      console.log('Auth/subscription error:', error);
+    }
+
     // Initialize demo personal garden data
     const today = new Date();
     const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
@@ -224,7 +257,209 @@ export default function PersonalGarden() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Intention & Reflection */}
+          
+          {/* NEW: My Garden Benefits - Tier Hub */}
+          <div className="lg:col-span-3 mb-8">
+            <div className="bg-white/10 backdrop-blur-sm border border-purple-300/30 rounded-2xl p-6">
+              <h2 className="text-xl font-light text-purple-100 mb-6 flex items-center">
+                <span className="mr-2">🌟</span>
+                My Garden Benefits
+              </h2>
+              
+              <div className="grid md:grid-cols-3 gap-6">
+                
+                {/* Current Tier Status */}
+                <div className="bg-white/5 rounded-xl p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-purple-100 font-medium">Current Tier</h3>
+                    <div className="text-2xl">
+                      {subscriptionTier === 'guardian' ? '🌳' : 
+                       subscriptionTier === 'gardener' ? '🌿' : '🌱'}
+                    </div>
+                  </div>
+                  <div className="text-lg text-white mb-2 capitalize">
+                    {subscriptionTier === 'guardian' ? 'Guardian Path' : 
+                     subscriptionTier === 'gardener' ? 'Gardener Journey' : 'Seeker Beginning'}
+                  </div>
+                  
+                  {/* Usage Stats */}
+                  {subscriptionTier === 'guardian' ? (
+                    <div className="text-xs text-green-300 space-y-1">
+                      <div>✨ Unlimited AI guidance</div>
+                      <div>📚 All wisdom teachings</div>
+                      <div>🎯 Priority service access</div>
+                    </div>
+                  ) : subscriptionTier === 'gardener' ? (
+                    <div className="text-xs text-blue-300 space-y-1">
+                      <div>🌙 {messageUsage.monthly}/77 monthly messages</div>
+                      <div>📜 {9} wisdom teachings</div>
+                      <div>🌸 Enhanced features</div>
+                    </div>
+                  ) : (
+                    <div className="text-xs text-yellow-300 space-y-1">
+                      <div>☀️ {messageUsage.daily}/3 daily messages</div>
+                      <div>📜 {4} foundation teachings</div>
+                      <div className="text-purple-300 mt-2">
+                        <Link href="/garden/services" className="underline hover:text-purple-200">
+                          Upgrade your garden →
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Quick Access to Features */}
+                <div className="bg-white/5 rounded-xl p-4">
+                  <h3 className="text-purple-100 font-medium mb-3">Quick Access</h3>
+                  <div className="space-y-2">
+                    <Link 
+                      href="/garden-guide" 
+                      className="block text-xs text-purple-300 hover:text-purple-200 p-2 bg-white/5 rounded-lg transition-all"
+                    >
+                      🤖 Garden Guide Chat
+                    </Link>
+                    <Link 
+                      href="/wisdom" 
+                      className="block text-xs text-purple-300 hover:text-purple-200 p-2 bg-white/5 rounded-lg transition-all"
+                    >
+                      📜 Wisdom Grove ({subscriptionTier === 'guardian' ? '13' : subscriptionTier === 'gardener' ? '9' : '4'} teachings)
+                    </Link>
+                    {(subscriptionTier === 'gardener' || subscriptionTier === 'guardian') && (
+                      <div className="text-xs text-blue-300 p-2 bg-blue-500/10 rounded-lg">
+                        🎯 Enhanced spiritual tools
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Available Services */}
+                <div className="bg-white/5 rounded-xl p-4">
+                  <h3 className="text-purple-100 font-medium mb-3">Sacred Services</h3>
+                  <div className="space-y-2 text-xs">
+                    
+                    {/* Personal Services Available to All */}
+                    <div className="space-y-1">
+                      <button 
+                        onClick={() => window.open('https://buy.stripe.com/eVq5kD2R4a9GgdU2Q5fIs05', '_blank')}
+                        className="w-full text-left p-2 bg-emerald-500/10 hover:bg-emerald-500/20 rounded-lg transition-all border border-emerald-500/20"
+                      >
+                        <div className="text-emerald-300 font-medium">Sacred Reflection - $33</div>
+                        <div className="text-emerald-400 text-xs">30min • Zoom/Phone • Life pattern exploration</div>
+                      </button>
+                      
+                      <button 
+                        onClick={() => window.open('https://buy.stripe.com/7sY9AT8bo4Pm4vc2Q5fIs04', '_blank')}
+                        className="w-full text-left p-2 bg-blue-500/10 hover:bg-blue-500/20 rounded-lg transition-all border border-blue-500/20"
+                      >
+                        <div className="text-blue-300 font-medium">Energy Alignment - $55</div>
+                        <div className="text-blue-400 text-xs">45min • Remote energy work • Chakra healing</div>
+                      </button>
+                      
+                      <button 
+                        onClick={() => window.open('https://buy.stripe.com/14A8wPbnA95C5zg62hfIs02', '_blank')}
+                        className="w-full text-left p-2 bg-purple-500/10 hover:bg-purple-500/20 rounded-lg transition-all border border-purple-500/20"
+                      >
+                        <div className="text-purple-300 font-medium">Mentoring Session - $77</div>
+                        <div className="text-purple-400 text-xs">60min • Zoom • Personalized spiritual guidance</div>
+                      </button>
+                      
+                      <button 
+                        onClick={() => window.open('https://buy.stripe.com/14AaEX63g0z6e5M3U9fIs03', '_blank')}
+                        className="w-full text-left p-2 bg-indigo-500/10 hover:bg-indigo-500/20 rounded-lg transition-all border border-indigo-500/20"
+                      >
+                        <div className="text-indigo-300 font-medium">Akashic Reading - $111</div>
+                        <div className="text-indigo-400 text-xs">90min • Zoom • Soul records + written summary</div>
+                      </button>
+                    </div>
+
+                    {/* Subscription Options */}
+                    {subscriptionTier === 'seeker' && (
+                      <div className="mt-3 pt-3 border-t border-purple-400/20">
+                        <div className="text-purple-300 text-xs mb-2">Expand Your Garden:</div>
+                        <button 
+                          onClick={() => window.open('https://buy.stripe.com/4gMfZh4Zc0z60eW0HXfIs00', '_blank')}
+                          className="w-full text-left p-2 bg-green-500/10 hover:bg-green-500/20 rounded-lg transition-all border border-green-500/20"
+                        >
+                          <div className="text-green-300 font-medium">🌿 Gardener Path - $7/month</div>
+                          <div className="text-green-400 text-xs">77 monthly messages + advanced teachings</div>
+                        </button>
+                        <button 
+                          onClick={() => window.open('https://buy.stripe.com/cNifZhdvI1Dae5M62hfIs01', '_blank')}
+                          className="w-full text-left p-2 bg-yellow-500/10 hover:bg-yellow-500/20 rounded-lg transition-all border border-yellow-500/20 mt-1"
+                        >
+                          <div className="text-yellow-300 font-medium">🌳 Guardian Path - $15/month</div>
+                          <div className="text-yellow-400 text-xs">Unlimited access + exclusive content</div>
+                        </button>
+                      </div>
+                    )}
+                    
+                    {subscriptionTier === 'gardener' && (
+                      <div className="mt-3 pt-3 border-t border-purple-400/20">
+                        <button 
+                          onClick={() => window.open('https://buy.stripe.com/cNifZhdvI1Dae5M62hfIs01', '_blank')}
+                          className="w-full text-left p-2 bg-yellow-500/10 hover:bg-yellow-500/20 rounded-lg transition-all border border-yellow-500/20"
+                        >
+                          <div className="text-yellow-300 font-medium">🌳 Upgrade to Guardian - $15/month</div>
+                          <div className="text-yellow-400 text-xs">Unlimited communion + exclusive teachings</div>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Service Information Panel */}
+              <div className="mt-6 bg-white/5 rounded-xl p-4 border border-purple-300/20">
+                <h4 className="text-sm text-purple-100 mb-3">📞 Service Details & Remote Delivery</h4>
+                <div className="grid md:grid-cols-2 gap-4 text-xs text-purple-300">
+                  
+                  <div className="space-y-2">
+                    <div><strong className="text-purple-200">🌸 Sacred Reflection ($33):</strong></div>
+                    <div>• 30-minute gentle exploration session</div>
+                    <div>• Zoom or phone - your preference</div>
+                    <div>• Life pattern awareness and intention setting</div>
+                    <div>• Perfect for beginners to conscious awakening</div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div><strong className="text-purple-200">⚡ Energy Alignment ($55):</strong></div>
+                    <div>• 45-minute remote energy healing session</div>
+                    <div>• Zoom with guided awareness exercises</div>
+                    <div>• Chakra assessment and clearing work</div>
+                    <div>• Personalized frequency recommendations</div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div><strong className="text-purple-200">🤝 Mentoring Session ($77):</strong></div>
+                    <div>• 60-minute deep spiritual guidance</div>
+                    <div>• Zoom with screen sharing for resources</div>
+                    <div>• Personalized practices and integration support</div>
+                    <div>• Follow-up resources and custom recommendations</div>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <div><strong className="text-purple-200">📜 Akashic Reading ($111):</strong></div>
+                    <div>• 90-minute soul records exploration</div>
+                    <div>• Zoom session with detailed discussion</div>
+                    <div>• Written summary for ongoing reflection</div>
+                    <div>• Past life insights and karmic healing guidance</div>
+                  </div>
+                </div>
+                
+                <div className="mt-4 pt-3 border-t border-purple-300/20">
+                  <div className="text-xs text-purple-300 space-y-1">
+                    <div><strong className="text-purple-200">All sessions include:</strong></div>
+                    <div>• Pre-session intake form to honor your unique journey</div>
+                    <div>• Flexible scheduling across time zones</div>
+                    <div>• Sacred space holding with complete confidentiality</div>
+                    <div>• Integration resources and gentle follow-up guidance</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* EXISTING: Left Column - Intention & Reflection */}
           <div className="lg:col-span-2 space-y-8">
             
             {/* Today's Intention */}
@@ -492,9 +727,9 @@ export default function PersonalGarden() {
                 Garden Pathways
               </h3>
               <div className="space-y-3">
-                <button
-                  onClick={() => window.location.href = '/garden/guide'}
-                  className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all"
+                <Link
+                  href="/garden-guide"
+                  className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all block"
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-lg">🤖</span>
@@ -503,11 +738,11 @@ export default function PersonalGarden() {
                       <div className="text-purple-300 text-xs">Sacred AI communion</div>
                     </div>
                   </div>
-                </button>
+                </Link>
                 
-                <button
-                  onClick={() => window.location.href = '/garden/meditation'}
-                  className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all"
+                <Link
+                  href="/meditations"
+                  className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all block"
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-lg">🧘‍♀️</span>
@@ -516,11 +751,11 @@ export default function PersonalGarden() {
                       <div className="text-purple-300 text-xs">Guided inner journeys</div>
                     </div>
                   </div>
-                </button>
+                </Link>
                 
-                <button
-                  onClick={() => window.location.href = '/garden/wisdom'}
-                  className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all"
+                <Link
+                  href="/wisdom"
+                  className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all block"
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-lg">📜</span>
@@ -529,7 +764,20 @@ export default function PersonalGarden() {
                       <div className="text-purple-300 text-xs">Sacred teachings</div>
                     </div>
                   </div>
-                </button>
+                </Link>
+                
+                <Link
+                  href="/garden/services"
+                  className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all block"
+                >
+                  <div className="flex items-center space-x-3">
+                    <span className="text-lg">�</span>
+                    <div>
+                      <div className="text-purple-100 text-sm">Sacred Services</div>
+                      <div className="text-purple-300 text-xs">Personal guidance & support</div>
+                    </div>
+                  </div>
+                </Link>
               </div>
             </div>
           </div>

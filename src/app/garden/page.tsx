@@ -32,12 +32,22 @@ export default function GardenDashboard() {
           journeyStart = new Date(session.user.user_metadata.journey_start);
         } else if (session.user.created_at) {
           journeyStart = new Date(session.user.created_at);
+        } else {
+          // Fallback to today if no creation date available
+          journeyStart = new Date();
         }
         
         const today = new Date();
-        const diffTime = Math.abs(today.getTime() - journeyStart.getTime());
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        // Calculate days since journey started (including partial days as full days)
+        const diffTime = today.getTime() - journeyStart.getTime();
+        const diffDays = Math.max(1, Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1);
         setJourneyDays(diffDays);
+        
+        console.log('🌱 Journey calculation:', {
+          journeyStart: journeyStart.toISOString(),
+          today: today.toISOString(),
+          diffDays: diffDays
+        });
       }
     } catch (error) {
       console.log('Auth check error:', error);

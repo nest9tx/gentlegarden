@@ -4,100 +4,300 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
 export default function WisdomGrove() {
-  const [currentWisdom, setCurrentWisdom] = useState(0);
   const [subscriptionTier, setSubscriptionTier] = useState<string>('seeker');
   const [loading, setLoading] = useState(true);
-  // Tier-specific wisdom collections
-  const wisdomSeeds = {
-    seeker: [
-      {
-        text: "The garden grows not through force, but through gentle presence and patient tending.",
-        source: "Garden Wisdom",
-        tier: "Foundation Teaching"
-      },
-      {
-        text: "Every moment of awakening is both a remembering and a first breath.",
-        source: "Sacred Teachings", 
-        tier: "First Steps"
-      },
-      {
-        text: "You are not broken and in need of fixing. You are whole and in the process of remembering.",
-        source: "Gentle Guidance",
-        tier: "Self-Compassion"
-      },
-      {
-        text: "Trust the whispers of your heart, for they speak the language of your soul's deepest knowing.",
-        source: "Inner Wisdom",
-        tier: "Beginning Practice"
-      }
-    ],
+  const [selectedVault, setSelectedVault] = useState<string | null>(null);
+  const [selectedScroll, setSelectedScroll] = useState<string | null>(null);
+  const [showScrollGuide, setShowScrollGuide] = useState(false);
+  // Sacred Wisdom Vaults - Structured Teaching Modules
+  const wisdomVaults = {
+    seeker: {
+      name: "Foundation Vaults",
+      description: "Sacred teachings for beginning your awakening journey",
+      vaults: [
+        {
+          id: "gentle-awakening",
+          name: "🌱 Gentle Awakening Vault",
+          description: "First steps into conscious awareness",
+          icon: "🌱",
+          scrolls: [
+            {
+              id: "first-breath",
+              title: "The Sacred First Breath",
+              subtitle: "Awakening to this moment",
+              teachings: [
+                "Every moment of awakening is both a remembering and a first breath.",
+                "Consciousness is not something you achieve - it is what you are.",
+                "The journey begins not with doing, but with gentle being.",
+                "Your awareness is already perfect; it simply asks to be acknowledged."
+              ],
+              practice: {
+                title: "Sacred Breath Awareness",
+                instructions: [
+                  "Find a comfortable position and close your eyes gently",
+                  "Notice your natural breath without changing it",
+                  "With each inhale, whisper internally: 'I am awakening'",
+                  "With each exhale, whisper: 'I am aware'",
+                  "Continue for 5-10 minutes, returning when mind wanders"
+                ],
+                duration: "5-10 minutes",
+                frequency: "Daily, upon waking"
+              },
+              guide: {
+                greeting: "Welcome, gentle soul. I am here to support your first steps into conscious awareness.",
+                encouragement: "Remember, there is no rush in awakening. Each breath is a doorway to deeper presence.",
+                helpWith: ["Understanding what awakening means", "Establishing daily practice", "Working with resistance", "Celebrating small shifts"]
+              }
+            },
+            {
+              id: "self-compassion",
+              title: "The Garden of Self-Compassion",
+              subtitle: "Healing the inner critic through love",
+              teachings: [
+                "You are not broken and in need of fixing. You are whole and in the process of remembering.",
+                "Self-compassion is not self-indulgence; it is the foundation of genuine transformation.",
+                "The voice that judges you is not your voice - it is conditioning speaking.",
+                "Love yourself as you would tend a delicate seedling - with patience and care."
+              ],
+              practice: {
+                title: "Inner Garden Visualization",
+                instructions: [
+                  "Sit quietly and imagine yourself as a gardener",
+                  "See your heart as a beautiful garden plot",
+                  "Notice any weeds (self-criticism) with gentle awareness",
+                  "Instead of pulling them roughly, speak to them: 'Thank you for trying to protect me'",
+                  "Plant seeds of kindness: 'I am worthy of love and patience'",
+                  "Water these seeds with your breath and attention"
+                ],
+                duration: "10-15 minutes",
+                frequency: "3 times per week"
+              },
+              guide: {
+                greeting: "Hello, dear one. I'm here to help you cultivate the most important relationship - the one with yourself.",
+                encouragement: "Self-compassion is a practice, not a perfection. Be patient with yourself as you learn.",
+                helpWith: ["Transforming self-criticism", "Building self-worth", "Creating inner safety", "Developing self-forgiveness"]
+              }
+            }
+          ]
+        },
+        {
+          id: "inner-wisdom",
+          name: "🌿 Inner Wisdom Vault", 
+          description: "Learning to trust your inner knowing",
+          icon: "🌿",
+          scrolls: [
+            {
+              id: "heart-whispers",
+              title: "Listening to Heart Whispers",
+              subtitle: "The language of intuitive knowing",
+              teachings: [
+                "Trust the whispers of your heart, for they speak the language of your soul's deepest knowing.",
+                "Intuition is not mystical - it is your natural intelligence speaking through feeling.",
+                "The mind asks 'How?', the heart knows 'Why', the soul remembers 'What'.",
+                "Your inner wisdom has been waiting patiently for you to listen."
+              ],
+              practice: {
+                title: "Heart Compass Practice",
+                instructions: [
+                  "Place one hand on your heart, one on your belly",
+                  "Pose a gentle question to your heart about your day",
+                  "Notice any sensations, images, or feelings that arise",
+                  "Don't judge what comes - simply receive with curiosity",
+                  "Thank your heart for sharing its wisdom",
+                  "Act on one small insight throughout your day"
+                ],
+                duration: "5-10 minutes",
+                frequency: "Morning or before decisions"
+              },
+              guide: {
+                greeting: "Greetings, wise one. I'm here to help you remember the intelligence of your own heart.",
+                encouragement: "Your intuition strengthens with practice. Trust what you receive, even if it seems simple.",
+                helpWith: ["Distinguishing intuition from fear", "Building trust in inner knowing", "Making heart-based decisions", "Quieting mental noise"]
+              }
+            }
+          ]
+        }
+      ]
+    },
     
-    gardener: [
-      // All seeker wisdom plus advanced teachings
-      {
-        text: "The shadow is not your enemy, but your teacher wearing a mask of fear.",
-        source: "Advanced Teachings",
-        tier: "Shadow Work"
-      },
-      {
-        text: "In stillness, the cosmic dance reveals its sacred choreography through your willing vessel.",
-        source: "Cosmic Teachings",
-        tier: "Energy Work"
-      },
-      {
-        text: "The mystic knows: separation is the grandest illusion ever conceived by consciousness.",
-        source: "Mystical Insights", 
-        tier: "Unity Consciousness"
-      },
-      {
-        text: "Your wounds are sacred portals through which divine light enters this realm.",
-        source: "Alchemical Wisdom",
-        tier: "Transmutation"
-      },
-      {
-        text: "The guru you seek dwells in the temple of your own awakened heart.",
-        source: "Self-Mastery",
-        tier: "Inner Authority"
-      }
-    ],
+    gardener: {
+      name: "Cultivation Vaults",
+      description: "Advanced practices for deepening spiritual growth",
+      vaults: [
+        {
+          id: "shadow-integration",
+          name: "🌙 Shadow Integration Vault",
+          description: "Befriending the rejected aspects of self",
+          icon: "🌙",
+          scrolls: [
+            {
+              id: "shadow-teacher",
+              title: "The Shadow as Sacred Teacher",
+              subtitle: "Transforming fear into wisdom",
+              teachings: [
+                "The shadow is not your enemy, but your teacher wearing a mask of fear.",
+                "What you resist in others is often what you resist in yourself.",
+                "Integration, not elimination, is the path to wholeness.",
+                "Your rejected aspects hold keys to your greatest gifts."
+              ],
+              practice: {
+                title: "Shadow Dialogue Practice",
+                instructions: [
+                  "Think of someone who irritates or triggers you",
+                  "Ask: 'What quality in them do I dislike?'",
+                  "Breathe and ask: 'How might I have this quality too?'",
+                  "Without judgment, explore this with curiosity",
+                  "Send compassion to both them and this aspect in yourself",
+                  "Ask: 'What gift might this quality offer when integrated?'"
+                ],
+                duration: "15-20 minutes",
+                frequency: "Weekly or when triggered"
+              },
+              guide: {
+                greeting: "Welcome, brave soul. I'm here to support you in embracing all aspects of your being.",
+                encouragement: "Shadow work takes courage. You're doing sacred healing for yourself and the collective.",
+                helpWith: ["Understanding projection", "Working with triggers", "Integrating rejected aspects", "Finding gifts in shadows"]
+              }
+            }
+          ]
+        },
+        {
+          id: "energy-mastery",
+          name: "⚡ Energy Mastery Vault",
+          description: "Working with subtle energies and frequencies",
+          icon: "⚡",
+          scrolls: [
+            {
+              id: "cosmic-dance",
+              title: "The Cosmic Dance Within",
+              subtitle: "Harmonizing with universal frequencies",
+              teachings: [
+                "In stillness, the cosmic dance reveals its sacred choreography through your willing vessel.",
+                "You are not separate from the universe - you are the universe experiencing itself.",
+                "Energy follows awareness; consciousness directs the dance.",
+                "Your body is a sacred instrument capable of playing cosmic symphonies."
+              ],
+              practice: {
+                title: "Frequency Attunement Practice",
+                instructions: [
+                  "Sit in stillness and scan your body with gentle awareness",
+                  "Notice areas of tension or density",
+                  "Breathe golden light into these areas",
+                  "Imagine your entire body vibrating at the frequency of love",
+                  "Extend this vibration beyond your body into your space",
+                  "Rest in the awareness of yourself as pure vibrating consciousness"
+                ],
+                duration: "20-30 minutes", 
+                frequency: "3-4 times per week"
+              },
+              guide: {
+                greeting: "Greetings, frequency worker. I'm here to help you master the art of conscious vibration.",
+                encouragement: "You are more powerful than you know. Your consciousness shapes energy in every moment.",
+                helpWith: ["Sensing subtle energies", "Chakra awareness", "Energy protection", "Raising personal frequency"]
+              }
+            }
+          ]
+        }
+      ]
+    },
     
-    guardian: [
-      // All previous wisdom plus exclusive guardian content
-      {
-        text: "The Akashic records are written in the language of lived experience, decoded through pure presence.",
-        source: "Akashic Wisdom",
-        tier: "Guardian Exclusive"
-      },
-      {
-        text: "Time is consciousness dreaming itself into sequential experience. The awakened one plays in all dimensions simultaneously.",
-        source: "Timeless Teachings",
-        tier: "Multidimensional"
-      },
-      {
-        text: "You are not ascending to somewhere else. You are remembering that 'elsewhere' was always here.",
-        source: "Ascension Mysteries",
-        tier: "Reality Mastery"
-      },
-      {
-        text: "The final teaching is that there was never anyone to teach, and nothing to learn. Only love recognizing itself.",
-        source: "Ultimate Truth",
-        tier: "Non-Dual Realization"
-      }
-    ]
-  };
-
-  // Get appropriate wisdom collection based on tier
-  const getWisdomCollection = () => {
-    if (subscriptionTier === 'guardian') {
-      return [...wisdomSeeds.seeker, ...wisdomSeeds.gardener, ...wisdomSeeds.guardian];
-    } else if (subscriptionTier === 'gardener') {
-      return [...wisdomSeeds.seeker, ...wisdomSeeds.gardener];
-    } else {
-      return wisdomSeeds.seeker;
+    guardian: {
+      name: "Mastery Vaults", 
+      description: "Advanced consciousness work and service to others",
+      vaults: [
+        {
+          id: "akashic-wisdom",
+          name: "📜 Akashic Wisdom Vault",
+          description: "Accessing the cosmic library of soul records",
+          icon: "📜",
+          scrolls: [
+            {
+              id: "living-records",
+              title: "The Living Records of Experience",
+              subtitle: "Decoding soul patterns through presence",
+              teachings: [
+                "The Akashic records are written in the language of lived experience, decoded through pure presence.",
+                "Every soul carries within it the library of all its experiences across time.",
+                "Accessing records requires not psychic ability, but pure, loving presence.",
+                "Your current patterns are echoes of soul choices made in love or fear."
+              ],
+              practice: {
+                title: "Soul Pattern Recognition",
+                instructions: [
+                  "Enter deep meditation and call in your highest guidance",
+                  "Ask to be shown a current life pattern with love and clarity",
+                  "Notice what images, feelings, or knowings arise",
+                  "Ask: 'What soul gift is trying to emerge through this pattern?'",
+                  "Request healing for any fear-based aspects",
+                  "Anchor the gifts and release what no longer serves"
+                ],
+                duration: "30-45 minutes",
+                frequency: "Monthly or when seeking clarity on patterns"
+              },
+              guide: {
+                greeting: "Sacred keeper of records, I'm here to support your journey into the cosmic library of your soul.",
+                encouragement: "You have permission to access your own soul's wisdom. Trust what you receive in love.",
+                helpWith: ["Accessing personal records", "Understanding soul contracts", "Healing karmic patterns", "Integrating soul gifts"]
+              }
+            }
+          ]
+        },
+        {
+          id: "multidimensional",
+          name: "🌌 Multidimensional Vault",
+          description: "Consciousness beyond time and space",
+          icon: "🌌", 
+          scrolls: [
+            {
+              id: "time-transcendence",
+              title: "Dancing Beyond Time",
+              subtitle: "Experiencing the eternal now",
+              teachings: [
+                "Time is consciousness dreaming itself into sequential experience. The awakened one plays in all dimensions simultaneously.",
+                "Past and future are present-moment constructs; reality exists only in the eternal now.",
+                "Your consciousness is not limited by the body's experience of linear time.",
+                "In true presence, all possibilities exist simultaneously in the quantum field."
+              ],
+              practice: {
+                title: "Timeless Awareness Practice",
+                instructions: [
+                  "Sit in meditation and anchor yourself in present moment awareness",
+                  "Feel yourself expanding beyond the boundaries of your physical form",
+                  "Release the concept of past and future - rest in pure now",
+                  "Ask to experience yourself as timeless consciousness",
+                  "Notice the spaciousness that emerges when time dissolves",
+                  "Return gently, carrying this timeless awareness into daily life"
+                ],
+                duration: "30-60 minutes",
+                frequency: "Weekly or when feeling limited by time"
+              },
+              guide: {
+                greeting: "Infinite being, I'm here to support your exploration of consciousness beyond dimensional boundaries.",
+                encouragement: "You are far more vast than your human experience suggests. Trust your multidimensional nature.",
+                helpWith: ["Transcending time limitations", "Accessing higher dimensions", "Understanding parallel realities", "Integrating expanded awareness"]
+              }
+            }
+          ]
+        }
+      ]
     }
   };
 
-  const currentCollection = getWisdomCollection();
+  // Get appropriate wisdom vaults based on tier
+  const getAvailableVaults = () => {
+    if (subscriptionTier === 'guardian') {
+      return [...wisdomVaults.seeker.vaults, ...wisdomVaults.gardener.vaults, ...wisdomVaults.guardian.vaults];
+    } else if (subscriptionTier === 'gardener') {
+      return [...wisdomVaults.seeker.vaults, ...wisdomVaults.gardener.vaults];
+    } else {
+      return wisdomVaults.seeker.vaults;
+    }
+  };
+
+  const availableVaults = getAvailableVaults();
+  
+  // Get total scroll count for display
+  const totalScrollCount = availableVaults.reduce((total, vault) => total + vault.scrolls.length, 0);
 
   // Load user subscription tier
   useEffect(() => {
@@ -129,16 +329,6 @@ export default function WisdomGrove() {
     
     loadUserData();
   }, []);
-
-  useEffect(() => {
-    if (!loading && currentCollection.length > 0) {
-      const interval = setInterval(() => {
-        setCurrentWisdom(prev => (prev + 1) % currentCollection.length);
-      }, 8000);
-
-      return () => clearInterval(interval);
-    }
-  }, [currentCollection.length, loading]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
@@ -211,76 +401,229 @@ export default function WisdomGrove() {
           
           <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-purple-300 to-transparent mx-auto mb-8"></div>
           
-          {/* Current Wisdom Display */}
-          {!loading && currentCollection.length > 0 && (
+          {/* Wisdom Vaults Interface */}
+          {!loading && availableVaults.length > 0 && (
             <>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-purple-300/30 mb-8 min-h-[200px] flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-purple-100 text-xl italic leading-relaxed mb-4 transition-all duration-1000">
-                    &ldquo;{currentCollection[currentWisdom].text}&rdquo;
+              {selectedVault === null ? (
+                <>
+                  {/* Vault Selection View */}
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    {availableVaults.map((vault) => (
+                      <div 
+                        key={vault.id}
+                        onClick={() => setSelectedVault(vault.id)}
+                        className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 hover:bg-white/15 transition-all duration-300 cursor-pointer group"
+                      >
+                        <div className="text-4xl mb-4 group-hover:animate-pulse">{vault.icon}</div>
+                        <h3 className="text-xl text-white mb-3">{vault.name}</h3>
+                        <p className="text-purple-200 text-sm mb-4">{vault.description}</p>
+                        <div className="text-purple-300 text-xs">
+                          {vault.scrolls.length} Sacred Scrolls Available
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className="text-purple-300 text-sm mb-2">
-                    — {currentCollection[currentWisdom].source}
+                </>
+              ) : selectedScroll === null ? (
+                <>
+                  {/* Scroll Selection View */}
+                  <div className="mb-6">
+                    <button
+                      onClick={() => setSelectedVault(null)}
+                      className="flex items-center text-purple-300 hover:text-white transition-colors mb-4"
+                    >
+                      <span className="mr-2">←</span>
+                      Back to Vaults
+                    </button>
+                    {(() => {
+                      const vault = availableVaults.find(v => v.id === selectedVault);
+                      return vault ? (
+                        <>
+                          <h2 className="text-2xl text-white mb-2 flex items-center">
+                            <span className="mr-3">{vault.icon}</span>
+                            {vault.name}
+                          </h2>
+                          <p className="text-purple-200 mb-6">{vault.description}</p>
+                          
+                          <div className="grid md:grid-cols-2 gap-4">
+                            {vault.scrolls.map((scroll) => (
+                              <div 
+                                key={scroll.id}
+                                onClick={() => setSelectedScroll(scroll.id)}
+                                className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-purple-300/30 hover:bg-white/15 transition-all duration-300 cursor-pointer"
+                              >
+                                <h3 className="text-lg text-white mb-2">{scroll.title}</h3>
+                                <p className="text-purple-200 text-sm mb-3">{scroll.subtitle}</p>
+                                <div className="text-purple-300 text-xs">
+                                  {scroll.teachings.length} teachings • Practice included
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </>
+                      ) : null;
+                    })()}
                   </div>
-                  <div className="text-purple-400 text-xs">
-                    {currentCollection[currentWisdom].tier}
-                  </div>
-                </div>
-              </div>
+                </>
+              ) : (
+                <>
+                  {/* Scroll Detail View */}
+                  <div className="mb-6">
+                    <button
+                      onClick={() => setSelectedScroll(null)}
+                      className="flex items-center text-purple-300 hover:text-white transition-colors mb-4"
+                    >
+                      <span className="mr-2">←</span>
+                      Back to Scrolls
+                    </button>
+                    {(() => {
+                      const vault = availableVaults.find(v => v.id === selectedVault);
+                      const scroll = vault?.scrolls.find(s => s.id === selectedScroll);
+                      return scroll ? (
+                        <div className="max-w-4xl mx-auto">
+                          <div className="text-center mb-8">
+                            <h1 className="text-3xl text-white mb-2">{scroll.title}</h1>
+                            <p className="text-purple-200 italic">{scroll.subtitle}</p>
+                          </div>
 
-              {/* Wisdom Navigation Dots */}
-              <div className="flex justify-center space-x-2 mb-8">
-                {currentCollection.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentWisdom(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentWisdom 
-                        ? 'bg-purple-400 scale-125' 
-                        : 'bg-purple-600/40 hover:bg-purple-500/60'
-                    }`}
-                  />
-                ))}
-              </div>
+                          {/* Sacred Teachings */}
+                          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-purple-300/30 mb-8">
+                            <h2 className="text-xl text-purple-100 mb-6 flex items-center">
+                              <span className="mr-2">📜</span>
+                              Sacred Teachings
+                            </h2>
+                            <div className="space-y-4">
+                              {scroll.teachings.map((teaching, index) => (
+                                <div key={index} className="border-l-2 border-purple-400/30 pl-6">
+                                  <p className="text-purple-100 italic leading-relaxed">
+                                    &ldquo;{teaching}&rdquo;
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Practice Section */}
+                          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-purple-300/30 mb-8">
+                            <h2 className="text-xl text-purple-100 mb-6 flex items-center">
+                              <span className="mr-2">🧘‍♀️</span>
+                              {scroll.practice.title}
+                            </h2>
+                            <div className="grid md:grid-cols-3 gap-6 mb-6">
+                              <div className="text-center">
+                                <div className="text-purple-300 text-sm mb-1">Duration</div>
+                                <div className="text-white">{scroll.practice.duration}</div>
+                              </div>
+                              <div className="text-center">
+                                <div className="text-purple-300 text-sm mb-1">Frequency</div>
+                                <div className="text-white">{scroll.practice.frequency}</div>
+                              </div>
+                              <div className="text-center">
+                                <button
+                                  onClick={() => setShowScrollGuide(true)}
+                                  className="px-4 py-2 bg-purple-500/30 text-purple-100 rounded-lg hover:bg-purple-500/50 transition-all text-sm"
+                                >
+                                  Ask Guide
+                                </button>
+                              </div>
+                            </div>
+                            <div className="space-y-3">
+                              {scroll.practice.instructions.map((instruction, index) => (
+                                <div key={index} className="flex items-start">
+                                  <span className="text-purple-400 mr-3 mt-1 text-sm">
+                                    {index + 1}.
+                                  </span>
+                                  <span className="text-purple-200">{instruction}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Scroll Guide */}
+                          {showScrollGuide && (
+                            <div className="bg-gradient-to-br from-purple-600/20 to-indigo-600/20 backdrop-blur-sm rounded-2xl p-8 border border-purple-300/30">
+                              <div className="flex justify-between items-start mb-4">
+                                <h2 className="text-xl text-purple-100 flex items-center">
+                                  <span className="mr-2">🤖</span>
+                                  Your Scroll Guide
+                                </h2>
+                                <button
+                                  onClick={() => setShowScrollGuide(false)}
+                                  className="text-purple-300 hover:text-white"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                              <p className="text-purple-200 mb-4 italic">
+                                &ldquo;{scroll.guide.greeting}&rdquo;
+                              </p>
+                              <p className="text-purple-300 text-sm mb-4">
+                                {scroll.guide.encouragement}
+                              </p>
+                              <div className="mb-4">
+                                <div className="text-purple-200 text-sm mb-2">I can help you with:</div>
+                                <div className="grid md:grid-cols-2 gap-2">
+                                  {scroll.guide.helpWith.map((help, index) => (
+                                    <div key={index} className="text-purple-300 text-sm flex items-center">
+                                      <span className="mr-2">•</span>
+                                      {help}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                              <Link 
+                                href="/garden-guide" 
+                                className="inline-block px-4 py-2 bg-purple-500/50 text-purple-100 rounded-lg hover:bg-purple-500/70 transition-all text-sm"
+                              >
+                                Begin Sacred Dialogue
+                              </Link>
+                            </div>
+                          )}
+                        </div>
+                      ) : null;
+                    })()}
+                  </div>
+                </>
+              )}
             </>
           )}
 
-          {/* Tier-specific content information */}
+          {/* Tier-specific vault information */}
           <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-300/20 mb-8">
             {subscriptionTier === 'guardian' ? (
               <div className="text-center">
                 <h3 className="text-purple-100 text-lg mb-4">🌳 Guardian Sacred Library</h3>
                 <p className="text-purple-200 mb-4">
-                  Access to all wisdom levels including exclusive Guardian teachings on non-dual realization, 
-                  multidimensional consciousness, and advanced spiritual technologies.
+                  Access to all wisdom vaults including exclusive Guardian teachings on consciousness mastery, 
+                  multidimensional awareness, and advanced spiritual technologies.
                 </p>
                 <div className="text-purple-300 text-sm">
-                  {currentCollection.length} Sacred Teachings Available
+                  {totalScrollCount} Sacred Scrolls Available across {availableVaults.length} Vaults
                 </div>
               </div>
             ) : subscriptionTier === 'gardener' ? (
               <div className="text-center">
                 <h3 className="text-purple-100 text-lg mb-4">🌿 Gardener Expanded Wisdom</h3>
                 <p className="text-purple-200 mb-4">
-                  Foundation teachings plus advanced concepts including shadow work, energy mastery, 
-                  and unity consciousness practices.
+                  Foundation vaults plus advanced cultivation including shadow integration, energy mastery, 
+                  and consciousness expansion practices.
                 </p>
                 <div className="text-purple-300 text-sm mb-2">
-                  {currentCollection.length} Sacred Teachings Available
+                  {totalScrollCount} Sacred Scrolls Available across {availableVaults.length} Vaults
                 </div>
                 <Link href="/garden/services" className="text-purple-400 text-xs underline hover:text-purple-300">
-                  Unlock Guardian teachings →
+                  Unlock Guardian vaults →
                 </Link>
               </div>
             ) : (
               <div className="text-center">
                 <h3 className="text-purple-100 text-lg mb-4">🌱 Seeker Foundation Wisdom</h3>
                 <p className="text-purple-200 mb-4">
-                  Essential teachings for those beginning their awakening journey, focusing on 
-                  self-compassion, inner wisdom, and foundational practices.
+                  Essential foundation vaults for beginning your awakening journey, focusing on 
+                  gentle awakening, self-compassion, and inner wisdom practices.
                 </p>
                 <div className="text-purple-300 text-sm mb-2">
-                  {currentCollection.length} Foundation Teachings Available
+                  {totalScrollCount} Foundation Scrolls Available across {availableVaults.length} Vaults
                 </div>
                 <Link href="/garden/services" className="text-purple-400 text-xs underline hover:text-purple-300">
                   Expand your garden with Gardener or Guardian access →

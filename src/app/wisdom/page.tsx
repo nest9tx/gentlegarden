@@ -24,58 +24,72 @@ export default function WisdomGrove() {
             {
               id: "first-breath",
               title: "The Sacred First Breath",
-              subtitle: "Awakening to this moment",
+              subtitle: "Your complete guide to awakening through breath awareness",
               teachings: [
-                "Every moment of awakening is both a remembering and a first breath.",
-                "Consciousness is not something you achieve - it is what you are.",
-                "The journey begins not with doing, but with gentle being.",
-                "Your awareness is already perfect; it simply asks to be acknowledged."
+                "Every moment of awakening is both a remembering and a first breath. Meditation begins not with complex techniques, but with this simple recognition.",
+                "Consciousness is not something you achieve through effort - it is what you already are. The breath serves as a gentle doorway to this recognition.",
+                "The journey of meditation begins not with doing, but with gentle being. Your breath is always available as an anchor to presence.",
+                "Your awareness is already perfect; it simply asks to be acknowledged. Through breath awareness, we learn to trust our natural capacity for peace.",
+                "Ancient traditions teach that the breath carries both life force (prana) and awareness itself. As you attune to breathing, you attune to consciousness.",
+                "Meditation is not about stopping thoughts, but learning to rest in the space between thoughts - the same space between each inhale and exhale.",
+                "The sacred pause between breaths is where eternity touches time. Here, in this natural stillness, awakening naturally unfolds.",
+                "As your breath practice deepens, you may find yourself naturally drawn to longer meditations, sacred locations in nature, or geometric breathing patterns that enhance awareness."
               ],
               practice: {
-                title: "Sacred Breath Awareness",
+                title: "Sacred Breath Awareness - Complete Foundation Practice",
                 instructions: [
-                  "Find a comfortable position and close your eyes gently",
-                  "Notice your natural breath without changing it",
-                  "With each inhale, whisper internally: 'I am awakening'",
-                  "With each exhale, whisper: 'I am aware'",
-                  "Continue for 5-10 minutes, returning when mind wanders"
+                  "🌅 PREPARATION: Find a comfortable position where your spine can be naturally upright. This can be sitting, lying down, or even standing in nature.",
+                  "🌸 SETTLING: Close your eyes gently or soften your gaze. Take three deep breaths to signal to your nervous system that this is sacred time.",
+                  "👁️ AWARENESS: Notice your natural breath without changing it. Observe: Is it shallow or deep? Fast or slow? Smooth or irregular? Simply witness.",
+                  "🎵 MANTRA BREATHING: With each inhale, whisper internally: 'I am awakening.' With each exhale, whisper: 'I am aware.' Let these words arise naturally.",
+                  "🌊 RHYTHM: Allow your breath to find its own natural rhythm. Don't force; simply follow. Notice how the body breathes you.",
+                  "💭 WHEN MIND WANDERS: This is normal and perfect. Gently return to the breath without judgment. Each return is awakening happening.",
+                  "⏰ DURATION: Start with 5-10 minutes daily. As you feel called, extend to 15-20 minutes. Trust your inner guidance on timing.",
+                  "🌱 INTEGRATION: Before opening your eyes, set a gentle intention to carry this awareness into your day. Notice how breath awareness can be your constant companion."
                 ],
-                duration: "5-10 minutes",
-                frequency: "Daily, upon waking"
+                duration: "5-10 minutes (expanding naturally as you're called)",
+                frequency: "Daily, preferably upon waking to set sacred intention for the day"
               },
               guide: {
-                greeting: "Welcome, gentle soul. I am here to support your first steps into conscious awareness.",
-                encouragement: "Remember, there is no rush in awakening. Each breath is a doorway to deeper presence.",
-                helpWith: ["Understanding what awakening means", "Establishing daily practice", "Working with resistance", "Celebrating small shifts"]
+                greeting: "Welcome, gentle soul. I am here to support your first steps into conscious awareness through the wisdom of breath.",
+                encouragement: "Remember, there is no rush in awakening. Each breath is a perfect doorway to deeper presence. Your practice is already whole.",
+                helpWith: ["Understanding what meditation truly is", "Establishing daily breath practice", "Working with resistance or restlessness", "Recognizing the natural progression to deeper practices", "Connecting breath awareness to daily life", "Exploring breath work in nature or sacred spaces"]
               }
             },
             {
               id: "self-compassion",
               title: "The Garden of Self-Compassion",
-              subtitle: "Healing the inner critic through love",
+              subtitle: "Your complete guide to healing the inner critic through love",
               teachings: [
-                "You are not broken and in need of fixing. You are whole and in the process of remembering.",
-                "Self-compassion is not self-indulgence; it is the foundation of genuine transformation.",
-                "The voice that judges you is not your voice - it is conditioning speaking.",
-                "Love yourself as you would tend a delicate seedling - with patience and care."
+                "You are not broken and in need of fixing. You are whole and in the process of remembering. Self-compassion begins with this fundamental truth.",
+                "Self-compassion is not self-indulgence; it is the foundation of genuine transformation. Without it, spiritual practice becomes another form of self-violence.",
+                "The voice that judges you harshly is not your voice - it is conditioning speaking. Learning to recognize this difference is the first step to freedom.",
+                "Love yourself as you would tend a delicate seedling - with patience, consistency, and faith in the natural process of growth.",
+                "Self-compassion has three components: mindfulness (seeing your pain clearly), common humanity (recognizing you're not alone), and self-kindness (offering yourself comfort).",
+                "The paradox of self-compassion: the more gently you treat yourself, the more naturally you transform. Resistance creates persistence; acceptance creates change.",
+                "Your inner critic developed to protect you, often in childhood. Thanking it for its service while choosing a kinder voice is how healing happens.",
+                "As self-compassion deepens, you may find yourself naturally drawn to practices like loving-kindness meditation, heart-centered breathwork, or creating sacred self-care rituals that honor your spiritual journey."
               ],
               practice: {
-                title: "Inner Garden Visualization",
+                title: "Inner Garden Visualization - Complete Self-Compassion Practice",
                 instructions: [
-                  "Sit quietly and imagine yourself as a gardener",
-                  "See your heart as a beautiful garden plot",
-                  "Notice any weeds (self-criticism) with gentle awareness",
-                  "Instead of pulling them roughly, speak to them: 'Thank you for trying to protect me'",
-                  "Plant seeds of kindness: 'I am worthy of love and patience'",
-                  "Water these seeds with your breath and attention"
+                  "🌱 SACRED SPACE: Sit quietly in a place where you feel safe and won't be interrupted. Light a candle or hold something beautiful if it feels supportive.",
+                  "🧘‍♀️ GENTLE SETTLING: Take several deep breaths and imagine yourself as a wise, loving gardener. Feel the earth beneath you, the sky above you.",
+                  "💚 HEART GARDEN: Visualize your heart as a beautiful garden plot. See it as it truly is - perhaps wild, perhaps tended, perhaps in need of care. All is perfect.",
+                  "🌿 NOTICING WEEDS: Observe any 'weeds' (self-critical thoughts) with gentle awareness. Instead of judgment, feel curiosity. What are they trying to tell you?",
+                  "🙏 COMPASSIONATE DIALOGUE: Speak to the critical voices: 'Thank you for trying to protect me. I see your concern. You can rest now - I've got this.'",
+                  "🌸 PLANTING KINDNESS: Now plant seeds of self-compassion: 'I am worthy of love and patience,' 'I am learning and growing,' 'I forgive myself for being human.'",
+                  "💧 WATERING WITH BREATH: Water these seeds with your breath and attention. Feel each inhale bringing nourishment, each exhale releasing what no longer serves.",
+                  "🌺 WITNESSING GROWTH: See your inner garden beginning to bloom. Notice what wants to grow. What colors appear? What fragrance arises?",
+                  "🔄 DAILY TENDING: Before ending, commit to tending this inner garden daily, even if just for a moment. Your heart garden is always available to you."
                 ],
-                duration: "10-15 minutes",
-                frequency: "3 times per week"
+                duration: "10-15 minutes (can extend to 20-30 minutes as you're drawn deeper)",
+                frequency: "3 times per week minimum, daily when experiencing self-criticism"
               },
               guide: {
                 greeting: "Hello, dear one. I'm here to help you cultivate the most important relationship - the one with yourself.",
-                encouragement: "Self-compassion is a practice, not a perfection. Be patient with yourself as you learn.",
-                helpWith: ["Transforming self-criticism", "Building self-worth", "Creating inner safety", "Developing self-forgiveness"]
+                encouragement: "Self-compassion is a practice, not a perfection. Be patient with yourself as you learn to love yourself. Every moment of kindness matters.",
+                helpWith: ["Transforming harsh self-criticism into gentle guidance", "Building authentic self-worth from within", "Creating inner safety and emotional regulation", "Developing forgiveness practices", "Understanding the difference between self-compassion and self-pity", "Extending this compassion to others naturally"]
               }
             }
           ]
@@ -400,6 +414,44 @@ export default function WisdomGrove() {
           </div>
           
           <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-purple-300 to-transparent mx-auto mb-8"></div>
+
+          {/* How to Use the Wisdom Grove */}
+          {selectedVault === null && (
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-300/20 mb-8 max-w-4xl mx-auto">
+              <h2 className="text-lg text-purple-100 mb-4 text-center flex items-center justify-center">
+                <span className="mr-2">🌸</span>
+                How to Navigate Your Sacred Teachings
+              </h2>
+              <div className="grid md:grid-cols-3 gap-6 text-center">
+                <div>
+                  <div className="text-2xl mb-2">📚</div>
+                  <h3 className="text-purple-200 text-sm font-medium mb-2">Choose Your Vault</h3>
+                  <p className="text-purple-300 text-xs leading-relaxed">
+                    Select a vault that calls to your current spiritual needs. Each contains sacred scrolls with comprehensive teachings.
+                  </p>
+                </div>
+                <div>
+                  <div className="text-2xl mb-2">📜</div>
+                  <h3 className="text-purple-200 text-sm font-medium mb-2">Explore Sacred Scrolls</h3>
+                  <p className="text-purple-300 text-xs leading-relaxed">
+                    Each scroll is a complete guide with teachings, practices, and gentle wisdom that deepens your understanding.
+                  </p>
+                </div>
+                <div>
+                  <div className="text-2xl mb-2">🧘‍♀️</div>
+                  <h3 className="text-purple-200 text-sm font-medium mb-2">Practice & Integrate</h3>
+                  <p className="text-purple-300 text-xs leading-relaxed">
+                    Follow the practice instructions and let the teachings guide your daily spiritual cultivation.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6 text-center">
+                <p className="text-purple-300 text-xs italic">
+                  Each scroll serves as your gentle guide. The &ldquo;Ask Guide&rdquo; button connects you to additional support through the Garden Guide when needed.
+                </p>
+              </div>
+            </div>
+          )}
           
           {/* Wisdom Vaults Interface */}
           {!loading && availableVaults.length > 0 && (
@@ -523,7 +575,7 @@ export default function WisdomGrove() {
                                   onClick={() => setShowScrollGuide(true)}
                                   className="px-4 py-2 bg-purple-500/30 text-purple-100 rounded-lg hover:bg-purple-500/50 transition-all text-sm"
                                 >
-                                  Ask Guide
+                                  Ask Garden Guide
                                 </button>
                               </div>
                             </div>
@@ -575,7 +627,7 @@ export default function WisdomGrove() {
                                 href="/garden-guide" 
                                 className="inline-block px-4 py-2 bg-purple-500/50 text-purple-100 rounded-lg hover:bg-purple-500/70 transition-all text-sm"
                               >
-                                Begin Sacred Dialogue
+                                Connect with Garden Guide
                               </Link>
                             </div>
                           )}

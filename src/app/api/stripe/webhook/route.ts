@@ -97,19 +97,14 @@ export async function POST(req: NextRequest) {
       // Determine subscription tier based on amount
       let subscriptionTier = 'seeker';
       let messageLimit = 3;
-      let stripeCustomerId = '';
-      let stripeSubscriptionId = '';
       
       let finalAmount = amount;
       
       if (eventType === 'checkout') {
-        // For checkout sessions, get line items and customer info
-        const session = await stripe.checkout.sessions.retrieve(sessionOrInvoiceId);
+        // For checkout sessions, get line items
         const lineItems = await stripe.checkout.sessions.listLineItems(sessionOrInvoiceId);
         const firstItem = lineItems.data[0];
         finalAmount = firstItem?.price?.unit_amount || 0;
-        stripeCustomerId = session.customer as string || '';
-        stripeSubscriptionId = session.subscription as string || '';
       }
       
       console.log('Final amount to check:', finalAmount);
@@ -126,30 +121,22 @@ export async function POST(req: NextRequest) {
 
       console.log('Determined tier:', subscriptionTier, 'with limit:', messageLimit);
 
-      // Update user subscription tier
+      // Update user subscription tier (using existing table structure)
       const updateData: {
         user_id: string;
         subscription_tier: string;
-        monthly_message_limit: number;
         daily_message_count: number;
         monthly_message_count: number;
         last_message_date: string;
         updated_at: string;
-        stripe_customer_id?: string;
-        stripe_subscription_id?: string;
       } = {
         user_id: user.id,
         subscription_tier: subscriptionTier,
-        monthly_message_limit: messageLimit,
-        daily_message_count: 0,
-        monthly_message_count: 0,
+        daily_message_count: 0, // Reset daily count on upgrade
+        monthly_message_count: 0, // Reset monthly count on upgrade  
         last_message_date: new Date().toISOString().split('T')[0],
         updated_at: new Date().toISOString()
       };
-
-      // Add Stripe IDs if available
-      if (stripeCustomerId) updateData.stripe_customer_id = stripeCustomerId;
-      if (stripeSubscriptionId) updateData.stripe_subscription_id = stripeSubscriptionId;
 
       const { error: updateError } = await supabase
         .from('garden_guide_usage')

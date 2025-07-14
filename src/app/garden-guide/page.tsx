@@ -81,7 +81,8 @@ export default function GardenGuide() {
             .from('garden_guide_usage')
             .update({
               daily_message_count: 0,
-              last_message_date: today
+              last_message_date: today,
+              updated_at: new Date().toISOString()
             })
             .eq('user_id', userId);
           setDailyMessageCount(0);
@@ -90,6 +91,13 @@ export default function GardenGuide() {
         }
         setMessageCount(usageData.monthly_message_count);
         setSubscriptionTier(usageData.subscription_tier || 'seeker');
+        
+        console.log('📊 Loaded user subscription:', {
+          tier: usageData.subscription_tier || 'seeker',
+          dailyCount: usageData.daily_message_count,
+          monthlyCount: usageData.monthly_message_count,
+          lastDate: usageData.last_message_date
+        });
       } else {
         // Create new usage record
         await supabase
@@ -250,11 +258,13 @@ Consider joining as a Gardener ($7/month) for 77 monthly messages, or as a Guard
     if (user) {
       const { createClient } = await import('../../../lib/supabase');
       const supabase = createClient();
+      const today = new Date().toISOString().split('T')[0];
       await supabase
         .from('garden_guide_usage')
         .update({
           daily_message_count: newDailyCount,
           monthly_message_count: newMonthlyCount,
+          last_message_date: today,
           updated_at: new Date().toISOString()
         })
         .eq('user_id', user.id);

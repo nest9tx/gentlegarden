@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { SupabaseClient } from '@supabase/supabase-js';
 
 // Export a simple GET handler to prevent build-time evaluation issues
 export async function GET() {
@@ -59,8 +60,7 @@ export async function POST(req: NextRequest) {
     // Helper function to handle subscription updates
     async function handleSubscriptionUpdate(
       stripe: Stripe,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      supabase: any,
+      supabase: SupabaseClient,
       customerEmail: string | null,
       sessionOrInvoiceId: string,
       eventType: 'checkout' | 'invoice',
@@ -85,10 +85,10 @@ export async function POST(req: NextRequest) {
       }
 
       console.log('Found', userData.users.length, 'total users in database');
-      const user = userData.users.find((u: { email: string }) => u.email === customerEmail);
+      const user = userData.users.find((u) => u.email === customerEmail);
       if (!user) {
         console.error('User not found for email:', customerEmail);
-        console.log('Available users:', userData.users.map((u: { email: string }) => u.email));
+        console.log('Available users:', userData.users.map(u => u.email).filter(Boolean));
         return { error: 'User not found' };
       }
 

@@ -49,11 +49,6 @@ export default function WisdomGrove() {
                 ],
                 duration: "5-10 minutes (expanding naturally as you're called)",
                 frequency: "Daily, preferably upon waking to set sacred intention for the day"
-              },
-              guide: {
-                greeting: "Welcome, gentle soul. I am here to support your first steps into conscious awareness through the wisdom of breath.",
-                encouragement: "Remember, there is no rush in awakening. Each breath is a perfect doorway to deeper presence. Your practice is already whole.",
-                helpWith: ["Understanding what meditation truly is", "Establishing daily breath practice", "Working with resistance or restlessness", "Recognizing the natural progression to deeper practices", "Connecting breath awareness to daily life", "Exploring breath work in nature or sacred spaces"]
               }
             },
             {
@@ -85,11 +80,6 @@ export default function WisdomGrove() {
                 ],
                 duration: "10-15 minutes (can extend to 20-30 minutes as you're drawn deeper)",
                 frequency: "3 times per week minimum, daily when experiencing self-criticism"
-              },
-              guide: {
-                greeting: "Hello, dear one. I'm here to help you cultivate the most important relationship - the one with yourself.",
-                encouragement: "Self-compassion is a practice, not a perfection. Be patient with yourself as you learn to love yourself. Every moment of kindness matters.",
-                helpWith: ["Transforming harsh self-criticism into gentle guidance", "Building authentic self-worth from within", "Creating inner safety and emotional regulation", "Developing forgiveness practices", "Understanding the difference between self-compassion and self-pity", "Extending this compassion to others naturally"]
               }
             }
           ]
@@ -122,11 +112,6 @@ export default function WisdomGrove() {
                 ],
                 duration: "5-10 minutes",
                 frequency: "Morning or before decisions"
-              },
-              guide: {
-                greeting: "Greetings, wise one. I'm here to help you remember the intelligence of your own heart.",
-                encouragement: "Your intuition strengthens with practice. Trust what you receive, even if it seems simple.",
-                helpWith: ["Distinguishing intuition from fear", "Building trust in inner knowing", "Making heart-based decisions", "Quieting mental noise"]
               }
             }
           ]
@@ -166,11 +151,6 @@ export default function WisdomGrove() {
                 ],
                 duration: "15-20 minutes",
                 frequency: "Weekly or when triggered"
-              },
-              guide: {
-                greeting: "Welcome, brave soul. I'm here to support you in embracing all aspects of your being.",
-                encouragement: "Shadow work takes courage. You're doing sacred healing for yourself and the collective.",
-                helpWith: ["Understanding projection", "Working with triggers", "Integrating rejected aspects", "Finding gifts in shadows"]
               }
             }
           ]
@@ -203,11 +183,6 @@ export default function WisdomGrove() {
                 ],
                 duration: "20-30 minutes", 
                 frequency: "3-4 times per week"
-              },
-              guide: {
-                greeting: "Greetings, frequency worker. I'm here to help you master the art of conscious vibration.",
-                encouragement: "You are more powerful than you know. Your consciousness shapes energy in every moment.",
-                helpWith: ["Sensing subtle energies", "Chakra awareness", "Energy protection", "Raising personal frequency"]
               }
             }
           ]
@@ -247,11 +222,6 @@ export default function WisdomGrove() {
                 ],
                 duration: "30-45 minutes",
                 frequency: "Monthly or when seeking clarity on patterns"
-              },
-              guide: {
-                greeting: "Sacred keeper of records, I'm here to support your journey into the cosmic library of your soul.",
-                encouragement: "You have permission to access your own soul's wisdom. Trust what you receive in love.",
-                helpWith: ["Accessing personal records", "Understanding soul contracts", "Healing karmic patterns", "Integrating soul gifts"]
               }
             }
           ]
@@ -284,11 +254,6 @@ export default function WisdomGrove() {
                 ],
                 duration: "30-60 minutes",
                 frequency: "Weekly or when feeling limited by time"
-              },
-              guide: {
-                greeting: "Infinite being, I'm here to support your exploration of consciousness beyond dimensional boundaries.",
-                encouragement: "You are far more vast than your human experience suggests. Trust your multidimensional nature.",
-                helpWith: ["Transcending time limitations", "Accessing higher dimensions", "Understanding parallel realities", "Integrating expanded awareness"]
               }
             }
           ]
@@ -417,38 +382,50 @@ export default function WisdomGrove() {
 
           {/* How to Use the Wisdom Grove */}
           {selectedVault === null && (
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-300/20 mb-8 max-w-4xl mx-auto">
-              <h2 className="text-lg text-purple-100 mb-4 text-center flex items-center justify-center">
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-purple-300/20 mb-8 max-w-5xl mx-auto">
+              <h2 className="text-xl text-purple-100 mb-6 text-center flex items-center justify-center">
                 <span className="mr-2">🌸</span>
-                How to Navigate Your Sacred Teachings
+                How to Navigate Your Sacred Wisdom Grove
               </h2>
-              <div className="grid md:grid-cols-3 gap-6 text-center">
+              
+              <div className="grid md:grid-cols-3 gap-8 text-center mb-8">
                 <div>
-                  <div className="text-2xl mb-2">📚</div>
-                  <h3 className="text-purple-200 text-sm font-medium mb-2">Choose Your Vault</h3>
-                  <p className="text-purple-300 text-xs leading-relaxed">
-                    Select a vault that calls to your current spiritual needs. Each contains sacred scrolls with comprehensive teachings.
+                  <div className="text-3xl mb-3">📚</div>
+                  <h3 className="text-purple-200 text-base font-medium mb-3">Choose Your Vault</h3>
+                  <p className="text-purple-300 text-sm leading-relaxed">
+                    Select a vault that resonates with your current spiritual needs. Each vault contains complete teachings organized around specific themes and practices.
                   </p>
                 </div>
                 <div>
-                  <div className="text-2xl mb-2">📜</div>
-                  <h3 className="text-purple-200 text-sm font-medium mb-2">Explore Sacred Scrolls</h3>
-                  <p className="text-purple-300 text-xs leading-relaxed">
-                    Each scroll is a complete guide with teachings, practices, and gentle wisdom that deepens your understanding.
+                  <div className="text-3xl mb-3">📜</div>
+                  <h3 className="text-purple-200 text-base font-medium mb-3">Explore Sacred Scrolls</h3>
+                  <p className="text-purple-300 text-sm leading-relaxed">
+                    Each scroll is a self-contained guide with comprehensive teachings, detailed practice instructions, and wisdom that deepens over time.
                   </p>
                 </div>
                 <div>
-                  <div className="text-2xl mb-2">🧘‍♀️</div>
-                  <h3 className="text-purple-200 text-sm font-medium mb-2">Practice & Integrate</h3>
-                  <p className="text-purple-300 text-xs leading-relaxed">
-                    Follow the practice instructions and let the teachings guide your daily spiritual cultivation.
+                  <div className="text-3xl mb-3">🧘‍♀️</div>
+                  <h3 className="text-purple-200 text-base font-medium mb-3">Practice & Integrate</h3>
+                  <p className="text-purple-300 text-sm leading-relaxed">
+                    Work with the teachings at your own pace. Each scroll provides everything you need to cultivate that particular aspect of your spiritual journey.
                   </p>
                 </div>
               </div>
-              <div className="mt-6 text-center">
-                <p className="text-purple-300 text-xs italic">
-                  Each scroll serves as your gentle guide. The &ldquo;Ask Guide&rdquo; button connects you to additional support through the Garden Guide when needed.
-                </p>
+              
+              <div className="bg-purple-500/10 rounded-lg p-6 border border-purple-400/20">
+                <h3 className="text-purple-200 text-base font-medium mb-3 text-center">
+                  ✨ Sacred Practice Guidelines
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4 text-sm text-purple-300">
+                  <div>
+                    <p className="mb-2">• <span className="text-purple-200">Start where you feel called:</span> Trust your intuition about which vault to explore first</p>
+                    <p className="mb-2">• <span className="text-purple-200">Practice regularly:</span> Consistent gentle practice creates deeper transformation than intense sporadic sessions</p>
+                  </div>
+                  <div>
+                    <p className="mb-2">• <span className="text-purple-200">Allow natural progression:</span> Each scroll will guide you toward the next step when you&rsquo;re ready</p>
+                    <p className="mb-2">• <span className="text-purple-200">Seek support when needed:</span> Use &ldquo;Seek Guidance&rdquo; to connect with the Garden Guide for personalized help</p>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -575,7 +552,7 @@ export default function WisdomGrove() {
                                   onClick={() => setShowScrollGuide(true)}
                                   className="px-4 py-2 bg-purple-500/30 text-purple-100 rounded-lg hover:bg-purple-500/50 transition-all text-sm"
                                 >
-                                  Ask Garden Guide
+                                  🌸 Seek Guidance
                                 </button>
                               </div>
                             </div>
@@ -591,13 +568,13 @@ export default function WisdomGrove() {
                             </div>
                           </div>
 
-                          {/* Scroll Guide */}
+                          {/* Garden Guide Connection */}
                           {showScrollGuide && (
                             <div className="bg-gradient-to-br from-purple-600/20 to-indigo-600/20 backdrop-blur-sm rounded-2xl p-8 border border-purple-300/30">
                               <div className="flex justify-between items-start mb-4">
                                 <h2 className="text-xl text-purple-100 flex items-center">
-                                  <span className="mr-2">🤖</span>
-                                  Your Scroll Guide
+                                  <span className="mr-2">🌸</span>
+                                  Connect with the Garden Guide
                                 </h2>
                                 <button
                                   onClick={() => setShowScrollGuide(false)}
@@ -607,27 +584,37 @@ export default function WisdomGrove() {
                                 </button>
                               </div>
                               <p className="text-purple-200 mb-4 italic">
-                                &ldquo;{scroll.guide.greeting}&rdquo;
+                                &ldquo;These scrolls contain everything you need for your spiritual practice. When you need additional support, personalized guidance, or have questions about your journey, I&rsquo;m here to help.&rdquo;
                               </p>
                               <p className="text-purple-300 text-sm mb-4">
-                                {scroll.guide.encouragement}
+                                The Garden Guide offers personalized spiritual mentorship, answers to your specific questions, and gentle support as you work with these sacred teachings.
                               </p>
-                              <div className="mb-4">
-                                <div className="text-purple-200 text-sm mb-2">I can help you with:</div>
+                              <div className="mb-6">
+                                <div className="text-purple-200 text-sm mb-3">The Garden Guide can support you with:</div>
                                 <div className="grid md:grid-cols-2 gap-2">
-                                  {scroll.guide.helpWith.map((help, index) => (
-                                    <div key={index} className="text-purple-300 text-sm flex items-center">
-                                      <span className="mr-2">•</span>
-                                      {help}
-                                    </div>
-                                  ))}
+                                  <div className="text-purple-300 text-sm flex items-center">
+                                    <span className="mr-2">•</span>
+                                    Personalized practice adjustments
+                                  </div>
+                                  <div className="text-purple-300 text-sm flex items-center">
+                                    <span className="mr-2">•</span>
+                                    Questions about the teachings
+                                  </div>
+                                  <div className="text-purple-300 text-sm flex items-center">
+                                    <span className="mr-2">•</span>
+                                    Working through spiritual challenges
+                                  </div>
+                                  <div className="text-purple-300 text-sm flex items-center">
+                                    <span className="mr-2">•</span>
+                                    Guidance on next steps in your journey
+                                  </div>
                                 </div>
                               </div>
                               <Link 
                                 href="/garden-guide" 
-                                className="inline-block px-4 py-2 bg-purple-500/50 text-purple-100 rounded-lg hover:bg-purple-500/70 transition-all text-sm"
+                                className="inline-block px-6 py-3 bg-purple-500/50 text-purple-100 rounded-lg hover:bg-purple-500/70 transition-all text-sm font-medium"
                               >
-                                Connect with Garden Guide
+                                🌸 Connect with Garden Guide
                               </Link>
                             </div>
                           )}

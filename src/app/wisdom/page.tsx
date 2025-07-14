@@ -484,7 +484,7 @@ export default function WisdomGrove() {
                                 <h3 className="text-lg text-white mb-2">{scroll.title}</h3>
                                 <p className="text-purple-200 text-sm mb-3">{scroll.subtitle}</p>
                                 <div className="text-purple-300 text-xs">
-                                  {scroll.teachings.length} teachings • Practice included
+                                  {scroll.teachings.length} sacred teachings • Practice included
                                 </div>
                               </div>
                             ))}

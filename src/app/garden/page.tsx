@@ -9,6 +9,8 @@ export default function GardenDashboard() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [journeyDays, setJourneyDays] = useState(0);
+  const [subscriptionTier, setSubscriptionTier] = useState<string>('seeker');
+  const [messageUsage, setMessageUsage] = useState({ daily: 0, monthly: 0 });
 
   useEffect(() => {
     checkAuth();
@@ -24,6 +26,21 @@ export default function GardenDashboard() {
       if (session?.user) {
         setUser(session.user);
         
+        // Load subscription tier and usage from Supabase
+        const { data: usageData } = await supabase
+          .from('garden_guide_usage')
+          .select('*')
+          .eq('user_id', session.user.id)
+          .single();
+          
+        if (usageData) {
+          setSubscriptionTier(usageData.subscription_tier || 'seeker');
+          setMessageUsage({
+            daily: usageData.daily_message_count || 0,
+            monthly: usageData.monthly_message_count || 0
+          });
+        }
+        
         // Calculate journey days from when they first entered the garden
         let journeyStart = new Date();
         
@@ -38,15 +55,19 @@ export default function GardenDashboard() {
         }
         
         const today = new Date();
-        // Calculate days since journey started (including partial days as full days)
+        // Calculate days since journey started (start counting from day 1)
         const diffTime = today.getTime() - journeyStart.getTime();
-        const diffDays = Math.max(1, Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1);
-        setJourneyDays(diffDays);
+        
+        // For same-day creation, show Day 1; otherwise show actual days passed + 1
+        const actualDays = diffTime < (24 * 60 * 60 * 1000) ? 1 : Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        setJourneyDays(actualDays);
         
         console.log('🌱 Journey calculation:', {
           journeyStart: journeyStart.toISOString(),
           today: today.toISOString(),
-          diffDays: diffDays
+          diffTime: diffTime,
+          actualDays: actualDays,
+          created: session.user.created_at
         });
       }
     } catch (error) {
@@ -143,10 +164,29 @@ export default function GardenDashboard() {
             <h1 className="text-4xl md:text-5xl font-light text-white mb-4">
               Welcome to Your Sacred Garden
             </h1>
-            <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-purple-300 to-transparent mx-auto mb-6"></div>
-            <p className="text-purple-200 text-lg">
-              Day {journeyDays} of your awakening journey
-            </p>
+            <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-purple-300 to-transparent mx-auto mb-4"></div>
+            
+            {/* Journey Day and Tier Status */}
+            <div className="flex justify-center items-center space-x-6 mb-2">
+              <p className="text-purple-200 text-lg">
+                Day {journeyDays} of your awakening journey
+              </p>
+              <div className="text-sm px-3 py-1 rounded-full bg-gradient-to-r from-purple-500/30 to-indigo-500/30 text-purple-100 border border-purple-400/40">
+                {subscriptionTier === 'guardian' ? '🌳 Guardian Path' : 
+                 subscriptionTier === 'gardener' ? '🌿 Gardener Journey' : 
+                 '🌱 Seeker Beginning'}
+              </div>
+            </div>
+            
+            {/* Gentle tier encouragement */}
+            {subscriptionTier === 'seeker' && (
+              <p className="text-purple-300 text-sm mt-2">
+                Your garden can bloom even brighter - explore our{' '}
+                <Link href="/garden/services" className="underline hover:text-purple-200">
+                  Sacred Services
+                </Link>
+              </p>
+            )}
           </div>
 
           {/* Garden Pathways - Sacred Navigation */}
@@ -211,11 +251,44 @@ export default function GardenDashboard() {
             {/* Personal Garden */}
             <Link href="/garden/personal">
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 hover:bg-white/15 transition-all duration-300 group cursor-pointer">
-                <div className="text-3xl mb-4 group-hover:animate-pulse">🌿</div>
+                <div className="flex justify-between items-start mb-4">
+                  <div className="text-3xl group-hover:animate-pulse">🌿</div>
+                  <div className="text-xs px-2 py-1 rounded-full bg-gradient-to-r from-purple-500/20 to-indigo-500/20 text-purple-200 border border-purple-400/30">
+                    {subscriptionTier === 'guardian' ? '🌳 Guardian' : 
+                     subscriptionTier === 'gardener' ? '🌿 Gardener' : 
+                     '🌱 Seeker'}
+                  </div>
+                </div>
                 <h3 className="text-xl text-white mb-2">Personal Garden</h3>
-                <p className="text-purple-200 text-sm">
+                <p className="text-purple-200 text-sm mb-3">
                   Tend to your preferences and track your sacred journey.
                 </p>
+                
+                {/* Tier-specific benefits preview */}
+                <div className="space-y-1 mb-4">
+                  {subscriptionTier === 'guardian' ? (
+                    <>
+                      <div className="text-xs text-green-300">✨ Unlimited AI guidance</div>
+                      <div className="text-xs text-green-300">🎯 Priority support access</div>
+                      <div className="text-xs text-green-300">🔮 Exclusive content library</div>
+                    </>
+                  ) : subscriptionTier === 'gardener' ? (
+                    <>
+                      <div className="text-xs text-blue-300">🌙 77 monthly messages ({messageUsage.monthly}/77 used)</div>
+                      <div className="text-xs text-blue-300">📚 Advanced wisdom access</div>
+                      <div className="text-xs text-blue-300">🌸 Community features</div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="text-xs text-yellow-300">☀️ 3 daily messages ({messageUsage.daily}/3 used)</div>
+                      <div className="text-xs text-yellow-300">🌱 Foundation practices</div>
+                      <div className="text-xs text-purple-300 mt-2">
+                        <span className="underline">Upgrade for expanded access</span>
+                      </div>
+                    </>
+                  )}
+                </div>
+                
                 <div className="mt-4 text-purple-300 text-xs">
                   → Nurture your growth
                 </div>

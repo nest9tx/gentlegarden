@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+// Fixed scroll count display - showing teachings count properly
 
 export default function WisdomGrove() {
   const [subscriptionTier, setSubscriptionTier] = useState<string>('seeker');

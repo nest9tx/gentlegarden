@@ -224,7 +224,9 @@ export default function CommunityCircle() {
                     Energy: {circle.energy}
                   </div>
                   <div className="text-xs text-purple-300 hover:text-purple-200 transition-colors">
-                    Enter Circle →
+                    <Link href={`/community/${circle.id}`}>
+                      Enter Circle →
+                    </Link>
                   </div>
                 </div>
               </div>

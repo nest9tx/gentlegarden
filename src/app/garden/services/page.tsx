@@ -20,7 +20,7 @@ export default function ServicesPage() {
         'Priority support when needed'
       ],
       ideal: 'Perfect for souls ready to tend their spiritual garden with sacred commitment',
-      checkoutUrl: 'https://buy.stripe.com/4gMfZh4Zc0z60eW0HXfIs00'
+      checkoutUrl: 'https://buy.stripe.com/fZu8wP4ZcbdK8Ls9etfIs06'
     }
   ];
 

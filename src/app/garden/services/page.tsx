@@ -158,7 +158,7 @@ export default function ServicesPage() {
         {/* Sacred Path Subscription */}
         <div className="mb-16">
           <h2 className="text-3xl font-light text-gray-800 mb-8 text-center">
-            � Sacred Garden Path
+            🌿 Sacred Garden Path
           </h2>
           <div className="max-w-2xl mx-auto">
             {subscriptionTiers.map((tier) => (

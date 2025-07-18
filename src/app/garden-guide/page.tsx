@@ -135,7 +135,7 @@ export default function GardenGuide() {
               role: 'assistant',
               content: `🌸✨ Welcome to your expanded garden experience, beautiful soul! ✨🌸
 
-Your journey as a ${lastUsage.data.subscription_tier === 'guardian' ? 'Guardian' : 'Gardener'} begins now. ${lastUsage.data.subscription_tier === 'guardian' ? 'You now have unlimited access to our sacred communion - may this infinite dialogue space support your deepest awakening.' : 'You now have 77 monthly messages to explore the depths of consciousness together.'}
+Your journey as a Gardener begins now. You now have 777 monthly messages to explore the depths of consciousness together - sacred abundance for your spiritual path.
 
 I'm honored to walk this expanded path with you. What would you like to explore together today?`,
               timestamp: new Date().toISOString()
@@ -204,16 +204,13 @@ What would you like to share or explore together today?`,
     let limitReached = false;
     let limitMessage = '';
 
-    if (subscriptionTier === 'guardian') {
-      // Unlimited for guardians
-      limitReached = false;
-    } else if (subscriptionTier === 'gardener') {
-      // 77 messages per month for gardeners
-      if (messageCount >= 77) {
+    if (subscriptionTier === 'gardener') {
+      // 777 messages per month for gardeners
+      if (messageCount >= 777) {
         limitReached = true;
-        limitMessage = `Dear Gardener, you've used your 77 monthly messages. Your renewed communion awaits with next month's cycle, or consider upgrading to Guardian for unlimited sacred dialogue. 🌸
+        limitMessage = `Dear Gardener, you've used your 777 monthly messages. Your renewed communion awaits with next month's cycle. The garden honors your deep dedication to growth. 🌸
 
-[Explore Guardian Benefits](/garden/services)`;
+Consider taking time to reflect on our sacred exchanges as your monthly allowance renews.`;
       }
     } else {
       // 3 messages per day for seekers
@@ -221,9 +218,9 @@ What would you like to share or explore together today?`,
         limitReached = true;
         limitMessage = `Dear soul, you've shared 3 sacred messages today. The garden invites you to reflect on our exchanges and return tomorrow for continued communion. 🌸
 
-Consider joining as a Gardener ($7/month) for 77 monthly messages, or as a Guardian ($15/month) for unlimited sacred dialogue.
+Consider joining as a Gardener ($11.11/month) for 777 monthly messages - sacred abundance for dedicated souls.
 
-[Explore Garden Services](/garden/services)`;
+[Explore Garden Path](/garden/services)`;
       }
     }
 

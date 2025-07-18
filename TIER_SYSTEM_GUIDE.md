@@ -1,7 +1,7 @@
 # The Gentle Garden - Tier-Based System Guide
 
 ## Overview
-The Gentle Garden now features a complete tier-based subscription system with three levels: Seeker, Gardener, and Guardian. This system integrates Stripe payments, Supabase database management, and tier-specific content across the application.
+The Gentle Garden features a pure two-tier subscription system: Seeker (free) and Gardener ($11.11/month). This system integrates Stripe payments, Supabase database management, and tier-specific content across the application.
 
 ## Subscription Tiers
 
@@ -11,17 +11,11 @@ The Gentle Garden now features a complete tier-based subscription system with th
 - **Wisdom Grove**: 4 foundation teachings focused on self-compassion and basic awakening principles
 - **Features**: Basic access to Personal Garden, journey day counter
 
-### 🌿 Gardener ($7/month)
-- **Price**: $7/month (Stripe recurring subscription)
-- **Garden Guide**: 77 messages per month
+### 🌿 Gardener ($11.11/month)
+- **Price**: $11.11/month (sacred portal number - Stripe recurring subscription)
+- **Garden Guide**: 777 messages per month (sacred abundance)
 - **Wisdom Grove**: 9 teachings (foundation + advanced) including shadow work, energy mastery, unity consciousness
-- **Features**: Enhanced Personal Garden with tier-specific benefits display
-
-### 🌳 Guardian ($15/month)
-- **Price**: $15/month (Stripe recurring subscription)
-- **Garden Guide**: Unlimited messages
-- **Wisdom Grove**: 13 teachings (all levels) including exclusive Guardian content on non-dual realization, multidimensional consciousness
-- **Features**: Full access to all current and future premium content
+- **Features**: Enhanced Personal Garden with tier-specific benefits display, access to all Sacred Garden Circles
 
 ## Personal Services (Available to All Tiers)
 - **Sacred Reflection Intensive**: $33 (30min remote session via Zoom/Phone)

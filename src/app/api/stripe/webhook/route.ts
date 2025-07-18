@@ -110,13 +110,11 @@ export async function POST(req: NextRequest) {
       console.log('Final amount to check:', finalAmount);
       
       if (finalAmount) {
-        if (finalAmount === 700) { // $7.00 - Gardener
+        if (finalAmount === 1111) { // $11.11 - Gardener
           subscriptionTier = 'gardener';
-          messageLimit = 77;
-        } else if (finalAmount === 1500) { // $15.00 - Guardian
-          subscriptionTier = 'guardian';  
-          messageLimit = -1;
+          messageLimit = 777;
         }
+        // Removed Guardian tier - only Seeker (free) and Gardener ($11.11) exist
       }
 
       console.log('Determined tier:', subscriptionTier, 'with limit:', messageLimit);
@@ -217,13 +215,11 @@ export async function POST(req: NextRequest) {
           // Update based on current subscription
           if (subscription.status === 'active') {
             const amount = subscription.items.data[0]?.price.unit_amount;
-            if (amount === 700) {
+            if (amount === 1111) { // $11.11 - Gardener
               newTier = 'gardener';
-              newLimit = 77;
-            } else if (amount === 1500) {
-              newTier = 'guardian';
-              newLimit = -1;
+              newLimit = 777;
             }
+            // Only Gardener tier exists - removed Guardian
           }
         }
 

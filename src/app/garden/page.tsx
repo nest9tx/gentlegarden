@@ -251,9 +251,7 @@ export default function GardenDashboard() {
                 <div className="flex justify-between items-start mb-4">
                   <div className="text-3xl group-hover:animate-pulse">🌿</div>
                   <div className="text-xs px-2 py-1 rounded-full bg-gradient-to-r from-purple-500/20 to-indigo-500/20 text-purple-200 border border-purple-400/30">
-                    {subscriptionTier === 'guardian' ? '🌳 Guardian' : 
-                     subscriptionTier === 'gardener' ? '🌿 Gardener' : 
-                     '🌱 Seeker'}
+                    {subscriptionTier === 'gardener' ? '🌿 Gardener' : '🌱 Seeker'}
                   </div>
                 </div>
                 <h3 className="text-xl text-white mb-2">Personal Garden</h3>

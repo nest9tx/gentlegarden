@@ -170,12 +170,9 @@ export default function GardenDashboard() {
             <div className="flex justify-center items-center space-x-6 mb-2">
               <p className="text-purple-200 text-lg">
                 Day {journeyDays} of your awakening journey
-              </p>
-              <div className="text-sm px-3 py-1 rounded-full bg-gradient-to-r from-purple-500/30 to-indigo-500/30 text-purple-100 border border-purple-400/40">
-                {subscriptionTier === 'guardian' ? '🌳 Guardian Path' : 
-                 subscriptionTier === 'gardener' ? '🌿 Gardener Journey' : 
-                 '🌱 Seeker Beginning'}
-              </div>
+              </p>            <div className="text-sm px-3 py-1 rounded-full bg-gradient-to-r from-purple-500/30 to-indigo-500/30 text-purple-100 border border-purple-400/40">
+              {subscriptionTier === 'gardener' ? '� Sacred Gardener' : '� Gentle Seeker'}
+            </div>
             </div>
             
             {/* Gentle tier encouragement */}
@@ -183,7 +180,7 @@ export default function GardenDashboard() {
               <p className="text-purple-300 text-sm mt-2">
                 Your garden can bloom even brighter - explore our{' '}
                 <Link href="/garden/services" className="underline hover:text-purple-200">
-                  Sacred Services
+                  Sacred Gardener Path
                 </Link>
               </p>
             )}
@@ -266,24 +263,20 @@ export default function GardenDashboard() {
                 
                 {/* Tier-specific benefits preview */}
                 <div className="space-y-1 mb-4">
-                  {subscriptionTier === 'guardian' ? (
+                  {subscriptionTier === 'gardener' ? (
                     <>
-                      <div className="text-xs text-green-300">✨ Unlimited AI guidance</div>
-                      <div className="text-xs text-green-300">🎯 Priority support access</div>
-                      <div className="text-xs text-green-300">🔮 Exclusive content library</div>
-                    </>
-                  ) : subscriptionTier === 'gardener' ? (
-                    <>
-                      <div className="text-xs text-blue-300">🌙 77 monthly messages ({messageUsage.monthly}/77 used)</div>
-                      <div className="text-xs text-blue-300">📚 Advanced wisdom access</div>
-                      <div className="text-xs text-blue-300">🌸 Community features</div>
+                      <div className="text-xs text-green-300">🌙 777 monthly messages ({messageUsage.monthly}/777 used)</div>
+                      <div className="text-xs text-green-300">📚 Complete wisdom access</div>
+                      <div className="text-xs text-green-300">� All Sacred Circle features</div>
                     </>
                   ) : (
                     <>
                       <div className="text-xs text-yellow-300">☀️ 3 daily messages ({messageUsage.daily}/3 used)</div>
                       <div className="text-xs text-yellow-300">🌱 Foundation practices</div>
                       <div className="text-xs text-purple-300 mt-2">
-                        <span className="underline">Upgrade for expanded access</span>
+                        <Link href="/garden/services" className="underline hover:text-purple-200">
+                          <span>Become a Sacred Gardener</span>
+                        </Link>
                       </div>
                     </>
                   )}

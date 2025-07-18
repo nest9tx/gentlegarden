@@ -8,36 +8,19 @@ export default function ServicesPage() {
     {
       id: 'gardener',
       name: 'Gardener',
-      price: '$7/month',
-      description: 'Enhanced garden cultivation for dedicated seekers',
-      stripeDescription: 'Monthly subscription for spiritual seekers ready to deepen their practice. Includes 77 monthly Garden Guide messages, priority access to new content, exclusive intention library, and enhanced personal garden features. Cancel anytime.',
+      price: '$11.11/month',
+      description: 'Sacred garden cultivation for dedicated souls',
+      stripeDescription: 'Monthly subscription for spiritual seekers ready to deepen their practice. Includes 777 monthly Garden Guide messages, access to all Sacred Garden Circles, complete wisdom library, and enhanced personal garden features. Cancel anytime.',
       imagePrompt: 'Peaceful garden scene with a person tending to flourishing plants and flowers, soft morning light filtering through leaves, representing spiritual growth and daily cultivation, watercolor style, serene and nurturing atmosphere',
       features: [
-        '77 monthly Garden Guide messages',
-        'Priority access to new sacred pathways',
-        'Exclusive intention library with deeper contemplations',
-        'Early access to premium content',
-        'Enhanced personal garden features'
+        '777 monthly Garden Guide messages (sacred abundance)',
+        'Full access to all 6 Sacred Garden Circles',
+        'Complete wisdom library and teachings',
+        'Enhanced personal garden features',
+        'Priority support when needed'
       ],
-      ideal: 'Perfect for souls ready to deepen their daily spiritual practice',
+      ideal: 'Perfect for souls ready to tend their spiritual garden with sacred commitment',
       checkoutUrl: 'https://buy.stripe.com/4gMfZh4Zc0z60eW0HXfIs00'
-    },
-    {
-      id: 'guardian',
-      name: 'Guardian',
-      price: '$15/month',
-      description: 'Unlimited communion and access to personal sacred services',
-      stripeDescription: 'Premium monthly subscription for souls seeking unlimited spiritual guidance. Includes unlimited Garden Guide communion, all Gardener benefits, direct access to personal sacred services booking, exclusive Guardian content, and priority support. Cancel anytime.',
-      imagePrompt: 'Majestic ancient tree with golden light radiating from its center, representing wisdom and unlimited growth, surrounded by sacred geometry patterns, ethereal and luminous atmosphere, digital art style with soft glowing effects',
-      features: [
-        'Unlimited Garden Guide communion',
-        'All Gardener benefits included',
-        'Direct access to personal sacred services booking',
-        'Exclusive Guardian-only content and features',
-        'Priority support and guidance'
-      ],
-      ideal: 'For awakening souls seeking unlimited guidance and personal mentoring',
-      checkoutUrl: 'https://buy.stripe.com/cNifZhdvI1Dae5M62hfIs01'
     }
   ];
 
@@ -157,8 +140,8 @@ export default function ServicesPage() {
               <div className="text-3xl mb-3">🌸</div>
               <h3 className="font-medium text-gray-700 mb-2">Seeking Deeper Practice?</h3>
               <p className="text-gray-600 text-sm">
-                Consider a <strong>Gardener Subscription</strong> for enhanced daily communion 
-                and exclusive tools for spiritual cultivation.
+                Consider the <strong>Sacred Gardener Path</strong> for enhanced daily communion 
+                and full access to all garden features and wisdom.
               </p>
             </div>
             <div className="p-4">
@@ -172,12 +155,12 @@ export default function ServicesPage() {
           </div>
         </div>
 
-        {/* Subscription Tiers */}
+        {/* Sacred Path Subscription */}
         <div className="mb-16">
           <h2 className="text-3xl font-light text-gray-800 mb-8 text-center">
-            🌱 Garden Cultivation Subscriptions
+            � Sacred Garden Path
           </h2>
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="max-w-2xl mx-auto">
             {subscriptionTiers.map((tier) => (
               <div 
                 key={tier.id}
@@ -185,7 +168,7 @@ export default function ServicesPage() {
               >
                 <div className="text-center mb-6">
                   <h3 className="text-2xl font-light text-gray-800 mb-2">
-                    🌸 {tier.name}
+                    🌸 {tier.name} Path
                   </h3>
                   <div className="text-3xl font-light text-emerald-600 mb-2">
                     {tier.price}
@@ -206,6 +189,12 @@ export default function ServicesPage() {
 
                 <div className="bg-emerald-50 p-4 rounded-lg mb-6">
                   <p className="text-sm text-emerald-700">
+                    <strong>Sacred Number:</strong> $11.11 honors the divine portal energy, and 777 messages celebrate sacred abundance - generous support without overwhelming the garden&apos;s resources.
+                  </p>
+                </div>
+
+                <div className="bg-emerald-50 p-4 rounded-lg mb-6">
+                  <p className="text-sm text-emerald-700">
                     <strong>Ideal for:</strong> {tier.ideal}
                   </p>
                 </div>
@@ -214,7 +203,7 @@ export default function ServicesPage() {
                   className="w-full bg-emerald-600 text-white py-3 rounded-lg hover:bg-emerald-700 transition-colors duration-200 font-medium"
                   onClick={() => window.open(tier.checkoutUrl, '_blank')}
                 >
-                  Choose {tier.name} Path
+                  Become a Sacred Gardener
                 </button>
               </div>
             ))}
@@ -308,12 +297,13 @@ export default function ServicesPage() {
 
             <div>
               <h3 className="font-medium text-gray-700 mb-2">
-                How do subscriptions work with the Garden Guide?
+                How does the Sacred Garden Path work?
               </h3>
               <p className="text-gray-600 text-sm leading-relaxed">
-                Seekers receive 3 daily messages. Gardeners enjoy 77 monthly messages (about 2-3 daily). 
-                Guardians have unlimited communion. Your conversation history and personal garden remain 
-                yours regardless of subscription level.
+                Seekers receive 3 daily Garden Guide messages and access to all Sacred Circles. 
+                Gardeners enjoy 777 monthly messages (about 25 daily) and complete access to all 
+                garden features and wisdom. Your conversation history and personal garden remain 
+                yours regardless of path.
               </p>
             </div>
 

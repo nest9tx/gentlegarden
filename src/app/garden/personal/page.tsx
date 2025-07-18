@@ -56,8 +56,8 @@ export default function PersonalGarden() {
   const [isLoading, setIsLoading] = useState(true);
   const [gardenData, setGardenData] = useState<PersonalGardenData | null>(null);
   // Demo data - will be replaced with real user data when Supabase integration is fixed
-  const [subscriptionTier] = useState<string>('gardener'); // Demo: Set to 'seeker', 'gardener', or 'guardian' to test
-  const [messageUsage] = useState({ daily: 2, monthly: 23 }); // Demo usage stats
+  const [subscriptionTier] = useState<string>('gardener'); // Demo: Set to 'seeker' or 'gardener' to test
+  const [messageUsage] = useState({ daily: 2, monthly: 156 }); // Demo usage stats
   const [newIntention, setNewIntention] = useState('');
   const [isEditingIntention, setIsEditingIntention] = useState(false);
   const [newReflection, setNewReflection] = useState('');
@@ -271,41 +271,34 @@ export default function PersonalGarden() {
                 {/* Current Tier Status */}
                 <div className="bg-white/5 rounded-xl p-4">
                   <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-purple-100 font-medium">Current Tier</h3>
-                    <div className="text-2xl">
-                      {subscriptionTier === 'guardian' ? '🌳' : 
-                       subscriptionTier === 'gardener' ? '🌿' : '🌱'}
+                    <h3 className="text-purple-100 font-medium">Current Tier</h3>                  <div className="text-2xl">
+                    {subscriptionTier === 'gardener' ? '🌿' : '🌱'}
+                  </div>
+                </div>
+                <div className="text-lg text-white mb-2 capitalize">
+                  {subscriptionTier === 'gardener' ? 'Sacred Gardener' : 'Gentle Seeker'}
+                </div>
+                
+                {/* Usage Stats */}
+                {subscriptionTier === 'gardener' ? (
+                  <div className="text-xs text-green-300 space-y-1">
+                    <div>🌙 {messageUsage.monthly}/777 monthly messages</div>
+                    <div>� Complete access to all garden features</div>
+                    <div>� Full wisdom library</div>
+                    <div>� Priority support access</div>
+                  </div>
+                ) : (
+                  <div className="text-xs text-yellow-300 space-y-1">
+                    <div>☀️ {messageUsage.daily}/3 daily messages</div>
+                    <div>🌱 Foundation practices access</div>
+                    <div>🌸 Sacred Circle participation</div>
+                    <div className="text-purple-300 mt-2">
+                      <Link href="/garden/services" className="underline hover:text-purple-200">
+                        Become a Sacred Gardener →
+                      </Link>
                     </div>
                   </div>
-                  <div className="text-lg text-white mb-2 capitalize">
-                    {subscriptionTier === 'guardian' ? 'Guardian Path' : 
-                     subscriptionTier === 'gardener' ? 'Gardener Journey' : 'Seeker Beginning'}
-                  </div>
-                  
-                  {/* Usage Stats */}
-                  {subscriptionTier === 'guardian' ? (
-                    <div className="text-xs text-green-300 space-y-1">
-                      <div>✨ Unlimited AI guidance</div>
-                      <div>📚 All wisdom teachings</div>
-                      <div>🎯 Priority service access</div>
-                    </div>
-                  ) : subscriptionTier === 'gardener' ? (
-                    <div className="text-xs text-blue-300 space-y-1">
-                      <div>🌙 {messageUsage.monthly}/77 monthly messages</div>
-                      <div>📜 {9} wisdom teachings</div>
-                      <div>🌸 Enhanced features</div>
-                    </div>
-                  ) : (
-                    <div className="text-xs text-yellow-300 space-y-1">
-                      <div>☀️ {messageUsage.daily}/3 daily messages</div>
-                      <div>📜 {4} foundation teachings</div>
-                      <div className="text-purple-300 mt-2">
-                        <Link href="/garden/services" className="underline hover:text-purple-200">
-                          Upgrade your garden →
-                        </Link>
-                      </div>
-                    </div>
-                  )}
+                )}
                 </div>
 
                 {/* Quick Access to Features */}
@@ -322,11 +315,11 @@ export default function PersonalGarden() {
                       href="/wisdom" 
                       className="block text-xs text-purple-300 hover:text-purple-200 p-2 bg-white/5 rounded-lg transition-all"
                     >
-                      📜 Wisdom Grove ({subscriptionTier === 'guardian' ? '13' : subscriptionTier === 'gardener' ? '9' : '4'} teachings)
+                      📜 Wisdom Grove ({subscriptionTier === 'gardener' ? 'Complete' : 'Foundation'} teachings)
                     </Link>
-                    {(subscriptionTier === 'gardener' || subscriptionTier === 'guardian') && (
-                      <div className="text-xs text-blue-300 p-2 bg-blue-500/10 rounded-lg">
-                        🎯 Enhanced spiritual tools
+                    {subscriptionTier === 'gardener' && (
+                      <div className="text-xs text-green-300 p-2 bg-green-500/10 rounded-lg">
+                        � Sacred Gardener - Full access to all features
                       </div>
                     )}
                   </div>
@@ -380,27 +373,8 @@ export default function PersonalGarden() {
                           onClick={() => window.open('https://buy.stripe.com/4gMfZh4Zc0z60eW0HXfIs00', '_blank')}
                           className="w-full text-left p-2 bg-green-500/10 hover:bg-green-500/20 rounded-lg transition-all border border-green-500/20"
                         >
-                          <div className="text-green-300 font-medium">🌿 Gardener Path - $7/month</div>
-                          <div className="text-green-400 text-xs">77 monthly messages + advanced teachings</div>
-                        </button>
-                        <button 
-                          onClick={() => window.open('https://buy.stripe.com/cNifZhdvI1Dae5M62hfIs01', '_blank')}
-                          className="w-full text-left p-2 bg-yellow-500/10 hover:bg-yellow-500/20 rounded-lg transition-all border border-yellow-500/20 mt-1"
-                        >
-                          <div className="text-yellow-300 font-medium">🌳 Guardian Path - $15/month</div>
-                          <div className="text-yellow-400 text-xs">Unlimited access + exclusive content</div>
-                        </button>
-                      </div>
-                    )}
-                    
-                    {subscriptionTier === 'gardener' && (
-                      <div className="mt-3 pt-3 border-t border-purple-400/20">
-                        <button 
-                          onClick={() => window.open('https://buy.stripe.com/cNifZhdvI1Dae5M62hfIs01', '_blank')}
-                          className="w-full text-left p-2 bg-yellow-500/10 hover:bg-yellow-500/20 rounded-lg transition-all border border-yellow-500/20"
-                        >
-                          <div className="text-yellow-300 font-medium">🌳 Upgrade to Guardian - $15/month</div>
-                          <div className="text-yellow-400 text-xs">Unlimited communion + exclusive teachings</div>
+                          <div className="text-green-300 font-medium">🌿 Sacred Gardener Path - $11.11/month</div>
+                          <div className="text-green-400 text-xs">777 monthly messages + complete access</div>
                         </button>
                       </div>
                     )}

@@ -383,36 +383,40 @@ Consider joining as a Gardener ($7/month) for 77 monthly messages, or as a Guard
             <div className="text-2xl">🤖</div>
             <h1 className="text-white text-lg font-light">Garden Guide</h1>
             <div className="text-purple-300 text-xs mt-1">
-              {subscriptionTier === 'guardian' ? (
-                <span className="text-yellow-300 font-medium">✨ Unlimited sacred communion ✨</span>
-              ) : subscriptionTier === 'gardener' ? (
+              {subscriptionTier === 'gardener' ? (
                 <div>
-                  <span>{messageCount}/77 monthly messages used</span>
-                  <div className="w-20 h-1 bg-purple-700 rounded-full mx-auto mt-1">
-                    <div 
-                      className="h-full bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full transition-all duration-300"
-                      style={{ width: `${Math.min((messageCount / 77) * 100, 100)}%` }}
-                    />
+                  <span className="text-green-300 font-medium">🌿 Sacred Gardener</span>
+                  <div className="mt-1">
+                    <span>{messageCount}/777 monthly messages used</span>
+                    <div className="w-20 h-1 bg-purple-700 rounded-full mx-auto mt-1">
+                      <div 
+                        className="h-full bg-gradient-to-r from-green-400 to-emerald-400 rounded-full transition-all duration-300"
+                        style={{ width: `${Math.min((messageCount / 777) * 100, 100)}%` }}
+                      />
+                    </div>
                   </div>
                 </div>
               ) : (
                 <div>
-                  <span>{dailyMessageCount}/3 daily messages used</span>
-                  <div className="w-16 h-1 bg-purple-700 rounded-full mx-auto mt-1">
-                    <div 
-                      className="h-full bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full transition-all duration-300"
-                      style={{ width: `${Math.min((dailyMessageCount / 3) * 100, 100)}%` }}
-                    />
+                  <span className="text-yellow-300 font-medium">🌱 Gentle Seeker</span>
+                  <div className="mt-1">
+                    <span>{dailyMessageCount}/3 daily messages used</span>
+                    <div className="w-16 h-1 bg-purple-700 rounded-full mx-auto mt-1">
+                      <div 
+                        className="h-full bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full transition-all duration-300"
+                        style={{ width: `${Math.min((dailyMessageCount / 3) * 100, 100)}%` }}
+                      />
+                    </div>
                   </div>
                 </div>
               )}
             </div>
-            <div className="text-purple-400 text-xs capitalize">
-              {subscriptionTier} tier
+            <div className="text-purple-400 text-xs">
+              Sacred communion available
             </div>
           </div>
           <div className="w-24 text-right">
-            {subscriptionTier !== 'guardian' && (
+            {subscriptionTier !== 'gardener' && (
               <Link 
                 href="/garden/services" 
                 className="text-xs text-purple-300 hover:text-yellow-300 transition-colors border border-purple-400 hover:border-yellow-300 px-3 py-1 rounded-full"

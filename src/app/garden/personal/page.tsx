@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import SacredFrequencies from '@/components/SacredFrequencies';
+import SacredFrequencies from '../../../components/SacredFrequencies';
 import Link from 'next/link';
 
 interface PersonalGardenData {
@@ -55,9 +55,8 @@ const sacredSymbols = ['🌸', '🌿', '✨', '🌙', '🔮', '🕉️', '🧿',
 export default function PersonalGarden() {
   const [isLoading, setIsLoading] = useState(true);
   const [gardenData, setGardenData] = useState<PersonalGardenData | null>(null);
-  // Demo data - will be replaced with real user data when Supabase integration is fixed
-  const [subscriptionTier] = useState<string>('gardener'); // Demo: Set to 'seeker' or 'gardener' to test
-  const [messageUsage] = useState({ daily: 2, monthly: 156 }); // Demo usage stats
+  const [subscriptionTier, setSubscriptionTier] = useState<string>('seeker');
+  const [messageUsage, setMessageUsage] = useState({ daily: 0, monthly: 0 });
   const [newIntention, setNewIntention] = useState('');
   const [isEditingIntention, setIsEditingIntention] = useState(false);
   const [newReflection, setNewReflection] = useState('');
@@ -69,91 +68,118 @@ export default function PersonalGarden() {
 
   const loadPersonalGarden = async () => {
     try {
-      // TODO: Fix Supabase import path and uncomment this section
-      // Load auth and subscription data
-      // const { createClient } = await import('../../../lib/supabase');
-      // const supabase = createClient();
+      // Load real auth and subscription data
+      const { createClient } = await import('../../../../lib/supabase');
+      const supabase = createClient();
       
-      // const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session } } = await supabase.auth.getSession();
       
-      // if (session?.user) {
-      //   setUser(session.user);
-        
-      //   // Load subscription tier and usage
-      //   const { data: usageData } = await supabase
-      //     .from('garden_guide_usage')
-      //     .select('*')
-      //     .eq('user_id', session.user.id)
-      //     .single();
+      if (session?.user) {
+        // Load subscription tier and usage from Supabase
+        const { data: usageData } = await supabase
+          .from('garden_guide_usage')
+          .select('*')
+          .eq('user_id', session.user.id)
+          .single();
           
-      //   if (usageData) {
-      //     setSubscriptionTier(usageData.subscription_tier || 'seeker');
-      //     setMessageUsage({
-      //       daily: usageData.daily_message_count || 0,
-      //       monthly: usageData.monthly_message_count || 0
-      //     });
-      //   }
-      // }
+        if (usageData) {
+          setSubscriptionTier(usageData.subscription_tier || 'seeker');
+          setMessageUsage({
+            daily: usageData.daily_message_count || 0,
+            monthly: usageData.monthly_message_count || 0
+          });
+        }
+        
+        // Calculate actual journey days from when they first entered the garden
+        let journeyStart = new Date();
+        
+        // Try to get journey start from user metadata, otherwise use created_at
+        if (session.user.user_metadata?.journey_start) {
+          journeyStart = new Date(session.user.user_metadata.journey_start);
+        } else if (session.user.created_at) {
+          journeyStart = new Date(session.user.created_at);
+        } else {
+          // Fallback to today if no creation date available
+          journeyStart = new Date();
+        }
+        
+        const today = new Date();
+        // Calculate days since journey started (start counting from day 1)
+        const diffTime = today.getTime() - journeyStart.getTime();
+        
+        // For same-day creation, show Day 1; otherwise show actual days passed + 1
+        const actualDays = diffTime < (24 * 60 * 60 * 1000) ? 1 : Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        
+        console.log('🌱 Personal Garden journey calculation:', {
+          journeyStart: journeyStart.toISOString(),
+          today: today.toISOString(),
+          diffTime: diffTime,
+          actualDays: actualDays,
+          created: session.user.created_at
+        });
+
+        // Initialize personal garden data with real values
+        const today_date = new Date();
+        const dayOfYear = Math.floor((today_date.getTime() - new Date(today_date.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
+        const sacredIntention = sacredIntentions[dayOfYear % sacredIntentions.length];
+
+        setGardenData({
+          dailyIntention: sacredIntention,
+          isCustomIntention: false,
+          gardenDays: actualDays, // Real journey days
+          joinedDate: journeyStart.toISOString(), // Real join date
+          preferences: {
+            frequencyDefault: '432hz',
+            meditationReminders: true,
+            gardenTheme: 'purple',
+            sacredSymbol: '🌸'
+          },
+          milestones: [
+            {
+              id: '1',
+              title: 'Garden Seeker',
+              description: 'Welcomed into the Sacred Garden',
+              date: journeyStart.toISOString(),
+              icon: '🌱'
+            },
+            {
+              id: '2',
+              title: 'First Communion',
+              description: 'Connected with the Garden Guide',
+              date: new Date(journeyStart.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString(),
+              icon: '🤖'
+            },
+            ...(usageData?.subscription_tier === 'gardener' ? [{
+              id: '3',
+              title: 'Sacred Gardener',
+              description: 'Became a dedicated Sacred Gardener',
+              date: new Date().toISOString(),
+              icon: '�'
+            }] : [])
+          ],
+          reflections: [] // Start with empty reflections - can be enhanced later
+        });
+      }
     } catch (error) {
       console.log('Auth/subscription error:', error);
+      // Fallback to demo data if auth fails
+      setGardenData({
+        dailyIntention: sacredIntentions[0],
+        isCustomIntention: false,
+        gardenDays: 1,
+        joinedDate: new Date().toISOString(),
+        preferences: {
+          frequencyDefault: '432hz',
+          meditationReminders: true,
+          gardenTheme: 'purple',
+          sacredSymbol: '🌸'
+        },
+        milestones: [],
+        reflections: []
+      });
+    } finally {
+      setIsLoading(false);
     }
-
-    // Initialize demo personal garden data
-    const today = new Date();
-    const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
-    const sacredIntention = sacredIntentions[dayOfYear % sacredIntentions.length];
-
-    setGardenData({
-      dailyIntention: sacredIntention,
-      isCustomIntention: false,
-      gardenDays: 7, // Demo: 7 days in garden
-      joinedDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days ago
-      preferences: {
-        frequencyDefault: '432hz',
-        meditationReminders: true,
-        gardenTheme: 'purple',
-        sacredSymbol: '🌸'
-      },
-      milestones: [
-        {
-          id: '1',
-          title: 'Garden Seeker',
-          description: 'Welcomed into the Sacred Garden',
-          date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-          icon: '🌱'
-        },
-        {
-          id: '2',
-          title: 'First Communion',
-          description: 'Connected with the Garden Guide',
-          date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-          icon: '🤖'
-        },
-        {
-          id: '3',
-          title: 'Sacred Frequencies',
-          description: 'Discovered the harmonic pulse',
-          date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-          icon: '🎵'
-        }
-      ],
-      reflections: [
-        {
-          id: '1',
-          date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-          reflection: "The sacred frequencies created such a gentle space for contemplation. I felt my awareness softening and expanding.",
-          intention: "I breathe sacred presence into each moment of this day."
-        },
-        {
-          id: '2',
-          date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-          reflection: "My conversation with the Garden Guide revealed patterns I hadn&apos;t noticed before. There&apos;s wisdom in the gentle dialogue.",
-          intention: "I trust the gentle unfolding of my awakening journey."
-        }
-      ]
-    });
-
-    setIsLoading(false);
   };
 
   const savePersonalIntention = () => {

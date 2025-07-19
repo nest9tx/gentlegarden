@@ -24,7 +24,7 @@ export default function MeditationGarden() {
             className="absolute animate-pulse"
             style={{
               left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              top: `${20 + Math.random() * 70}%`, // Keep stars away from top nav area
               animationDelay: `${Math.random() * 3}s`,
               animationDuration: `${3 + Math.random() * 2}s`
             }}
@@ -46,7 +46,7 @@ export default function MeditationGarden() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen px-6">
+      <div className="relative z-10 flex items-center justify-center min-h-screen px-6 pt-20">
         <div className="text-center max-w-2xl">
           
           {/* Breathing Mandala */}

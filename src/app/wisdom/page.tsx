@@ -338,7 +338,7 @@ export default function WisdomGrove() {
             className="absolute animate-pulse"
             style={{
               left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
+              top: `${20 + Math.random() * 70}%`, // Keep symbols away from top nav area
               animationDelay: `${Math.random() * 4}s`,
               animationDuration: `${4 + Math.random() * 2}s`
             }}
@@ -360,7 +360,7 @@ export default function WisdomGrove() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 flex items-center justify-center min-h-screen px-6">
+      <div className="relative z-10 flex items-center justify-center min-h-screen px-6 pt-20">
         <div className="text-center max-w-3xl">
           
           {/* Sacred Grove Symbol */}
@@ -692,9 +692,9 @@ export default function WisdomGrove() {
 
       {/* Floating Elements */}
       <div className="absolute bottom-10 left-10 text-2xl animate-float">🌿</div>
-      <div className="absolute top-32 right-20 text-2xl animate-float" style={{animationDelay: '1s'}}>📖</div>
+      <div className="absolute top-40 right-20 text-2xl animate-float" style={{animationDelay: '1s'}}>📖</div>
       <div className="absolute bottom-32 right-10 text-2xl animate-float" style={{animationDelay: '2s'}}>✨</div>
-      <div className="absolute top-40 left-20 text-2xl animate-float" style={{animationDelay: '3s'}}>🦋</div>
+      <div className="absolute top-48 left-20 text-2xl animate-float" style={{animationDelay: '3s'}}>🦋</div>
       
       <style jsx>{`
         @keyframes float {

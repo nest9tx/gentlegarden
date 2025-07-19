@@ -154,7 +154,7 @@ export default function PersonalGarden() {
               title: 'Sacred Gardener',
               description: 'Became a dedicated Sacred Gardener',
               date: new Date().toISOString(),
-              icon: '�'
+              icon: '🌿'
             }] : [])
           ],
           reflections: [] // Start with empty reflections - can be enhanced later
@@ -278,7 +278,7 @@ export default function PersonalGarden() {
             Your Sacred Garden
           </h1>
           <p className="text-purple-200">
-            Day {gardenData.gardenDays} of your awakening journey
+            Welcome to your personal sanctuary of growth and reflection
           </p>
         </div>
 
@@ -343,9 +343,15 @@ export default function PersonalGarden() {
                     >
                       📜 Wisdom Grove ({subscriptionTier === 'gardener' ? 'Complete' : 'Foundation'} teachings)
                     </Link>
+                    <Link 
+                      href="/community" 
+                      className="block text-xs text-purple-300 hover:text-purple-200 p-2 bg-white/5 rounded-lg transition-all"
+                    >
+                      🌸 Sacred Garden Circles
+                    </Link>
                     {subscriptionTier === 'gardener' && (
                       <div className="text-xs text-green-300 p-2 bg-green-500/10 rounded-lg">
-                        � Sacred Gardener - Full access to all features
+                        🌿 Sacred Gardener - Full access to all features
                       </div>
                     )}
                   </div>
@@ -387,7 +393,7 @@ export default function PersonalGarden() {
                         className="w-full text-left p-2 bg-indigo-500/10 hover:bg-indigo-500/20 rounded-lg transition-all border border-indigo-500/20"
                       >
                         <div className="text-indigo-300 font-medium">Akashic Reading - $111</div>
-                        <div className="text-indigo-400 text-xs">90min • Zoom • Soul records + written summary</div>
+                        <div className="text-indigo-400 text-xs">90min • Remote connection • Soul records exploration</div>
                       </button>
                     </div>
 
@@ -439,20 +445,23 @@ export default function PersonalGarden() {
                   
                   <div className="space-y-2">
                     <div><strong className="text-purple-200">📜 Akashic Reading ($111):</strong></div>
-                    <div>• 90-minute soul records exploration</div>
-                    <div>• Zoom session with detailed discussion</div>
-                    <div>• Written summary for ongoing reflection</div>
-                    <div>• Past life insights and karmic healing guidance</div>
+                    <div>• 90-minute deep soul records exploration</div>
+                    <div>• Sacred energy connection through focused intention</div>
+                    <div>• Comprehensive written summary with guidance</div>
+                    <div>• Past life insights and karmic patterns revealed</div>
+                    <div>• Follow-up call to discuss insights and integration</div>
                   </div>
                 </div>
                 
                 <div className="mt-4 pt-3 border-t border-purple-300/20">
                   <div className="text-xs text-purple-300 space-y-1">
-                    <div><strong className="text-purple-200">All sessions include:</strong></div>
+                    <div><strong className="text-purple-200">Service Delivery & Sacred Process:</strong></div>
                     <div>• Pre-session intake form to honor your unique journey</div>
                     <div>• Flexible scheduling across time zones</div>
                     <div>• Sacred space holding with complete confidentiality</div>
-                    <div>• Integration resources and gentle follow-up guidance</div>
+                    <div>• <strong>Akashic Readings:</strong> Conducted in sacred solitude for deepest connection to the records, followed by detailed discussion call</div>
+                    <div>• <strong>Energy Work:</strong> Remote transmission with guided awareness via Zoom</div>
+                    <div>• <strong>Mentoring & Reflection:</strong> Interactive sessions via Zoom or phone</div>
                   </div>
                 </div>
               </div>

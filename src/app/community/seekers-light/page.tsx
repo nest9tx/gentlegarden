@@ -7,8 +7,8 @@ export default function SeekersLightCircle() {
   const [activeTab, setActiveTab] = useState('reflection');
   const [newSharing, setNewSharing] = useState('');
   
-  // Demo data for sacred sharing
-  const [sharings] = useState([
+  // Demo data for sacred sharing with interactive state
+  const [sharings, setSharings] = useState([
     {
       id: 1,
       soulName: 'Gentle Dawn',
@@ -40,6 +40,32 @@ export default function SeekersLightCircle() {
       // In real implementation, this would post to backend
       console.log('New sharing:', newSharing);
       setNewSharing('');
+    }
+  };
+
+  // Handle gentle heart giving
+  const handleHeart = (sharingId: number) => {
+    setSharings(prev => prev.map(sharing => 
+      sharing.id === sharingId 
+        ? { ...sharing, hearts: sharing.hearts + 1 }
+        : sharing
+    ));
+    // Gentle haptic feedback for mobile users
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+  };
+
+  // Handle gentle prayer support
+  const handlePrayer = (sharingId: number) => {
+    setSharings(prev => prev.map(sharing => 
+      sharing.id === sharingId 
+        ? { ...sharing, prayers: sharing.prayers + 1 }
+        : sharing
+    ));
+    // Gentle haptic feedback for mobile users
+    if (navigator.vibrate) {
+      navigator.vibrate(100);
     }
   };
 
@@ -234,13 +260,21 @@ export default function SeekersLightCircle() {
                         </div>
                         <p className="text-yellow-100 mb-4 leading-relaxed">{sharing.content}</p>
                         <div className="flex items-center space-x-4">
-                          <button className="flex items-center space-x-2 text-yellow-300 hover:text-yellow-200 transition-colors">
-                            <span>💝</span>
-                            <span className="text-sm">{sharing.hearts}</span>
+                          <button 
+                            onClick={() => handleHeart(sharing.id)}
+                            className="flex items-center space-x-2 text-yellow-300 hover:text-yellow-200 transition-all duration-200 hover:scale-110 transform active:scale-95"
+                            title="Send gentle appreciation"
+                          >
+                            <span className="transition-transform duration-200 hover:animate-pulse">💝</span>
+                            <span className="text-sm font-medium">{sharing.hearts}</span>
                           </button>
-                          <button className="flex items-center space-x-2 text-yellow-300 hover:text-yellow-200 transition-colors">
-                            <span>🙏</span>
-                            <span className="text-sm">{sharing.prayers}</span>
+                          <button 
+                            onClick={() => handlePrayer(sharing.id)}
+                            className="flex items-center space-x-2 text-yellow-300 hover:text-yellow-200 transition-all duration-200 hover:scale-110 transform active:scale-95"
+                            title="Offer prayer support"
+                          >
+                            <span className="transition-transform duration-200 hover:animate-pulse">🙏</span>
+                            <span className="text-sm font-medium">{sharing.prayers}</span>
                           </button>
                         </div>
                       </div>

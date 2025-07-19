@@ -73,6 +73,61 @@ export default function CommunityCircle() {
       participants: 298,
       todaysPrompt: 'Where in your life are you being invited to soften and trust?',
       color: 'from-pink-400 to-rose-400'
+    },
+    { 
+      id: 'earth-keepers',
+      symbol: '🌍', 
+      name: 'Earth Keepers',
+      title: 'Nature Connection & Grounding',
+      description: 'Sacred relationship with the natural world, eco-spirituality, and earth healing',
+      energy: 'Grounding & Connection',
+      participants: 142,
+      todaysPrompt: 'How did nature speak to your soul today?',
+      color: 'from-green-500 to-teal-400'
+    },
+    { 
+      id: 'moon-daughters',
+      symbol: '🌙', 
+      name: 'Moon Daughters',
+      title: 'Divine Feminine & Cycles',
+      description: 'Honoring the sacred feminine, moon cycles, and intuitive wisdom',
+      energy: 'Intuition & Cycles',
+      participants: 211,
+      todaysPrompt: 'What is your inner wisdom calling you to release or embrace?',
+      color: 'from-purple-500 to-indigo-400'
+    },
+    { 
+      id: 'gentle-warriors',
+      symbol: '⚖️', 
+      name: 'Gentle Warriors',
+      title: 'Courage & Sacred Boundaries',
+      description: 'Finding strength in gentleness, setting loving boundaries, spiritual courage',
+      energy: 'Courage & Balance',
+      participants: 178,
+      todaysPrompt: 'Where are you being called to stand in your truth with love?',
+      color: 'from-amber-400 to-yellow-400'
+    },
+    { 
+      id: 'crystal-hearts',
+      symbol: '💎', 
+      name: 'Crystal Hearts',
+      title: 'Energy Healing & Vibrational Medicine',
+      description: 'Exploring crystal healing, energy work, sound therapy, and vibrational alignment',
+      energy: 'Healing & Vibration',
+      participants: 156,
+      todaysPrompt: 'What frequency is your heart calling you to tune into today?',
+      color: 'from-cyan-400 to-blue-400'
+    },
+    { 
+      id: 'dream-weavers',
+      symbol: '🌟', 
+      name: 'Dream Weavers',
+      title: 'Dreams & Subconscious Wisdom',
+      description: 'Dream interpretation, lucid dreaming, and accessing subconscious guidance',
+      energy: 'Mystery & Insight',
+      participants: 134,
+      todaysPrompt: 'What symbols or messages have been appearing in your dreamscape?',
+      color: 'from-violet-400 to-purple-400'
     }
   ];
 

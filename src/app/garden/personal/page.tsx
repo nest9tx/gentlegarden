@@ -325,6 +325,22 @@ export default function PersonalGarden() {
                     </div>
                   </div>
                 )}
+
+                {/* Contact Support */}
+                <div className="mt-4 pt-3 border-t border-purple-400/20">
+                  <button
+                    onClick={() => window.open('mailto:support@gentlegarden.org?subject=Sacred Garden Support Request', '_blank')}
+                    className="w-full text-left p-2 bg-white/5 hover:bg-white/10 rounded-lg transition-all text-xs text-purple-300 hover:text-purple-200"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span>💌</span>
+                      <div>
+                        <div className="font-medium">Contact Sacred Support</div>
+                        <div className="text-purple-400">support@gentlegarden.org</div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
                 </div>
 
                 {/* Quick Access to Features */}

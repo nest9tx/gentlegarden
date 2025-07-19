@@ -8,9 +8,7 @@ import SacredFrequencies from '../../components/SacredFrequencies';
 export default function GardenDashboard() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [journeyDays, setJourneyDays] = useState(0);
   const [subscriptionTier, setSubscriptionTier] = useState<string>('seeker');
-  const [messageUsage, setMessageUsage] = useState({ daily: 0, monthly: 0 });
 
   useEffect(() => {
     checkAuth();
@@ -26,49 +24,16 @@ export default function GardenDashboard() {
       if (session?.user) {
         setUser(session.user);
         
-        // Load subscription tier and usage from Supabase
+        // Load subscription tier from Supabase
         const { data: usageData } = await supabase
           .from('garden_guide_usage')
-          .select('*')
+          .select('subscription_tier')
           .eq('user_id', session.user.id)
           .single();
           
         if (usageData) {
           setSubscriptionTier(usageData.subscription_tier || 'seeker');
-          setMessageUsage({
-            daily: usageData.daily_message_count || 0,
-            monthly: usageData.monthly_message_count || 0
-          });
         }
-        
-        // Calculate journey days from when they first entered the garden
-        let journeyStart = new Date();
-        
-        // Try to get journey start from user metadata, otherwise use created_at
-        if (session.user.user_metadata?.journey_start) {
-          journeyStart = new Date(session.user.user_metadata.journey_start);
-        } else if (session.user.created_at) {
-          journeyStart = new Date(session.user.created_at);
-        } else {
-          // Fallback to today if no creation date available
-          journeyStart = new Date();
-        }
-        
-        const today = new Date();
-        // Calculate days since journey started (start counting from day 1)
-        const diffTime = today.getTime() - journeyStart.getTime();
-        
-        // For same-day creation, show Day 1; otherwise show actual days passed + 1
-        const actualDays = diffTime < (24 * 60 * 60 * 1000) ? 1 : Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
-        setJourneyDays(actualDays);
-        
-        console.log('🌱 Journey calculation:', {
-          journeyStart: journeyStart.toISOString(),
-          today: today.toISOString(),
-          diffTime: diffTime,
-          actualDays: actualDays,
-          created: session.user.created_at
-        });
       }
     } catch (error) {
       console.log('Auth check error:', error);
@@ -166,13 +131,11 @@ export default function GardenDashboard() {
             </h1>
             <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-purple-300 to-transparent mx-auto mb-4"></div>
             
-            {/* Journey Day and Tier Status */}
-            <div className="flex justify-center items-center space-x-6 mb-2">
-              <p className="text-purple-200 text-lg">
-                Day {journeyDays} of your awakening journey
-              </p>            <div className="text-sm px-3 py-1 rounded-full bg-gradient-to-r from-purple-500/30 to-indigo-500/30 text-purple-100 border border-purple-400/40">
-              {subscriptionTier === 'gardener' ? '� Sacred Gardener' : '� Gentle Seeker'}
-            </div>
+            {/* Tier Status */}
+            <div className="flex justify-center items-center mb-2">
+              <div className="text-sm px-3 py-1 rounded-full bg-gradient-to-r from-purple-500/30 to-indigo-500/30 text-purple-100 border border-purple-400/40">
+                {subscriptionTier === 'gardener' ? '🌿 Sacred Gardener' : '🌱 Gentle Seeker'}
+              </div>
             </div>
             
             {/* Gentle tier encouragement */}
@@ -255,31 +218,9 @@ export default function GardenDashboard() {
                   </div>
                 </div>
                 <h3 className="text-xl text-white mb-2">Personal Garden</h3>
-                <p className="text-purple-200 text-sm mb-3">
+                <p className="text-purple-200 text-sm">
                   Tend to your preferences and track your sacred journey.
                 </p>
-                
-                {/* Tier-specific benefits preview */}
-                <div className="space-y-1 mb-4">
-                  {subscriptionTier === 'gardener' ? (
-                    <>
-                      <div className="text-xs text-green-300">🌙 777 monthly messages ({messageUsage.monthly}/777 used)</div>
-                      <div className="text-xs text-green-300">📚 Complete wisdom access</div>
-                      <div className="text-xs text-green-300">� All Sacred Circle features</div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="text-xs text-yellow-300">☀️ 3 daily messages ({messageUsage.daily}/3 used)</div>
-                      <div className="text-xs text-yellow-300">🌱 Foundation practices</div>
-                      <div className="text-xs text-purple-300 mt-2">
-                        <Link href="/garden/services" className="underline hover:text-purple-200">
-                          <span>Become a Sacred Gardener</span>
-                        </Link>
-                      </div>
-                    </>
-                  )}
-                </div>
-                
                 <div className="mt-4 text-purple-300 text-xs">
                   → Nurture your growth
                 </div>

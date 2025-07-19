@@ -309,9 +309,9 @@ export default function PersonalGarden() {
                 {subscriptionTier === 'gardener' ? (
                   <div className="text-xs text-green-300 space-y-1">
                     <div>🌙 {messageUsage.monthly}/777 monthly messages</div>
-                    <div>� Complete access to all garden features</div>
-                    <div>� Full wisdom library</div>
-                    <div>� Priority support access</div>
+                    <div>🌟 Complete access to all garden features</div>
+                    <div>📚 Full wisdom library</div>
+                    <div>💫 Priority support access</div>
                   </div>
                 ) : (
                   <div className="text-xs text-yellow-300 space-y-1">
@@ -780,7 +780,7 @@ export default function PersonalGarden() {
                   className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all block"
                 >
                   <div className="flex items-center space-x-3">
-                    <span className="text-lg">�</span>
+                    <span className="text-lg">🎋</span>
                     <div>
                       <div className="text-purple-100 text-sm">Sacred Services</div>
                       <div className="text-purple-300 text-xs">Personal guidance & support</div>

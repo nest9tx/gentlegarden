@@ -71,12 +71,20 @@ function EnterContent() {
 
       if (error) {
         console.error('Auth error:', error);
+        console.error('Error details:', {
+          message: error.message,
+          status: error.status,
+          name: error.name
+        });
+        
         if (error.message.includes('rate limit')) {
           setMessage('The garden is protecting against too many requests. Please wait a moment and try again gently. 🌱');
         } else if (error.message.includes('email')) {
           setMessage('Please check that your email address is entered correctly. 📧');
+        } else if (error.message.includes('SMTP') || error.message.includes('mail')) {
+          setMessage('There seems to be a gentle whisper lost in the email garden. The gardeners are tending to this. Please try again in a moment. 📮');
         } else {
-          setMessage('A gentle whisper could not reach you. Please try again in a moment.');
+          setMessage(`A gentle whisper could not reach you: ${error.message}`);
         }
       } else {
         setMessage('A sacred invitation has been sent to your email. Check your inbox (and spam folder) for your gentle entry to the garden. The link will be valid for 1 hour. 🌱');

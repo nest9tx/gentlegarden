@@ -1,52 +1,86 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function AuthCallback() {
   const router = useRouter()
+  const [status, setStatus] = useState('Preparing your garden...')
 
   useEffect(() => {
     const handleAuth = async () => {
       try {
+        setStatus('Connecting to your sanctuary...')
+        
         // Dynamic import to avoid SSR issues
         const { createClient } = await import('../../../../lib/supabase')
         const supabase = createClient()
 
-        // Handle the auth state change - this will process the URL fragments
-        const { data: { session } } = await supabase.auth.getSession()
+        // First, try to get current session
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession()
         
-        // Set up an auth listener to catch the callback
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-          if (event === 'SIGNED_IN' && session) {
-            // Successfully authenticated, redirect to garden
+        if (sessionError) {
+          console.error('Session error:', sessionError)
+          setStatus('Garden connection interrupted...')
+          setTimeout(() => {
+            router.push('/enter?message=Please try signing in again')
+          }, 2000)
+          return
+        }
+
+        if (session) {
+          console.log('Session found:', session.user.email)
+          setStatus('Welcome back to your garden! 🌸')
+          setTimeout(() => {
             router.push('/garden')
-          } else if (event === 'SIGNED_OUT' || !session) {
-            // No session or signed out, redirect back to enter
-            router.push('/enter?message=Please check your email and click the magic link')
+          }, 1500)
+          return
+        }
+
+        // If no session, wait for auth state change
+        setStatus('Listening for your gentle entry...')
+        
+        const authTimeout = setTimeout(() => {
+          console.log('Auth timeout reached')
+          setStatus('Taking longer than expected...')
+          subscription.unsubscribe()
+          setTimeout(() => {
+            router.push('/enter?message=The magic link may have expired. Please try again.')
+          }, 2000)
+        }, 8000)
+        
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+          console.log('Auth state change:', event, session?.user?.email)
+          
+          if (event === 'SIGNED_IN' && session) {
+            setStatus('Sacred entry complete! 🌱')
+            clearTimeout(authTimeout)
+            setTimeout(() => {
+              router.push('/garden')
+            }, 1500)
+          } else if (event === 'SIGNED_OUT') {
+            setStatus('Garden connection lost...')
+            clearTimeout(authTimeout)
+            setTimeout(() => {
+              router.push('/enter?message=Please try signing in again')
+            }, 2000)
           }
         })
 
-        // If we already have a session, go to garden immediately
-        if (session) {
-          router.push('/garden')
-        } else {
-          // Give it a moment for the auth callback to process
-          setTimeout(async () => {
-            const { data: { session: updatedSession } } = await supabase.auth.getSession()
-            if (!updatedSession) {
-              router.push('/enter?message=Authentication link may have expired, please try again')
-            }
-          }, 3000)
-        }
+        // Set a timeout - if no auth after 8 seconds, redirect to enter
 
-        // Cleanup subscription
+        // Cleanup function
         return () => {
+          clearTimeout(authTimeout)
           subscription.unsubscribe()
         }
+        
       } catch (error) {
         console.error('Callback error:', error)
-        router.push('/enter?message=Something went wrong, please try again')
+        setStatus('Something went gently wrong...')
+        setTimeout(() => {
+          router.push('/enter?message=Please try again - the garden is waiting for you')
+        }, 2000)
       }
     }
 
@@ -76,7 +110,7 @@ export default function AuthCallback() {
       <div className="relative z-10 text-center">
         <div className="text-6xl mb-6 animate-spin">🌱</div>
         <h1 className="text-3xl font-light text-white mb-4">
-          Completing Your Sacred Entry...
+          {status}
         </h1>
         <p className="text-purple-200 text-lg">
           Please wait while we prepare your garden sanctuary...

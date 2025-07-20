@@ -8,42 +8,47 @@ export async function GET(request: NextRequest) {
   const type = requestUrl.searchParams.get('type')
   const code = requestUrl.searchParams.get('code')
 
-  if (token_hash && type) {
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
+  console.log('Auth confirm params:', { token_hash, type, code, url: request.url })
 
+  const cookieStore = cookies()
+  const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
+
+  // Handle code-based authentication (modern method)
+  if (code) {
     try {
-      const { error } = await supabase.auth.verifyOtp({
+      const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+      
+      if (!error && data.session) {
+        console.log('Code auth success:', data.session.user.email)
+        return NextResponse.redirect(new URL('/garden', requestUrl.origin))
+      } else {
+        console.error('Code auth error:', error)
+      }
+    } catch (error) {
+      console.error('Code exchange exception:', error)
+    }
+  }
+
+  // Handle token_hash-based authentication (legacy method)
+  if (token_hash && type) {
+    try {
+      const { data, error } = await supabase.auth.verifyOtp({
         type: type as 'signup' | 'email',
         token_hash,
       })
 
-      if (!error) {
-        // Success! Redirect to garden
+      if (!error && data.session) {
+        console.log('Token auth success:', data.session.user.email)
         return NextResponse.redirect(new URL('/garden', requestUrl.origin))
+      } else {
+        console.error('Token auth error:', error)
       }
     } catch (error) {
-      console.error('Auth error:', error)
+      console.error('Token verify exception:', error)
     }
   }
 
-  // Handle code-based authentication (newer method)
-  if (code) {
-    const cookieStore = cookies()
-    const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
-
-    try {
-      const { error } = await supabase.auth.exchangeCodeForSession(code)
-
-      if (!error) {
-        // Success! Redirect to garden
-        return NextResponse.redirect(new URL('/garden', requestUrl.origin))
-      }
-    } catch (error) {
-      console.error('Auth code exchange error:', error)
-    }
-  }
-
-  // For hash-based authentication, redirect to client-side handler
+  // If no params or auth failed, redirect to callback for client-side handling
+  console.log('Redirecting to callback for client-side auth')
   return NextResponse.redirect(new URL('/auth/callback', requestUrl.origin))
 }

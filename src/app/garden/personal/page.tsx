@@ -418,7 +418,7 @@ export default function PersonalGarden() {
                       <div className="mt-3 pt-3 border-t border-purple-400/20">
                         <div className="text-purple-300 text-xs mb-2">Expand Your Garden:</div>
                         <button 
-                          onClick={() => window.open('https://buy.stripe.com/4gMfZh4Zc0z60eW0HXfIs00', '_blank')}
+                          onClick={() => window.open('https://buy.stripe.com/fZu8wP4ZcbdK8Ls9etfIs06', '_blank')}
                           className="w-full text-left p-2 bg-green-500/10 hover:bg-green-500/20 rounded-lg transition-all border border-green-500/20"
                         >
                           <div className="text-green-300 font-medium">🌿 Sacred Gardener Path - $11.11/month</div>

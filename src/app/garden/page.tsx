@@ -129,7 +129,36 @@ export default function GardenDashboard() {
             <h1 className="text-4xl md:text-5xl font-light text-white mb-4">
               Welcome to Your Sacred Garden
             </h1>
-            <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-purple-300 to-transparent mx-auto mb-4"></div>
+            <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-purple-300 to-transparent mx-auto mb-6"></div>
+            
+            {/* Sacred Welcome Video */}
+            <div className="mb-8">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 max-w-2xl mx-auto">
+                <div className="text-purple-200 text-sm mb-4 flex items-center justify-center">
+                  <span className="mr-2">🎵</span>
+                  A gentle welcome from your garden tender
+                </div>
+                <div className="relative w-full max-w-xl mx-auto">
+                  <iframe
+                    width="100%"
+                    height="315"
+                    src="https://www.youtube.com/embed/m4BOmksqFwk?rel=0&modestbranding=1&showinfo=0&controls=1&autoplay=0&mute=0&cc_load_policy=0&iv_load_policy=3"
+                    title="Welcome to Your Gentle Garden"
+                    frameBorder="0"
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="rounded-xl shadow-lg"
+                    style={{
+                      aspectRatio: '16/9',
+                      minHeight: '200px'
+                    }}
+                  ></iframe>
+                </div>
+                <div className="text-purple-300 text-xs mt-3 italic">
+                  ✧ Sacred space, sacred timing - watch when your heart calls ✧
+                </div>
+              </div>
+            </div>
             
             {/* Tier Status */}
             <div className="flex justify-center items-center mb-2">
@@ -147,6 +176,35 @@ export default function GardenDashboard() {
                 </Link>
               </p>
             )}
+          </div>
+
+          {/* Sacred Welcome Video */}
+          <div className="mb-12">
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/20">
+              <div className="text-center mb-4">
+                <h2 className="text-xl text-white mb-2">A Gentle Welcome to Your Sacred Space</h2>
+                <p className="text-purple-200 text-sm">
+                  Take a moment to breathe and receive this gentle introduction to your garden
+                </p>
+              </div>
+              <div className="aspect-video rounded-xl overflow-hidden">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1&controls=1&showinfo=0"
+                  title="Sacred Garden Welcome"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="rounded-xl"
+                ></iframe>
+              </div>
+              <div className="text-center mt-4">
+                <p className="text-purple-300 text-xs">
+                  ✧ May this gentle guidance illuminate your path ✧
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Garden Pathways - Sacred Navigation */}
@@ -240,18 +298,6 @@ export default function GardenDashboard() {
                 </div>
               </div>
             </Link>
-
-            {/* Today's Intention */}
-            <div className="bg-gradient-to-br from-purple-600/30 to-indigo-600/30 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30">
-              <div className="text-3xl mb-4">🌸</div>
-              <h3 className="text-xl text-white mb-2">Today&apos;s Intention</h3>
-              <p className="text-purple-200 text-sm italic">
-                &ldquo;I welcome whatever seeds are ready to bloom within me today.&rdquo;
-              </p>
-              <div className="mt-4 text-purple-300 text-xs">
-                ✧ Sacred reflection ✧
-              </div>
-            </div>
           </div>
 
           {/* Sacred Quote */}

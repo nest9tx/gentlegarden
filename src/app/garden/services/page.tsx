@@ -14,7 +14,7 @@ export default function ServicesPage() {
       imagePrompt: 'Peaceful garden scene with a person tending to flourishing plants and flowers, soft morning light filtering through leaves, representing spiritual growth and daily cultivation, watercolor style, serene and nurturing atmosphere',
       features: [
         '777 monthly Garden Guide messages (sacred abundance)',
-        'Full access to all 6 Sacred Garden Circles',
+        'Full access to all Sacred Garden Circles',
         'Complete wisdom library and teachings',
         'Enhanced personal garden features',
         'Priority support when needed'

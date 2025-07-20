@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
-export default function EnterPage() {
+function EnterContent() {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -163,5 +163,20 @@ export default function EnterPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function EnterPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="text-4xl mb-4 animate-pulse">🌸</div>
+          <p className="text-purple-200">Preparing your gentle entry...</p>
+        </div>
+      </div>
+    }>
+      <EnterContent />
+    </Suspense>
   );
 }

@@ -18,6 +18,13 @@ function EnterContent() {
     }
   }, [searchParams]);
 
+  // Function to clear rate limiting (for debugging)
+  const clearRateLimit = () => {
+    const rateLimitKey = `rate_limit_${email}`;
+    localStorage.removeItem(rateLimitKey);
+    setMessage('Rate limit cleared. You can try again now. 🌱');
+  };
+
   const handleGentleEntry = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -35,6 +42,19 @@ function EnterContent() {
       const { createClient } = await import('../../../lib/supabase');
       const supabase = createClient();
 
+      // Check if we're rate limited first
+      const rateLimitKey = `rate_limit_${email}`;
+      const lastAttempt = localStorage.getItem(rateLimitKey);
+      const now = Date.now();
+      
+      // If last attempt was less than 60 seconds ago, show message
+      if (lastAttempt && (now - parseInt(lastAttempt)) < 60000) {
+        const remainingTime = Math.ceil((60000 - (now - parseInt(lastAttempt))) / 1000);
+        setMessage(`Please wait ${remainingTime} seconds before requesting another invitation. The garden protects against too many requests. 🌱`);
+        setIsLoading(false);
+        return;
+      }
+
       // Send magic link - no password needed, gentle entry
       const { error } = await supabase.auth.signInWithOtp({
         email,
@@ -43,12 +63,23 @@ function EnterContent() {
         },
       });
 
+      // Store this attempt time
+      localStorage.setItem(rateLimitKey, now.toString());
+
       if (error) {
-        setMessage('A gentle whisper could not reach you. Please try again.');
+        console.error('Auth error:', error);
+        if (error.message.includes('rate limit')) {
+          setMessage('The garden is protecting against too many requests. Please wait a moment and try again gently. 🌱');
+        } else if (error.message.includes('email')) {
+          setMessage('Please check that your email address is entered correctly. 📧');
+        } else {
+          setMessage('A gentle whisper could not reach you. Please try again in a moment.');
+        }
       } else {
-        setMessage('A sacred invitation has been sent to your email. Check your inbox for your gentle entry to the garden. 🌱');
+        setMessage('A sacred invitation has been sent to your email. Check your inbox (and spam folder) for your gentle entry to the garden. The link will be valid for 1 hour. 🌱');
       }
-    } catch {
+    } catch (error) {
+      console.error('Exception:', error);
       setMessage('The garden is temporarily resting. Please try again in a moment.');
     } finally {
       setIsLoading(false);
@@ -134,6 +165,14 @@ function EnterContent() {
                 <p className="text-sm text-purple-300 mt-4">
                   Check your email and click the link to step into your sanctuary.
                 </p>
+              )}
+              {message.includes('wait') && message.includes('seconds') && (
+                <button
+                  onClick={clearRateLimit}
+                  className="mt-4 text-xs text-purple-400 hover:text-purple-300 underline"
+                >
+                  Clear rate limit (if needed)
+                </button>
               )}
             </div>
           )}

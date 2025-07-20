@@ -49,6 +49,15 @@ export async function GET(request: NextRequest) {
   }
 
   // If no params or auth failed, redirect to callback for client-side handling
-  console.log('Redirecting to callback for client-side auth')
-  return NextResponse.redirect(new URL('/auth/callback', requestUrl.origin))
+  console.log('No valid auth params found or auth failed, redirecting to callback')
+  
+  // Add helpful error message to callback
+  const callbackUrl = new URL('/auth/callback', requestUrl.origin)
+  if (!token_hash && !type && !code) {
+    callbackUrl.searchParams.set('error', 'missing_params')
+  } else {
+    callbackUrl.searchParams.set('error', 'auth_failed')
+  }
+  
+  return NextResponse.redirect(callbackUrl)
 }

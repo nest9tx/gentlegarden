@@ -10,6 +10,24 @@ export default function AuthCallback() {
   useEffect(() => {
     const handleAuth = async () => {
       try {
+        // Check for error parameters from confirm route
+        const urlParams = new URLSearchParams(window.location.search)
+        const error = urlParams.get('error')
+        
+        if (error === 'missing_params') {
+          setStatus('Magic link appears incomplete...')
+          setTimeout(() => {
+            router.push('/enter?message=Please request a new magic link - this one seems incomplete.')
+          }, 3000)
+          return
+        } else if (error === 'auth_failed') {
+          setStatus('Magic link verification failed...')
+          setTimeout(() => {
+            router.push('/enter?message=Please request a new magic link - this one may have expired.')
+          }, 3000)
+          return
+        }
+        
         setStatus('Connecting to your sanctuary...')
         
         // Dynamic import to avoid SSR issues
@@ -47,7 +65,7 @@ export default function AuthCallback() {
           setTimeout(() => {
             router.push('/enter?message=The magic link may have expired. Please try again.')
           }, 2000)
-        }, 8000)
+        }, 15000)
         
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
           console.log('Auth state change:', event, session?.user?.email)

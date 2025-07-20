@@ -178,35 +178,6 @@ export default function GardenDashboard() {
             )}
           </div>
 
-          {/* Sacred Welcome Video */}
-          <div className="mb-12">
-            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/20">
-              <div className="text-center mb-4">
-                <h2 className="text-xl text-white mb-2">A Gentle Welcome to Your Sacred Space</h2>
-                <p className="text-purple-200 text-sm">
-                  Take a moment to breathe and receive this gentle introduction to your garden
-                </p>
-              </div>
-              <div className="aspect-video rounded-xl overflow-hidden">
-                <iframe
-                  width="100%"
-                  height="100%"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1&controls=1&showinfo=0"
-                  title="Sacred Garden Welcome"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="rounded-xl"
-                ></iframe>
-              </div>
-              <div className="text-center mt-4">
-                <p className="text-purple-300 text-xs">
-                  ✧ May this gentle guidance illuminate your path ✧
-                </p>
-              </div>
-            </div>
-          </div>
-
           {/* Garden Pathways - Sacred Navigation */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             

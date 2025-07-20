@@ -9,6 +9,8 @@ export async function GET(request: NextRequest) {
   const code = requestUrl.searchParams.get('code')
 
   console.log('Auth confirm params:', { token_hash, type, code, url: request.url })
+  console.log('Full request URL:', request.url)
+  console.log('Request headers:', Object.fromEntries(request.headers.entries()))
 
   const cookieStore = cookies()
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore })

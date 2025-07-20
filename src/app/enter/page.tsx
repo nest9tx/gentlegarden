@@ -42,20 +42,21 @@ function EnterContent() {
       const { createClient } = await import('../../../lib/supabase');
       const supabase = createClient();
 
-      // Check if we're rate limited first
-      const rateLimitKey = `rate_limit_${email}`;
-      const lastAttempt = localStorage.getItem(rateLimitKey);
-      const now = Date.now();
+      // Check if we're rate limited first (DISABLE FOR TESTING)
+      // const rateLimitKey = `rate_limit_${email}`;
+      // const lastAttempt = localStorage.getItem(rateLimitKey);
+      // const now = Date.now();
       
       // If last attempt was less than 60 seconds ago, show message
-      if (lastAttempt && (now - parseInt(lastAttempt)) < 60000) {
-        const remainingTime = Math.ceil((60000 - (now - parseInt(lastAttempt))) / 1000);
-        setMessage(`Please wait ${remainingTime} seconds before requesting another invitation. The garden protects against too many requests. 🌱`);
-        setIsLoading(false);
-        return;
-      }
+      // if (lastAttempt && (now - parseInt(lastAttempt)) < 60000) {
+      //   const remainingTime = Math.ceil((60000 - (now - parseInt(lastAttempt))) / 1000);
+      //   setMessage(`Please wait ${remainingTime} seconds before requesting another invitation. The garden protects against too many requests. 🌱`);
+      //   setIsLoading(false);
+      //   return;
+      // }
 
       // Send magic link - no password needed, gentle entry
+      console.log('Attempting to send magic link to:', email)
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
@@ -63,8 +64,10 @@ function EnterContent() {
         },
       });
 
-      // Store this attempt time
-      localStorage.setItem(rateLimitKey, now.toString());
+      console.log('Magic link response:', { error })
+
+      // Store this attempt time (DISABLED FOR TESTING)
+      // localStorage.setItem(rateLimitKey, now.toString());
 
       if (error) {
         console.error('Auth error:', error);

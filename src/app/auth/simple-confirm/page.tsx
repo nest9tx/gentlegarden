@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function SimpleAuthConfirm() {
+function SimpleAuthConfirmContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState('Verifying your sacred invitation...');
@@ -103,5 +103,20 @@ export default function SimpleAuthConfirm() {
         <p className="text-purple-200">Please wait while we prepare your garden sanctuary...</p>
       </div>
     </div>
+  );
+}
+
+export default function SimpleAuthConfirm() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-white text-center">
+          <div className="text-4xl mb-4 animate-pulse">🌸</div>
+          <p className="text-purple-200">Preparing your gentle entry...</p>
+        </div>
+      </div>
+    }>
+      <SimpleAuthConfirmContent />
+    </Suspense>
   );
 }

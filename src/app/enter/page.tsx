@@ -55,13 +55,12 @@ function EnterContent() {
       //   return;
       // }
 
-      // Send magic link - use simple client-side auth confirmation
+      // Send magic link - revert to original auth/confirm route
       console.log('Attempting to send magic link to:', email)
       const { error } = await supabase.auth.signInWithOtp({
         email: email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/simple-confirm`,
-          shouldCreateUser: true,
+          emailRedirectTo: `${window.location.origin}/auth/confirm`,
         },
       });
 

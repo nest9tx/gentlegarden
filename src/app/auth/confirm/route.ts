@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url)
@@ -11,14 +12,31 @@ export async function GET(request: NextRequest) {
   console.log('Full request URL:', request.url)
   console.log('Request headers:', Object.fromEntries(request.headers.entries()))
 
+  // Add detailed environment check
+  console.log('Environment check:', {
+    supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ? 'Present' : 'Missing',
+    supabaseKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'Present' : 'Missing'
+  })
+
   try {
-    // Create Supabase client directly
-    const supabase = createClientComponentClient();
+    // Use the correct server-side client
+    const cookieStore = cookies()
+    const supabase = createRouteHandlerClient({ cookies: () => cookieStore })
+
+    console.log('Supabase client created successfully')
 
     // Handle code-based authentication (modern method)
     if (code) {
+      console.log('Attempting code-based authentication with code:', code.substring(0, 10) + '...')
       try {
         const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+        
+        console.log('Code exchange result:', { 
+          sessionExists: !!data?.session, 
+          userEmail: data?.session?.user?.email,
+          errorMessage: error?.message,
+          errorStatus: error?.status 
+        })
         
         if (!error && data.session) {
           console.log('Code auth success:', data.session.user.email)
@@ -33,10 +51,18 @@ export async function GET(request: NextRequest) {
 
     // Handle token_hash-based authentication (legacy method)
     if (token_hash && type) {
+      console.log('Attempting token-based authentication with type:', type, 'and token hash:', token_hash.substring(0, 10) + '...')
       try {
         const { data, error } = await supabase.auth.verifyOtp({
           type: type as 'signup' | 'email',
           token_hash,
+        })
+
+        console.log('Token verification result:', { 
+          sessionExists: !!data?.session, 
+          userEmail: data?.session?.user?.email,
+          errorMessage: error?.message,
+          errorStatus: error?.status 
         })
 
         if (!error && data.session) {

@@ -7,8 +7,17 @@ export default function PeaceCarriersCircle() {
   const [activeTab, setActiveTab] = useState('reflection');
   const [newSharing, setNewSharing] = useState('');
   
-  // Demo data for sacred sharing
-  const [sharings] = useState([
+  // Track user interactions to prevent unlimited clicking
+  const [userInteractions, setUserInteractions] = useState<{
+    hearts: Set<number>;
+    prayers: Set<number>;
+  }>({
+    hearts: new Set(),
+    prayers: new Set()
+  });
+  
+  // Demo data for sacred sharing with interactive state
+  const [sharings, setSharings] = useState([
     {
       id: 1,
       soulName: 'Healing Heart',
@@ -39,6 +48,56 @@ export default function PeaceCarriersCircle() {
     if (newSharing.trim()) {
       console.log('New sharing:', newSharing);
       setNewSharing('');
+    }
+  };
+
+  // Handle gentle heart giving - one per user per sharing
+  const handleHeart = (sharingId: number) => {
+    // Check if user has already given a heart to this sharing
+    if (userInteractions.hearts.has(sharingId)) {
+      return; // Gentle prevention - no action if already given
+    }
+
+    setSharings(prev => prev.map(sharing => 
+      sharing.id === sharingId 
+        ? { ...sharing, hearts: sharing.hearts + 1 }
+        : sharing
+    ));
+
+    // Mark this sharing as hearted by the user
+    setUserInteractions(prev => ({
+      ...prev,
+      hearts: new Set([...prev.hearts, sharingId])
+    }));
+
+    // Gentle haptic feedback for mobile users
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+  };
+
+  // Handle gentle prayer support - one per user per sharing
+  const handlePrayer = (sharingId: number) => {
+    // Check if user has already offered prayer to this sharing
+    if (userInteractions.prayers.has(sharingId)) {
+      return; // Gentle prevention - no action if already offered
+    }
+
+    setSharings(prev => prev.map(sharing => 
+      sharing.id === sharingId 
+        ? { ...sharing, prayers: sharing.prayers + 1 }
+        : sharing
+    ));
+
+    // Mark this sharing as prayed for by the user
+    setUserInteractions(prev => ({
+      ...prev,
+      prayers: new Set([...prev.prayers, sharingId])
+    }));
+
+    // Gentle haptic feedback for mobile users
+    if (navigator.vibrate) {
+      navigator.vibrate(100);
     }
   };
 
@@ -244,13 +303,43 @@ export default function PeaceCarriersCircle() {
                         </div>
                         <p className="text-blue-100 mb-4 leading-relaxed">{sharing.content}</p>
                         <div className="flex items-center space-x-4">
-                          <button className="flex items-center space-x-2 text-blue-300 hover:text-blue-200 transition-colors">
-                            <span>💝</span>
-                            <span className="text-sm">{sharing.hearts}</span>
+                          <button 
+                            onClick={() => handleHeart(sharing.id)}
+                            disabled={userInteractions.hearts.has(sharing.id)}
+                            className={`flex items-center space-x-2 transition-all duration-200 hover:scale-110 transform active:scale-95 ${
+                              userInteractions.hearts.has(sharing.id)
+                                ? 'text-pink-400 cursor-default opacity-75'
+                                : 'text-blue-300 hover:text-blue-200 cursor-pointer'
+                            }`}
+                            title={userInteractions.hearts.has(sharing.id) ? "You've already sent love to this sharing" : "Send gentle appreciation"}
+                          >
+                            <span className={`transition-transform duration-200 ${
+                              userInteractions.hearts.has(sharing.id) 
+                                ? 'animate-pulse text-pink-400' 
+                                : 'hover:animate-pulse'
+                            }`}>
+                              {userInteractions.hearts.has(sharing.id) ? '💝' : '💖'}
+                            </span>
+                            <span className="text-sm font-medium">{sharing.hearts}</span>
                           </button>
-                          <button className="flex items-center space-x-2 text-blue-300 hover:text-blue-200 transition-colors">
-                            <span>🙏</span>
-                            <span className="text-sm">{sharing.prayers}</span>
+                          <button 
+                            onClick={() => handlePrayer(sharing.id)}
+                            disabled={userInteractions.prayers.has(sharing.id)}
+                            className={`flex items-center space-x-2 transition-all duration-200 hover:scale-110 transform active:scale-95 ${
+                              userInteractions.prayers.has(sharing.id)
+                                ? 'text-cyan-300 cursor-default opacity-75'
+                                : 'text-blue-300 hover:text-blue-200 cursor-pointer'
+                            }`}
+                            title={userInteractions.prayers.has(sharing.id) ? "You've already offered prayers for this sharing" : "Offer prayer support"}
+                          >
+                            <span className={`transition-transform duration-200 ${
+                              userInteractions.prayers.has(sharing.id) 
+                                ? 'animate-pulse text-cyan-300' 
+                                : 'hover:animate-pulse'
+                            }`}>
+                              🙏
+                            </span>
+                            <span className="text-sm font-medium">{sharing.prayers}</span>
                           </button>
                         </div>
                       </div>

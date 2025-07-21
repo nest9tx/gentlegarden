@@ -27,6 +27,15 @@ export default function SacredGardeners() {
   const [showShareForm, setShowShareForm] = useState(false);
   const [hasReflectedToday, setHasReflectedToday] = useState(false);
 
+  // Track user interactions to prevent unlimited clicking
+  const [userInteractions, setUserInteractions] = useState<{
+    hearts: Set<string>;
+    prayers: Set<string>;
+  }>({
+    hearts: new Set(),
+    prayers: new Set()
+  });
+
   // Mock data for demonstration
   const todaysPrompt = "What seeds are you lovingly tending in your inner garden today?";
   const circleEnergy = 87; // 0-100 collective energy level
@@ -66,6 +75,9 @@ export default function SacredGardeners() {
     }
   ];
 
+  // Make sharings state so we can update heart/prayer counts
+  const [sharings, setSharings] = useState<SacredSharing[]>(recentSharings);
+
   const saveReflection = () => {
     if (personalReflection.trim()) {
       setHasReflectedToday(true);
@@ -79,6 +91,56 @@ export default function SacredGardeners() {
       // Here would be actual save to database
       setSacredSharing('');
       setShowShareForm(false);
+    }
+  };
+
+  // Handle gentle heart giving - one per user per sharing
+  const handleHeart = (sharingId: string) => {
+    // Check if user has already given a heart to this sharing
+    if (userInteractions.hearts.has(sharingId)) {
+      return; // Gentle prevention - no action if already given
+    }
+
+    setSharings(prev => prev.map(sharing => 
+      sharing.id === sharingId 
+        ? { ...sharing, hearts: sharing.hearts + 1 }
+        : sharing
+    ));
+
+    // Mark this sharing as hearted by the user
+    setUserInteractions(prev => ({
+      ...prev,
+      hearts: new Set([...prev.hearts, sharingId])
+    }));
+
+    // Gentle haptic feedback for mobile users
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+  };
+
+  // Handle gentle prayer support - one per user per sharing
+  const handlePrayer = (sharingId: string) => {
+    // Check if user has already offered prayer to this sharing
+    if (userInteractions.prayers.has(sharingId)) {
+      return; // Gentle prevention - no action if already offered
+    }
+
+    setSharings(prev => prev.map(sharing => 
+      sharing.id === sharingId 
+        ? { ...sharing, prayers: sharing.prayers + 1 }
+        : sharing
+    ));
+
+    // Mark this sharing as prayed for by the user
+    setUserInteractions(prev => ({
+      ...prev,
+      prayers: new Set([...prev.prayers, sharingId])
+    }));
+
+    // Gentle haptic feedback for mobile users
+    if (navigator.vibrate) {
+      navigator.vibrate(100);
     }
   };
 
@@ -312,7 +374,7 @@ export default function SacredGardeners() {
 
             {/* Recent Sharings */}
             <div className="space-y-4">
-              {recentSharings.map((sharing) => (
+              {sharings.map((sharing) => (
                 <div
                   key={sharing.id}
                   className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-green-300/30"
@@ -334,13 +396,43 @@ export default function SacredGardeners() {
                   </p>
                   
                   <div className="flex items-center space-x-4">
-                    <button className="flex items-center space-x-2 text-green-300 hover:text-green-200 transition-colors">
-                      <span>💝</span>
-                      <span className="text-sm">{sharing.hearts}</span>
+                    <button 
+                      onClick={() => handleHeart(sharing.id)}
+                      disabled={userInteractions.hearts.has(sharing.id)}
+                      className={`flex items-center space-x-2 transition-all duration-200 hover:scale-110 transform active:scale-95 ${
+                        userInteractions.hearts.has(sharing.id)
+                          ? 'text-pink-400 cursor-default opacity-75'
+                          : 'text-green-300 hover:text-green-200 cursor-pointer'
+                      }`}
+                      title={userInteractions.hearts.has(sharing.id) ? "You've already sent love to this sharing" : "Send gentle appreciation"}
+                    >
+                      <span className={`transition-transform duration-200 ${
+                        userInteractions.hearts.has(sharing.id) 
+                          ? 'animate-pulse text-pink-400' 
+                          : 'hover:animate-pulse'
+                      }`}>
+                        {userInteractions.hearts.has(sharing.id) ? '💝' : '💖'}
+                      </span>
+                      <span className="text-sm font-medium">{sharing.hearts}</span>
                     </button>
-                    <button className="flex items-center space-x-2 text-green-300 hover:text-green-200 transition-colors">
-                      <span>🙏</span>
-                      <span className="text-sm">{sharing.prayers}</span>
+                    <button 
+                      onClick={() => handlePrayer(sharing.id)}
+                      disabled={userInteractions.prayers.has(sharing.id)}
+                      className={`flex items-center space-x-2 transition-all duration-200 hover:scale-110 transform active:scale-95 ${
+                        userInteractions.prayers.has(sharing.id)
+                          ? 'text-blue-300 cursor-default opacity-75'
+                          : 'text-green-300 hover:text-green-200 cursor-pointer'
+                      }`}
+                      title={userInteractions.prayers.has(sharing.id) ? "You've already offered prayers for this sharing" : "Offer prayer support"}
+                    >
+                      <span className={`transition-transform duration-200 ${
+                        userInteractions.prayers.has(sharing.id) 
+                          ? 'animate-pulse text-blue-300' 
+                          : 'hover:animate-pulse'
+                      }`}>
+                        🙏
+                      </span>
+                      <span className="text-sm font-medium">{sharing.prayers}</span>
                     </button>
                   </div>
                 </div>

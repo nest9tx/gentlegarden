@@ -25,13 +25,14 @@ export async function GET(request: NextRequest) {
 
     console.log('Supabase client created successfully')
 
-    // Handle code-based authentication (modern method)
+    // Handle code-based authentication (modern PKCE method)
     if (code) {
-      console.log('Attempting code-based authentication with code:', code.substring(0, 10) + '...')
+      console.log('Attempting PKCE code-based authentication with code:', code.substring(0, 10) + '...')
       try {
+        // For PKCE flow, we need to exchange the code for a session
         const { data, error } = await supabase.auth.exchangeCodeForSession(code)
         
-        console.log('Code exchange result:', { 
+        console.log('PKCE Code exchange result:', { 
           sessionExists: !!data?.session, 
           userEmail: data?.session?.user?.email,
           errorMessage: error?.message,
@@ -39,13 +40,15 @@ export async function GET(request: NextRequest) {
         })
         
         if (!error && data.session) {
-          console.log('Code auth success:', data.session.user.email)
+          console.log('PKCE auth success:', data.session.user.email)
           return NextResponse.redirect(new URL('/garden', requestUrl.origin))
         } else {
-          console.error('Code auth error:', error)
+          console.error('PKCE auth error:', error)
+          // Fall through to try legacy method or redirect to callback
         }
       } catch (error) {
-        console.error('Code exchange exception:', error)
+        console.error('PKCE exchange exception:', error)
+        // Fall through to try legacy method or redirect to callback
       }
     }
 

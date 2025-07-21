@@ -7,6 +7,9 @@ export default function GentleWarriorsCircle() {
   const [activeTab, setActiveTab] = useState('reflection');
   const [newSharing, setNewSharing] = useState('');
   
+  // Local state for heart/prayer interactions (gentle limits)
+  const [userInteractions, setUserInteractions] = useState<Record<string, boolean>>({});
+  
   // Demo data for sacred sharing
   const [sharings] = useState([
     {
@@ -39,6 +42,25 @@ export default function GentleWarriorsCircle() {
     if (newSharing.trim()) {
       console.log('New sharing:', newSharing);
       setNewSharing('');
+    }
+  };
+
+  // Handle heart/prayer interactions with gentle limits
+  const handleHeartClick = (sharingId: number) => {
+    const key = `heart_${sharingId}`;
+    if (!userInteractions[key]) {
+      setUserInteractions(prev => ({ ...prev, [key]: true }));
+      // In a real app, this would send to backend
+      console.log(`Sending heart to sharing ${sharingId}`);
+    }
+  };
+
+  const handlePrayerClick = (sharingId: number) => {
+    const key = `prayer_${sharingId}`;
+    if (!userInteractions[key]) {
+      setUserInteractions(prev => ({ ...prev, [key]: true }));
+      // In a real app, this would send to backend
+      console.log(`Sending prayer to sharing ${sharingId}`);
     }
   };
 
@@ -245,11 +267,29 @@ export default function GentleWarriorsCircle() {
                         </div>
                         <p className="text-amber-100 mb-4 leading-relaxed">{sharing.content}</p>
                         <div className="flex items-center space-x-4">
-                          <button className="flex items-center space-x-2 text-amber-300 hover:text-amber-200 transition-colors">
-                            <span>💝</span>
+                          <button 
+                            onClick={() => handleHeartClick(sharing.id)}
+                            disabled={userInteractions[`heart_${sharing.id}`]}
+                            className={`flex items-center space-x-2 transition-colors ${
+                              userInteractions[`heart_${sharing.id}`]
+                                ? 'text-amber-400 cursor-default'
+                                : 'text-amber-300 hover:text-amber-200 cursor-pointer'
+                            }`}
+                            title={userInteractions[`heart_${sharing.id}`] ? 'You\'ve already sent love to this sharing' : 'Send love'}
+                          >
+                            <span>�</span>
                             <span className="text-sm">{sharing.hearts}</span>
                           </button>
-                          <button className="flex items-center space-x-2 text-amber-300 hover:text-amber-200 transition-colors">
+                          <button 
+                            onClick={() => handlePrayerClick(sharing.id)}
+                            disabled={userInteractions[`prayer_${sharing.id}`]}
+                            className={`flex items-center space-x-2 transition-colors ${
+                              userInteractions[`prayer_${sharing.id}`]
+                                ? 'text-amber-400 cursor-default'
+                                : 'text-amber-300 hover:text-amber-200 cursor-pointer'
+                            }`}
+                            title={userInteractions[`prayer_${sharing.id}`] ? 'You\'ve already sent prayers to this sharing' : 'Send prayers'}
+                          >
                             <span>🙏</span>
                             <span className="text-sm">{sharing.prayers}</span>
                           </button>

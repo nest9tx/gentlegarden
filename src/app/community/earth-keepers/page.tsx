@@ -26,6 +26,23 @@ export default function EarthKeepers() {
   const [sacredSharing, setSacredSharing] = useState('');
   const [showShareForm, setShowShareForm] = useState(false);
   const [hasReflectedToday, setHasReflectedToday] = useState(false);
+  
+  // Gentle interaction state tracking
+  const [heartedSharings, setHeartedSharings] = useState<Set<string>>(new Set());
+  const [prayedSharings, setPrayedSharings] = useState<Set<string>>(new Set());
+
+  // Gentle interaction handlers
+  const handleHeart = (sharingId: string) => {
+    if (!heartedSharings.has(sharingId)) {
+      setHeartedSharings(prev => new Set([...prev, sharingId]));
+    }
+  };
+
+  const handlePrayer = (sharingId: string) => {
+    if (!prayedSharings.has(sharingId)) {
+      setPrayedSharings(prev => new Set([...prev, sharingId]));
+    }
+  };
 
   // Mock data for demonstration
   const todaysPrompt = "How did nature speak to your soul today?";
@@ -313,13 +330,31 @@ export default function EarthKeepers() {
                       </div>
                       <p className="text-green-100 mb-3 leading-relaxed">{sharing.reflection}</p>
                       <div className="flex items-center space-x-4 text-xs">
-                        <button className="flex items-center space-x-1 text-green-400 hover:text-green-300 transition-colors">
-                          <span>💚</span>
-                          <span>{sharing.hearts}</span>
+                        <button 
+                          className={`flex items-center space-x-1 transition-colors ${
+                            heartedSharings.has(sharing.id) 
+                              ? 'text-green-300 opacity-75 cursor-default' 
+                              : 'text-green-400 hover:text-green-300'
+                          }`}
+                          onClick={() => handleHeart(sharing.id)}
+                          disabled={heartedSharings.has(sharing.id)}
+                          title={heartedSharings.has(sharing.id) ? 'Heart already sent with love' : 'Send gentle heart'}
+                        >
+                          <span>�</span>
+                          <span>{sharing.hearts + (heartedSharings.has(sharing.id) ? 1 : 0)}</span>
                         </button>
-                        <button className="flex items-center space-x-1 text-green-400 hover:text-green-300 transition-colors">
+                        <button 
+                          className={`flex items-center space-x-1 transition-colors ${
+                            prayedSharings.has(sharing.id) 
+                              ? 'text-green-300 opacity-75 cursor-default' 
+                              : 'text-green-400 hover:text-green-300'
+                          }`}
+                          onClick={() => handlePrayer(sharing.id)}
+                          disabled={prayedSharings.has(sharing.id)}
+                          title={prayedSharings.has(sharing.id) ? 'Prayer already offered with grace' : 'Offer gentle prayer'}
+                        >
                           <span>🙏</span>
-                          <span>{sharing.prayers}</span>
+                          <span>{sharing.prayers + (prayedSharings.has(sharing.id) ? 1 : 0)}</span>
                         </button>
                       </div>
                     </div>

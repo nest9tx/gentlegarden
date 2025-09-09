@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { User } from '@supabase/auth-helpers-nextjs';
 import SacredFrequencies from '../../components/SacredFrequencies';
+import SacredNavigation from '../../components/SacredNavigation';
 
 export default function GardenDashboard() {
   const [user, setUser] = useState<User | null>(null);
@@ -86,6 +87,9 @@ export default function GardenDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+      {/* Sacred Navigation */}
+      <SacredNavigation currentPage="Sacred Garden" showBackToGarden={false} />
+      
       {/* Twinkling Stars Background */}
       <div className="absolute inset-0">
         {[...Array(40)].map((_, i) => (

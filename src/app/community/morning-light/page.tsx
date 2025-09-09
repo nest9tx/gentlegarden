@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import SacredNavigation from '@/components/SacredNavigation';
 
 export default function MorningLightSanctuary() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -80,6 +81,9 @@ export default function MorningLightSanctuary() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 relative overflow-hidden">
+      {/* Sacred Navigation */}
+      <SacredNavigation currentPage="Morning Light Sanctuary" />
+      
       {/* Gentle Morning Light Effects */}
       <div className="absolute inset-0">
         {[...Array(20)].map((_, i) => (
@@ -100,17 +104,6 @@ export default function MorningLightSanctuary() {
 
       {/* Rising Sun Effect */}
       <div className="absolute top-10 right-10 w-32 h-32 bg-gradient-to-br from-yellow-200 to-orange-300 rounded-full opacity-60 animate-pulse"></div>
-
-      {/* Navigation */}
-      <div className="absolute top-6 left-6 z-40">
-        <Link 
-          href="/community"
-          className="flex items-center space-x-2 px-4 py-2 bg-white/70 backdrop-blur-sm border border-orange-200 rounded-xl text-orange-800 hover:bg-white/90 transition-all duration-300"
-        >
-          <span>←</span>
-          <span>Return to Sanctuaries</span>
-        </Link>
-      </div>
 
       {/* Main Content */}
       <div className="relative z-10 min-h-screen px-6 pt-20">

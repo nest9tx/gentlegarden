@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import SacredNavigation from '@/components/SacredNavigation';
 
 export default function SacredSanctuaries() {
   const [pulsePhase, setPulsePhase] = useState(0);
@@ -92,6 +93,9 @@ export default function SacredSanctuaries() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+      {/* Sacred Navigation */}
+      <SacredNavigation currentPage="Sacred Practice Sanctuaries" showSanctuaries={false} />
+      
       {/* Sacred Circle Background */}
       <div className="absolute inset-0 flex items-center justify-center opacity-10">
         <div className="w-96 h-96 border border-purple-300 rounded-full animate-spin" style={{animationDuration: '60s'}}></div>
@@ -117,23 +121,12 @@ export default function SacredSanctuaries() {
         ))}
       </div>
 
-      {/* Navigation */}
-      <div className="absolute top-6 left-6 z-40">
-        <Link 
-          href="/garden"
-          className="flex items-center space-x-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-purple-300/30 rounded-xl text-purple-200 hover:bg-white/20 transition-all duration-300"
-        >
-          <span>←</span>
-          <span>Return to Garden</span>
-        </Link>
-      </div>
-
       {/* Main Content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-6 pt-20">
         <div className="text-center max-w-4xl">
           
           {/* Sacred Garden Symbol */}
-          <div className="text-6xl mb-6 animate-bounce">�</div>
+          <div className="text-6xl mb-6 animate-bounce">🌸</div>
           
           <h1 className="text-4xl font-light text-white mb-6">
             Sacred Practice Sanctuaries
@@ -169,8 +162,9 @@ export default function SacredSanctuaries() {
                   const y = Math.sin((angle - 90) * Math.PI / 180) * 140;
                   
                   return (
-                    <div
+                    <Link
                       key={sanctuary.id}
+                      href={`/community/${sanctuary.id}`}
                       className="absolute transform -translate-x-1/2 -translate-y-1/2 transition-all duration-3000 cursor-pointer group"
                       style={{
                         left: `calc(50% + ${x}px)`,
@@ -178,13 +172,19 @@ export default function SacredSanctuaries() {
                         opacity: pulsePhase === index ? 1 : 0.7,
                         scale: pulsePhase === index ? 1.3 : 1
                       }}
-                      onClick={() => setSelectedCircle(sanctuary.id)}
                     >
                       <div className="relative">
-                        <div className="text-4xl group-hover:animate-bounce">{sanctuary.symbol}</div>
+                        <div className="text-4xl group-hover:animate-bounce group-hover:scale-110 transition-transform">{sanctuary.symbol}</div>
                         <div className={`absolute inset-0 rounded-full bg-gradient-to-r ${sanctuary.color} opacity-20 blur-lg group-hover:opacity-40 transition-all duration-300`}></div>
+                        
+                        {/* Tooltip on hover */}
+                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                            {sanctuary.name}
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </Link>
                   );
                 })}
               </div>
@@ -194,27 +194,27 @@ export default function SacredSanctuaries() {
           {/* Sacred Garden Circles */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
             {sacredSanctuaries.map((sanctuary, index) => (
-              <div 
+              <Link
                 key={sanctuary.id}
-                className={`bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 transition-all duration-500 hover:bg-white/15 cursor-pointer group ${
+                href={`/community/${sanctuary.id}`}
+                className={`bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 transition-all duration-500 hover:bg-white/15 hover:scale-105 hover:shadow-xl cursor-pointer group block ${
                   pulsePhase === index ? 'bg-white/20 border-purple-300/50 shadow-lg' : ''
                 }`}
-                onClick={() => setSelectedCircle(sanctuary.id)}
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-3">
-                    <div className="text-3xl group-hover:animate-pulse">{sanctuary.symbol}</div>
+                    <div className="text-3xl group-hover:animate-pulse group-hover:scale-110 transition-transform">{sanctuary.symbol}</div>
                     <div>
-                      <div className="text-purple-100 font-medium">{sanctuary.name}</div>
+                      <div className="text-purple-100 font-medium group-hover:text-white transition-colors">{sanctuary.name}</div>
                       <div className="text-purple-300 text-sm">{sanctuary.title}</div>
                     </div>
                   </div>
-                  <div className="text-xs text-purple-400">
+                  <div className="text-xs text-purple-400 group-hover:text-purple-300">
                     {sanctuary.practiceType}
                   </div>
                 </div>
                 
-                <p className="text-purple-200 text-sm mb-4 leading-relaxed">
+                <p className="text-purple-200 text-sm mb-4 leading-relaxed group-hover:text-purple-100 transition-colors">
                   {sanctuary.description}
                 </p>
                 
@@ -229,13 +229,18 @@ export default function SacredSanctuaries() {
                   <div className="text-xs text-purple-400">
                     Duration: {sanctuary.duration} • Energy: {sanctuary.energy}
                   </div>
-                  <div className="text-xs text-purple-300 hover:text-purple-200 transition-colors">
-                    <Link href={`/community/${sanctuary.id}`}>
-                      Enter Sanctuary →
-                    </Link>
+                  <div className="text-xs text-purple-200 group-hover:text-white transition-colors font-medium">
+                    Enter Sacred Practice →
                   </div>
                 </div>
-              </div>
+                
+                {/* Hover instruction */}
+                <div className="mt-3 p-2 bg-purple-500/20 rounded-lg border border-purple-400/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="text-xs text-purple-200 text-center">
+                    🌸 Click anywhere to enter this sacred practice space
+                  </div>
+                </div>
+              </Link>
             ))}
           </div>
 
@@ -248,7 +253,7 @@ export default function SacredSanctuaries() {
                 <p className="text-purple-300 text-sm">Step-by-step spiritual practices designed for gentle awakening and integration</p>
               </div>
               <div className="text-center">
-                <div className="text-3xl mb-3">�</div>
+                <div className="text-3xl mb-3">🌱</div>
                 <h3 className="text-purple-100 font-medium mb-2">Personal Reflection</h3>
                 <p className="text-purple-300 text-sm">Private journaling spaces and contemplation prompts for your sacred journey</p>
               </div>
@@ -374,10 +379,10 @@ export default function SacredSanctuaries() {
       {/* Floating Garden Elements */}
       <div className="absolute bottom-10 left-10 text-2xl animate-float">🌻</div>
       <div className="absolute top-32 right-20 text-2xl animate-float" style={{animationDelay: '1s'}}>🦋</div>
-      <div className="absolute bottom-32 right-10 text-2xl animate-float" style={{animationDelay: '2s'}}>�</div>
+      <div className="absolute bottom-32 right-10 text-2xl animate-float" style={{animationDelay: '2s'}}>🌙</div>
       <div className="absolute top-40 left-20 text-2xl animate-float" style={{animationDelay: '3s'}}>🌸</div>
       <div className="absolute bottom-20 left-1/2 text-2xl animate-float" style={{animationDelay: '4s'}}>✨</div>
-      <div className="absolute top-1/4 right-10 text-2xl animate-float" style={{animationDelay: '5s'}}>�️</div>
+      <div className="absolute top-1/4 right-10 text-2xl animate-float" style={{animationDelay: '5s'}}>🕯️</div>
       
       <style jsx>{`
         @keyframes float {

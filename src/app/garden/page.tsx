@@ -223,16 +223,16 @@ export default function GardenDashboard() {
               </div>
             </Link>
 
-            {/* Community Circle */}
+            {/* Sacred Practice Sanctuaries */}
             <Link href="/community">
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 hover:bg-white/15 transition-all duration-300 group cursor-pointer">
-                <div className="text-3xl mb-4 group-hover:animate-pulse">🌻</div>
-                <h3 className="text-xl text-white mb-2">Community Circle</h3>
+                <div className="text-3xl mb-4 group-hover:animate-pulse">�</div>
+                <h3 className="text-xl text-white mb-2">Sacred Sanctuaries</h3>
                 <p className="text-purple-200 text-sm">
-                  Connect with fellow awakening souls on similar journeys.
+                  Daily spiritual practices for gentle awakening and soul communion.
                 </p>
                 <div className="mt-4 text-purple-300 text-xs">
-                  → Join the circle
+                  → Enter sacred practice
                 </div>
               </div>
             </Link>

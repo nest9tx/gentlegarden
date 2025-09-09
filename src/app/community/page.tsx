@@ -3,131 +3,82 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
-export default function CommunityCircle() {
+export default function SacredSanctuaries() {
   const [pulsePhase, setPulsePhase] = useState(0);
   const [selectedCircle, setSelectedCircle] = useState<string | null>(null);
   
-  const sacredCircles = [
+  const sacredSanctuaries = [
     { 
-      id: 'seekers-light',
-      symbol: '🌻', 
-      name: 'Seekers of Light',
-      title: 'First Steps & Gentle Beginnings',
-      description: 'A tender space for those taking their first sacred steps into awakening',
-      energy: 'Curiosity & Wonder',
-      participants: 234,
-      todaysPrompt: 'What first stirred your soul to seek something deeper?',
+      id: 'morning-light',
+      symbol: '�', 
+      name: 'Morning Light Sanctuary',
+      title: 'Sacred Dawn Practices',
+      description: 'Begin each day in gentle communion with your awakening soul',
+      energy: 'Clarity & New Beginnings',
+      practiceType: 'Daily Morning Ritual',
+      duration: '5-15 minutes',
+      todaysInvitation: 'What wants to be born through you today?',
       color: 'from-yellow-400 to-orange-400'
     },
     { 
-      id: 'gentle-awakeners',
-      symbol: '🦋', 
-      name: 'Gentle Awakeners',
-      title: 'Transformation & Integration',
-      description: 'Sacred support for souls experiencing shifts and spiritual emergence',
-      energy: 'Transformation & Grace',
-      participants: 189,
-      todaysPrompt: 'How are you honoring the changes moving through you?',
-      color: 'from-purple-400 to-pink-400'
-    },
-    { 
-      id: 'sacred-gardeners',
-      symbol: '🌿', 
-      name: 'Sacred Gardeners',
-      title: 'Tending Practice & Growth',
-      description: 'Daily cultivation of spiritual practices and gentle growth',
-      energy: 'Devotion & Nurturing',
-      participants: 156,
-      todaysPrompt: 'What seeds are you lovingly tending in your inner garden?',
-      color: 'from-green-400 to-emerald-400'
-    },
-    { 
-      id: 'peace-carriers',
-      symbol: '🕊️', 
-      name: 'Peace Carriers',
-      title: 'Healing & Restoration',
-      description: 'Gentle sanctuary for healing hearts and trauma-informed spiritual support',
-      energy: 'Healing & Compassion',
-      participants: 167,
-      todaysPrompt: 'What small act of self-compassion can you offer yourself today?',
-      color: 'from-blue-400 to-cyan-400'
-    },
-    { 
-      id: 'star-rememberers',
-      symbol: '✨', 
-      name: 'Star Rememberers',
-      title: 'Cosmic Consciousness & Mystery',
-      description: 'For deeper spiritual experiences, dreams, and mystical awareness',
-      energy: 'Mystery & Expansion',
-      participants: 203,
-      todaysPrompt: 'What messages is the universe whispering to you lately?',
-      color: 'from-indigo-400 to-purple-400'
-    },
-    { 
-      id: 'soft-bloomers',
-      symbol: '🌸', 
-      name: 'Soft Bloomers',
-      title: 'Surrender & Divine Timing',
-      description: 'Learning to trust the flow, embrace divine timing, and gentle surrender',
-      energy: 'Trust & Flow',
-      participants: 298,
-      todaysPrompt: 'Where in your life are you being invited to soften and trust?',
+      id: 'heart-temple',
+      symbol: '💖', 
+      name: 'Heart Temple Sanctuary',
+      title: 'Sacred Heart Opening',
+      description: 'Gentle practices for healing, feeling, and opening to love',
+      energy: 'Compassion & Healing',
+      practiceType: 'Heart-Centered Meditation',
+      duration: '10-20 minutes',
+      todaysInvitation: 'What is your heart longing to feel today?',
       color: 'from-pink-400 to-rose-400'
     },
     { 
-      id: 'earth-keepers',
-      symbol: '🌍', 
-      name: 'Earth Keepers',
-      title: 'Nature Connection & Grounding',
-      description: 'Sacred relationship with the natural world, eco-spirituality, and earth healing',
-      energy: 'Grounding & Connection',
-      participants: 142,
-      todaysPrompt: 'How did nature speak to your soul today?',
-      color: 'from-green-500 to-teal-400'
+      id: 'wisdom-grove',
+      symbol: '🌳', 
+      name: 'Ancient Wisdom Grove',
+      title: 'Timeless Spiritual Teachings',
+      description: 'Connect with the eternal wisdom that flows through all awakening souls',
+      energy: 'Ancient Knowledge & Understanding',
+      practiceType: 'Contemplative Study',
+      duration: '15-30 minutes',
+      todaysInvitation: 'What ancient wisdom is calling to you?',
+      color: 'from-green-400 to-emerald-400'
     },
     { 
-      id: 'moon-daughters',
+      id: 'moon-chamber',
       symbol: '🌙', 
-      name: 'Moon Daughters',
-      title: 'Divine Feminine & Cycles',
-      description: 'Honoring the sacred feminine, moon cycles, and intuitive wisdom',
-      energy: 'Intuition & Cycles',
-      participants: 211,
-      todaysPrompt: 'What is your inner wisdom calling you to release or embrace?',
-      color: 'from-purple-500 to-indigo-400'
+      name: 'Moon Chamber Sanctuary',
+      title: 'Lunar Wisdom & Cycles',
+      description: 'Align with natural rhythms and the sacred feminine wisdom of the moon',
+      energy: 'Intuition & Sacred Timing',
+      practiceType: 'Lunar Attunement',
+      duration: '10-25 minutes',
+      todaysInvitation: 'How is the moon\'s energy moving through you?',
+      color: 'from-indigo-400 to-purple-400'
     },
     { 
-      id: 'gentle-warriors',
-      symbol: '⚖️', 
-      name: 'Gentle Warriors',
-      title: 'Courage & Sacred Boundaries',
-      description: 'Finding strength in gentleness, setting loving boundaries, spiritual courage',
-      energy: 'Courage & Balance',
-      participants: 178,
-      todaysPrompt: 'Where are you being called to stand in your truth with love?',
-      color: 'from-amber-400 to-yellow-400'
+      id: 'integration-space',
+      symbol: '🦋', 
+      name: 'Integration Sanctuary',
+      title: 'Gentle Processing & Integration',
+      description: 'Sacred space for processing spiritual experiences with tender care',
+      energy: 'Integration & Understanding',
+      practiceType: 'Gentle Integration Work',
+      duration: '15-45 minutes',
+      todaysInvitation: 'What spiritual experience wants gentle attention?',
+      color: 'from-purple-400 to-blue-400'
     },
     { 
-      id: 'crystal-hearts',
-      symbol: '💎', 
-      name: 'Crystal Hearts',
-      title: 'Energy Healing & Vibrational Medicine',
-      description: 'Exploring crystal healing, energy work, sound therapy, and vibrational alignment',
-      energy: 'Healing & Vibration',
-      participants: 156,
-      todaysPrompt: 'What frequency is your heart calling you to tune into today?',
-      color: 'from-cyan-400 to-blue-400'
-    },
-    { 
-      id: 'dream-weavers',
-      symbol: '🌟', 
-      name: 'Dream Weavers',
-      title: 'Dreams & Subconscious Wisdom',
-      description: 'Dream interpretation, lucid dreaming, and accessing subconscious guidance',
-      energy: 'Mystery & Insight',
-      participants: 134,
-      todaysPrompt: 'What symbols or messages have been appearing in your dreamscape?',
-      color: 'from-violet-400 to-purple-400'
+      id: 'evening-peace',
+      symbol: '✨', 
+      name: 'Evening Peace Sanctuary',
+      title: 'Sacred Closure & Gratitude',
+      description: 'End each day in peaceful reflection and gentle gratitude',
+      energy: 'Peace & Completion',
+      practiceType: 'Evening Reflection',
+      duration: '5-20 minutes',
+      todaysInvitation: 'What are you grateful for in your soul\'s journey today?',
+      color: 'from-purple-500 to-indigo-600'
     }
   ];
 
@@ -182,14 +133,14 @@ export default function CommunityCircle() {
         <div className="text-center max-w-4xl">
           
           {/* Sacred Garden Symbol */}
-          <div className="text-6xl mb-6 animate-bounce">🌻</div>
+          <div className="text-6xl mb-6 animate-bounce">�</div>
           
           <h1 className="text-4xl font-light text-white mb-6">
-            Sacred Garden Circles
+            Sacred Practice Sanctuaries
           </h1>
           
           <p className="text-purple-200 text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            Gentle spaces for awakening souls to share, witness, and grow together in sacred communion.
+            Sacred spaces for daily spiritual practice, gentle self-communion, and conscious awakening.
           </p>
           
           <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-purple-300 to-transparent mx-auto mb-8"></div>
@@ -212,14 +163,14 @@ export default function CommunityCircle() {
                 </div>
 
                 {/* Sacred Garden Circles */}
-                {sacredCircles.map((circle, index) => {
-                  const angle = (index * 360) / sacredCircles.length;
+                {sacredSanctuaries.map((sanctuary, index) => {
+                  const angle = (index * 360) / sacredSanctuaries.length;
                   const x = Math.cos((angle - 90) * Math.PI / 180) * 140;
                   const y = Math.sin((angle - 90) * Math.PI / 180) * 140;
                   
                   return (
                     <div
-                      key={circle.id}
+                      key={sanctuary.id}
                       className="absolute transform -translate-x-1/2 -translate-y-1/2 transition-all duration-3000 cursor-pointer group"
                       style={{
                         left: `calc(50% + ${x}px)`,
@@ -227,11 +178,11 @@ export default function CommunityCircle() {
                         opacity: pulsePhase === index ? 1 : 0.7,
                         scale: pulsePhase === index ? 1.3 : 1
                       }}
-                      onClick={() => setSelectedCircle(circle.id)}
+                      onClick={() => setSelectedCircle(sanctuary.id)}
                     >
                       <div className="relative">
-                        <div className="text-4xl group-hover:animate-bounce">{circle.symbol}</div>
-                        <div className={`absolute inset-0 rounded-full bg-gradient-to-r ${circle.color} opacity-20 blur-lg group-hover:opacity-40 transition-all duration-300`}></div>
+                        <div className="text-4xl group-hover:animate-bounce">{sanctuary.symbol}</div>
+                        <div className={`absolute inset-0 rounded-full bg-gradient-to-r ${sanctuary.color} opacity-20 blur-lg group-hover:opacity-40 transition-all duration-300`}></div>
                       </div>
                     </div>
                   );
@@ -242,45 +193,45 @@ export default function CommunityCircle() {
 
           {/* Sacred Garden Circles */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-            {sacredCircles.map((circle, index) => (
+            {sacredSanctuaries.map((sanctuary, index) => (
               <div 
-                key={circle.id}
+                key={sanctuary.id}
                 className={`bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 transition-all duration-500 hover:bg-white/15 cursor-pointer group ${
                   pulsePhase === index ? 'bg-white/20 border-purple-300/50 shadow-lg' : ''
                 }`}
-                onClick={() => setSelectedCircle(circle.id)}
+                onClick={() => setSelectedCircle(sanctuary.id)}
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-3">
-                    <div className="text-3xl group-hover:animate-pulse">{circle.symbol}</div>
+                    <div className="text-3xl group-hover:animate-pulse">{sanctuary.symbol}</div>
                     <div>
-                      <div className="text-purple-100 font-medium">{circle.name}</div>
-                      <div className="text-purple-300 text-sm">{circle.title}</div>
+                      <div className="text-purple-100 font-medium">{sanctuary.name}</div>
+                      <div className="text-purple-300 text-sm">{sanctuary.title}</div>
                     </div>
                   </div>
                   <div className="text-xs text-purple-400">
-                    {circle.participants} seekers
+                    {sanctuary.practiceType}
                   </div>
                 </div>
                 
                 <p className="text-purple-200 text-sm mb-4 leading-relaxed">
-                  {circle.description}
+                  {sanctuary.description}
                 </p>
                 
                 <div className="border-t border-purple-300/20 pt-4">
-                  <div className="text-xs text-purple-300 mb-2">Today&apos;s Sacred Reflection:</div>
+                  <div className="text-xs text-purple-300 mb-2">Today&apos;s Sacred Invitation:</div>
                   <div className="text-sm text-purple-100 italic">
-                    &ldquo;{circle.todaysPrompt}&rdquo;
+                    &ldquo;{sanctuary.todaysInvitation}&rdquo;
                   </div>
                 </div>
                 
                 <div className="flex items-center justify-between mt-4">
                   <div className="text-xs text-purple-400">
-                    Energy: {circle.energy}
+                    Duration: {sanctuary.duration} • Energy: {sanctuary.energy}
                   </div>
                   <div className="text-xs text-purple-300 hover:text-purple-200 transition-colors">
-                    <Link href={`/community/${circle.id}`}>
-                      Enter Circle →
+                    <Link href={`/community/${sanctuary.id}`}>
+                      Enter Sanctuary →
                     </Link>
                   </div>
                 </div>
@@ -288,52 +239,52 @@ export default function CommunityCircle() {
             ))}
           </div>
 
-          {/* Sacred Community Features */}
+          {/* Sacred Practice Features */}
           <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-purple-300/30 mb-8">
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <div className="text-center">
-                <div className="text-3xl mb-3">🌱</div>
-                <h3 className="text-purple-100 font-medium mb-2">Sacred Witnessing</h3>
-                <p className="text-purple-300 text-sm">Share your journey insights and receive gentle presence from fellow seekers</p>
+                <div className="text-3xl mb-3">🕯️</div>
+                <h3 className="text-purple-100 font-medium mb-2">Guided Practices</h3>
+                <p className="text-purple-300 text-sm">Step-by-step spiritual practices designed for gentle awakening and integration</p>
               </div>
               <div className="text-center">
-                <div className="text-3xl mb-3">🙏</div>
-                <h3 className="text-purple-100 font-medium mb-2">Circle Intentions</h3>
-                <p className="text-purple-300 text-sm">Join weekly collective intentions and sacred energy holding</p>
+                <div className="text-3xl mb-3">�</div>
+                <h3 className="text-purple-100 font-medium mb-2">Personal Reflection</h3>
+                <p className="text-purple-300 text-sm">Private journaling spaces and contemplation prompts for your sacred journey</p>
               </div>
               <div className="text-center">
-                <div className="text-3xl mb-3">💫</div>
-                <h3 className="text-purple-100 font-medium mb-2">Gentle Guidance</h3>
-                <p className="text-purple-300 text-sm">Daily reflection prompts and soft spiritual support</p>
+                <div className="text-3xl mb-3">🌙</div>
+                <h3 className="text-purple-100 font-medium mb-2">Sacred Timing</h3>
+                <p className="text-purple-300 text-sm">Practices aligned with natural rhythms, lunar cycles, and your soul&apos;s perfect timing</p>
               </div>
             </div>
             
             <div className="text-center">
               <div className="text-purple-300 text-sm italic mb-4">
-                &ldquo;In sacred circles, we remember that we are not alone on this journey. 
-                Each soul&apos;s light illuminates the path for all.&rdquo;
+                &ldquo;Each practice is a sacred doorway into deeper communion with your awakening soul. 
+                Enter gently, with reverence for your unique journey.&rdquo;
               </div>
               <div className="text-purple-400 text-xs">
-                ✧ Opening in divine timing - when hearts are ready to gather ✧
+                ✧ Available to all Garden seekers - practice at your own sacred pace ✧
               </div>
             </div>
           </div>
 
-          {/* Selected Circle Details */}
+          {/* Selected Sanctuary Details */}
           {selectedCircle && (
             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-purple-300/30 mb-8">
               {(() => {
-                const circle = sacredCircles.find(c => c.id === selectedCircle);
-                if (!circle) return null;
+                const sanctuary = sacredSanctuaries.find(s => s.id === selectedCircle);
+                if (!sanctuary) return null;
                 
                 return (
                   <div>
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center space-x-4">
-                        <div className="text-4xl">{circle.symbol}</div>
+                        <div className="text-4xl">{sanctuary.symbol}</div>
                         <div>
-                          <h3 className="text-2xl font-light text-white">{circle.name}</h3>
-                          <div className="text-purple-300">{circle.title}</div>
+                          <h3 className="text-2xl font-light text-white">{sanctuary.name}</h3>
+                          <div className="text-purple-300">{sanctuary.title}</div>
                         </div>
                       </div>
                       <button
@@ -346,36 +297,36 @@ export default function CommunityCircle() {
                     
                     <div className="grid md:grid-cols-2 gap-8">
                       <div>
-                        <h4 className="text-purple-100 font-medium mb-3">Circle Energy</h4>
-                        <p className="text-purple-200 mb-6">{circle.description}</p>
+                        <h4 className="text-purple-100 font-medium mb-3">Sacred Practice Space</h4>
+                        <p className="text-purple-200 mb-6">{sanctuary.description}</p>
                         
                         <div className="bg-white/5 rounded-xl p-4 mb-4">
-                          <div className="text-purple-300 text-sm mb-2">Today&apos;s Sacred Reflection:</div>
+                          <div className="text-purple-300 text-sm mb-2">Today&apos;s Sacred Invitation:</div>
                           <div className="text-purple-100 italic">
-                            &ldquo;{circle.todaysPrompt}&rdquo;
+                            &ldquo;{sanctuary.todaysInvitation}&rdquo;
                           </div>
                         </div>
                         
                         <div className="flex items-center justify-between text-sm">
                           <div className="text-purple-400">
-                            {circle.participants} awakening souls
+                            Duration: {sanctuary.duration}
                           </div>
                           <div className="text-purple-300">
-                            Energy: {circle.energy}
+                            Energy: {sanctuary.energy}
                           </div>
                         </div>
                       </div>
                       
                       <div>
-                        <h4 className="text-purple-100 font-medium mb-3">How This Circle Gathers</h4>
+                        <h4 className="text-purple-100 font-medium mb-3">How This Practice Unfolds</h4>
                         <div className="space-y-4 text-sm">
                           <div className="bg-white/5 rounded-lg p-3">
-                            <div className="text-purple-200 font-medium mb-1">Daily Reflection</div>
-                            <div className="text-purple-300">Gentle prompts for personal contemplation</div>
+                            <div className="text-purple-200 font-medium mb-1">Guided Practice</div>
+                            <div className="text-purple-300">Gentle instructions and sacred timing</div>
                           </div>
                           <div className="bg-white/5 rounded-lg p-3">
-                            <div className="text-purple-200 font-medium mb-1">Sacred Sharing</div>
-                            <div className="text-purple-300">Optional brief insights (no advice, just witnessing)</div>
+                            <div className="text-purple-200 font-medium mb-1">Personal Reflection</div>
+                            <div className="text-purple-300">Private journaling space for insights</div>
                           </div>
                           <div className="bg-white/5 rounded-lg p-3">
                             <div className="text-purple-200 font-medium mb-1">Weekly Intention</div>

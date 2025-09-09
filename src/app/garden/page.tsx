@@ -85,25 +85,24 @@ export default function GardenDashboard() {
   }
 
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
-        {/* Twinkling Stars Background */}
-        <div className="absolute inset-0">
-          {[...Array(40)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute animate-pulse"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${2 + Math.random() * 2}s`
-              }}
-            >
-              ✨
-            </div>
-          ))}
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+      {/* Twinkling Stars Background */}
+      <div className="absolute inset-0">
+        {[...Array(40)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute animate-pulse"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${2 + Math.random() * 2}s`
+            }}
+          >
+            ✨
+          </div>
+        ))}
+      </div>
 
       {/* Header Navigation */}
       <header className="relative z-10 p-6">
@@ -157,28 +156,10 @@ export default function GardenDashboard() {
             
             <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-purple-300 to-transparent mx-auto mb-6"></div>
             
-            {/* Sacred Welcome Video */}
-            
             {/* Direct Practice Access */}
             <div className="text-purple-300 text-sm mb-8">
               ✧ Sacred practices ✧ Gentle wisdom ✧ AI companion ✧ Personal growth ✧
             </div>
-          </div>            {/* Tier Status */}
-            <div className="flex justify-center items-center mb-2">
-              <div className="text-sm px-3 py-1 rounded-full bg-gradient-to-r from-purple-500/30 to-indigo-500/30 text-purple-100 border border-purple-400/40">
-                {subscriptionTier === 'gardener' ? '🌿 Sacred Gardener' : '🌱 Gentle Seeker'}
-              </div>
-            </div>
-            
-            {/* Gentle tier encouragement */}
-            {subscriptionTier === 'seeker' && (
-              <p className="text-purple-300 text-sm mt-2">
-                Your garden can bloom even brighter - explore our{' '}
-                <Link href="/garden/services" className="underline hover:text-purple-200">
-                  Sacred Gardener Path
-                </Link>
-              </p>
-            )}
           </div>
 
           {/* Garden Pathways - Sacred Navigation */}
@@ -306,6 +287,6 @@ export default function GardenDashboard() {
           }
         `}</style>
       </div>
-    </>
+    </div>
   );
 }

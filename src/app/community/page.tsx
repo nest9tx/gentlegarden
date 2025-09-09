@@ -10,7 +10,7 @@ export default function SacredSanctuaries() {
   const sacredSanctuaries = [
     { 
       id: 'morning-light',
-      symbol: '�', 
+      symbol: '🌅', 
       name: 'Morning Light Sanctuary',
       title: 'Sacred Dawn Practices',
       description: 'Begin each day in gentle communion with your awakening soul',

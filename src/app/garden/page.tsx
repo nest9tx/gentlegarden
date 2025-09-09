@@ -138,12 +138,9 @@ export default function GardenDashboard() {
             </div>
             
             {/* Journey Status */}
-            <div className="flex justify-center items-center space-x-6 mb-4">
+            <div className="flex justify-center items-center mb-4">
               <div className="text-sm px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/20 to-indigo-500/20 text-purple-200 border border-purple-400/30">
                 {subscriptionTier === 'gardener' ? '🌿 Sacred Gardener' : '🌱 Gentle Seeker'}
-              </div>
-              <div className="text-purple-300 text-sm">
-                Journey Day {Math.floor((Date.now() - new Date(user?.created_at || '2024-01-01').getTime()) / (1000 * 60 * 60 * 24)) || 1}
               </div>
             </div>
             
@@ -183,16 +180,16 @@ export default function GardenDashboard() {
               </div>
             </Link>
 
-            {/* Wisdom Grove */}
-            <Link href="/wisdom">
+            {/* Wisdom Grove - Now redirects to Ancient Wisdom Grove Sanctuary */}
+            <Link href="/community/wisdom-grove">
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 hover:bg-white/15 transition-all duration-300 group cursor-pointer">
-                <div className="text-3xl mb-4 group-hover:animate-pulse">📜</div>
-                <h3 className="text-xl text-white mb-2">Wisdom Grove</h3>
+                <div className="text-3xl mb-4 group-hover:animate-pulse">🌳</div>
+                <h3 className="text-xl text-white mb-2">Ancient Wisdom Grove</h3>
                 <p className="text-purple-200 text-sm">
-                  Gentle teachings and sacred insights for your path.
+                  Connect with eternal wisdom through contemplative practices.
                 </p>
                 <div className="mt-4 text-purple-300 text-xs">
-                  → Receive today&apos;s wisdom
+                  → Enter wisdom sanctuary
                 </div>
               </div>
             </Link>
@@ -214,7 +211,7 @@ export default function GardenDashboard() {
             {/* Sacred Practice Sanctuaries */}
             <Link href="/community">
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 hover:bg-white/15 transition-all duration-300 group cursor-pointer">
-                <div className="text-3xl mb-4 group-hover:animate-pulse">�</div>
+                <div className="text-3xl mb-4 group-hover:animate-pulse">🏛️</div>
                 <h3 className="text-xl text-white mb-2">Sacred Sanctuaries</h3>
                 <p className="text-purple-200 text-sm">
                   Daily spiritual practices for gentle awakening and soul communion.

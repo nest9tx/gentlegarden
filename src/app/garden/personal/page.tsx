@@ -617,35 +617,9 @@ export default function PersonalGarden() {
             )}
           </div>
 
-          {/* Right Column - Milestones & Preferences */}
+          {/* Right Column - Garden Preferences */}
           <div className="space-y-8">
             
-            {/* Sacred Milestones */}
-            <div className="bg-white/10 backdrop-blur-sm border border-purple-300/30 rounded-2xl p-6">
-              <h3 className="text-lg font-light text-purple-100 mb-4 flex items-center">
-                <span className="mr-2">🏆</span>
-                Sacred Milestones
-              </h3>
-              <div className="space-y-3">
-                {gardenData.milestones.map((milestone) => (
-                  <div key={milestone.id} className="flex items-start space-x-3">
-                    <div className="text-lg">{milestone.icon}</div>
-                    <div>
-                      <div className="text-purple-100 font-medium text-sm">
-                        {milestone.title}
-                      </div>
-                      <div className="text-purple-300 text-xs">
-                        {milestone.description}
-                      </div>
-                      <div className="text-purple-400 text-xs">
-                        {new Date(milestone.date).toLocaleDateString()}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
             {/* Garden Preferences */}
             <div className="bg-white/10 backdrop-blur-sm border border-purple-300/30 rounded-2xl p-6">
               <h3 className="text-lg font-light text-purple-100 mb-4 flex items-center">

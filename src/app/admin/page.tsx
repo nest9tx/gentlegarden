@@ -16,7 +16,7 @@ export default function AdminDashboard() {
   });
 
   // Your admin email - update this to your actual email
-  const ADMIN_EMAIL = 'admin@gentlegarden.org'; // Update this!
+  const ADMIN_EMAIL = 'support@gentlegarden.org'; // Update this!
 
   useEffect(() => {
     const initAdmin = async () => {

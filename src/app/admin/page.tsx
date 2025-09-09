@@ -33,19 +33,8 @@ export default function AdminDashboard() {
           if (session.user.email === ADMIN_EMAIL) {
             setIsAuthorized(true);
             
-            // Load basic stats
-            const { data: usageData } = await supabase
-              .from('garden_guide_usage')
-              .select('user_id, subscription_tier');
-
-            if (usageData) {
-              const totalUsers = usageData.length;
-              const seekers = usageData.filter(u => u.subscription_tier === 'seeker').length;
-              const gardeners = usageData.filter(u => u.subscription_tier === 'gardener').length;
-              const monthlyRevenue = gardeners * 11.11;
-              
-              setStats({ totalUsers, seekers, gardeners, monthlyRevenue });
-            }
+            // Get comprehensive user data
+            await loadComprehensiveStats(supabase);
           }
         }
       } catch (error) {
@@ -57,6 +46,63 @@ export default function AdminDashboard() {
     
     initAdmin();
   }, []);
+
+  const loadComprehensiveStats = async (supabase: ReturnType<typeof import('../../../lib/supabase').createClient>) => {
+    try {
+      // Get all users from auth (requires service role or admin privileges)
+      // For now, we'll work with what we can access
+      
+      // Initialize any auth users who aren't in garden_guide_usage yet
+      const { data: { users: authUsers }, error: authError } = await supabase.auth.admin.listUsers();
+      
+      if (authUsers && !authError) {
+        // Initialize users who haven't been initialized yet
+        const { initializeUserInGarden } = await import('../../../lib/userInitialization');
+        
+        for (const authUser of authUsers) {
+          await initializeUserInGarden(authUser.id, authUser.email || '');
+        }
+      }
+      
+      // Now get all usage data (should include everyone)
+      const { data: usageData } = await supabase
+        .from('garden_guide_usage')
+        .select('user_id, subscription_tier, created_at, monthly_message_count');
+
+      if (usageData) {
+        const totalUsers = usageData.length;
+        const seekers = usageData.filter((u: { subscription_tier: string }) => u.subscription_tier === 'seeker').length;
+        const gardeners = usageData.filter((u: { subscription_tier: string }) => u.subscription_tier === 'gardener').length;
+        const monthlyRevenue = gardeners * 11.11;
+        
+        setStats({ totalUsers, seekers, gardeners, monthlyRevenue });
+        
+        console.log('🌸 Garden Stats Updated:', {
+          totalUsers,
+          seekers,
+          gardeners,
+          monthlyRevenue,
+          authUsersFound: authUsers?.length || 'access_limited'
+        });
+      }
+    } catch (error) {
+      console.log('Note: Limited admin access - showing available data only:', error);
+      
+      // Fallback: Just show what we can see from garden_guide_usage
+      const { data: usageData } = await supabase
+        .from('garden_guide_usage')
+        .select('user_id, subscription_tier');
+
+      if (usageData) {
+        const totalUsers = usageData.length;
+        const seekers = usageData.filter((u: { subscription_tier: string }) => u.subscription_tier === 'seeker').length;
+        const gardeners = usageData.filter((u: { subscription_tier: string }) => u.subscription_tier === 'gardener').length;
+        const monthlyRevenue = gardeners * 11.11;
+        
+        setStats({ totalUsers, seekers, gardeners, monthlyRevenue });
+      }
+    }
+  };
 
   if (loading) {
     return (

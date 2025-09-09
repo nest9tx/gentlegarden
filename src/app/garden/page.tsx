@@ -25,6 +25,10 @@ export default function GardenDashboard() {
       if (session?.user) {
         setUser(session.user);
         
+        // Initialize user in garden if not already present
+        const { initializeUserInGarden } = await import('../../../lib/userInitialization');
+        await initializeUserInGarden(session.user.id, session.user.email || '');
+        
         // Load subscription tier from Supabase
         const { data: usageData } = await supabase
           .from('garden_guide_usage')

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { User } from '@supabase/auth-helpers-nextjs';
 
@@ -15,8 +15,8 @@ export default function AdminDashboard() {
     monthlyRevenue: 0
   });
 
-  // Your admin email - update this to your actual email
-  const ADMIN_EMAIL = 'support@gentlegarden.org'; // Update this!
+  // Your admin emails - update this to your actual admin emails
+  const ADMIN_EMAILS = useMemo(() => ['support@gentlegarden.org', 'admin@gentlegarden.org'], []);
 
   useEffect(() => {
     const initAdmin = async () => {
@@ -29,12 +29,12 @@ export default function AdminDashboard() {
         if (session?.user) {
           setUser(session.user);
           
-          // Check if user is admin (update email above)
-          if (session.user.email === ADMIN_EMAIL) {
+          // Check if user is admin (update emails above)
+          if (ADMIN_EMAILS.includes(session.user.email || '')) {
             setIsAuthorized(true);
             
             // Get comprehensive user data
-            await loadComprehensiveStats(supabase);
+            await loadComprehensiveStats();
           }
         }
       } catch (error) {
@@ -45,62 +45,43 @@ export default function AdminDashboard() {
     };
     
     initAdmin();
-  }, []);
+  }, [ADMIN_EMAILS]);
 
-  const loadComprehensiveStats = async (supabase: ReturnType<typeof import('../../../lib/supabase').createClient>) => {
+  const loadComprehensiveStats = async () => {
     try {
-      // Get all users from auth (requires service role or admin privileges)
-      // For now, we'll work with what we can access
+      console.log('🌸 Loading comprehensive garden statistics...');
       
-      // Initialize any auth users who aren't in garden_guide_usage yet
-      const { data: { users: authUsers }, error: authError } = await supabase.auth.admin.listUsers();
-      
-      if (authUsers && !authError) {
-        // Initialize users who haven't been initialized yet
-        const { initializeUserInGarden } = await import('../../../lib/userInitialization');
-        
-        for (const authUser of authUsers) {
-          await initializeUserInGarden(authUser.id, authUser.email || '');
-        }
-      }
-      
-      // Now get all usage data (should include everyone)
-      const { data: usageData } = await supabase
-        .from('garden_guide_usage')
-        .select('user_id, subscription_tier, created_at, monthly_message_count');
+      // Call our admin API route that bypasses RLS and initializes missing users
+      const response = await fetch('/api/admin/stats', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-      if (usageData) {
-        const totalUsers = usageData.length;
-        const seekers = usageData.filter((u: { subscription_tier: string }) => u.subscription_tier === 'seeker').length;
-        const gardeners = usageData.filter((u: { subscription_tier: string }) => u.subscription_tier === 'gardener').length;
-        const monthlyRevenue = gardeners * 11.11;
-        
-        setStats({ totalUsers, seekers, gardeners, monthlyRevenue });
-        
-        console.log('🌸 Garden Stats Updated:', {
-          totalUsers,
-          seekers,
-          gardeners,
-          monthlyRevenue,
-          authUsersFound: authUsers?.length || 'access_limited'
+      if (!response.ok) {
+        throw new Error(`Admin API error: ${response.status}`);
+      }
+
+      const result = await response.json();
+      
+      if (result.success) {
+        setStats({
+          totalUsers: result.stats.totalUsers,
+          seekers: result.stats.seekers,
+          gardeners: result.stats.gardeners,
+          monthlyRevenue: result.stats.monthlyRevenue
         });
+        
+        console.log('🌸 Garden Stats Updated:', result.stats);
+        console.log('📊 Message:', result.message);
+      } else {
+        throw new Error(result.error || 'Unknown error');
       }
     } catch (error) {
-      console.log('Note: Limited admin access - showing available data only:', error);
-      
-      // Fallback: Just show what we can see from garden_guide_usage
-      const { data: usageData } = await supabase
-        .from('garden_guide_usage')
-        .select('user_id, subscription_tier');
-
-      if (usageData) {
-        const totalUsers = usageData.length;
-        const seekers = usageData.filter((u: { subscription_tier: string }) => u.subscription_tier === 'seeker').length;
-        const gardeners = usageData.filter((u: { subscription_tier: string }) => u.subscription_tier === 'gardener').length;
-        const monthlyRevenue = gardeners * 11.11;
-        
-        setStats({ totalUsers, seekers, gardeners, monthlyRevenue });
-      }
+      console.error('Error loading comprehensive stats:', error);
+      // Fallback to empty stats if API fails
+      setStats({ totalUsers: 0, seekers: 0, gardeners: 0, monthlyRevenue: 0 });
     }
   };
 

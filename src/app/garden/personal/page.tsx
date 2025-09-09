@@ -354,10 +354,10 @@ export default function PersonalGarden() {
                       🤖 Garden Guide Chat
                     </Link>
                     <Link 
-                      href="/wisdom" 
+                      href="/community/wisdom-grove" 
                       className="block text-xs text-purple-300 hover:text-purple-200 p-2 bg-white/5 rounded-lg transition-all"
                     >
-                      📜 Wisdom Grove ({subscriptionTier === 'gardener' ? 'Complete' : 'Foundation'} teachings)
+                      🌳 Ancient Wisdom Grove (contemplative practices)
                     </Link>
                     <Link 
                       href="/community" 
@@ -753,14 +753,14 @@ export default function PersonalGarden() {
                 </Link>
                 
                 <Link
-                  href="/wisdom"
+                  href="/community/wisdom-grove"
                   className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all block"
                 >
                   <div className="flex items-center space-x-3">
-                    <span className="text-lg">📜</span>
+                    <span className="text-lg">🌳</span>
                     <div>
-                      <div className="text-purple-100 text-sm">Wisdom Grove</div>
-                      <div className="text-purple-300 text-xs">Sacred teachings</div>
+                      <div className="text-purple-100 text-sm">Ancient Wisdom Grove</div>
+                      <div className="text-purple-300 text-xs">Contemplative practices</div>
                     </div>
                   </div>
                 </Link>

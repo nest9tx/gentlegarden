@@ -1,119 +1,139 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import SacredNavigation from '@/components/SacredNavigation';
 
-export default function SacredSanctuaries() {
-  const [pulsePhase, setPulsePhase] = useState(0);
-  const [selectedCircle, setSelectedCircle] = useState<string | null>(null);
+export default function SacredGuideGallery() {
+  const [selectedGuide, setSelectedGuide] = useState<string | null>(null);
   
-  const sacredSanctuaries = [
+  const sacredGuides = [
     { 
-      id: 'morning-light',
+      id: 'dawn-companion',
       symbol: '🌅', 
-      name: 'Morning Light Sanctuary',
-      title: 'Sacred Dawn Practices',
-      description: 'Begin each day in gentle communion with your awakening soul',
-      energy: 'Clarity & New Beginnings',
-      practiceType: 'Daily Morning Ritual',
-      duration: '5-15 minutes',
-      todaysInvitation: 'What wants to be born through you today?',
+      name: 'Dawn Companion',
+      title: 'Sacred Morning Guidance',
+      description: 'Begin each day with intentional practice and gentle awakening wisdom',
+      specialty: 'Morning rituals, intention setting, energy alignment',
+      guidance: 'Daily Practices & Sacred Beginnings',
+      personality: 'Gentle, uplifting, focused on new possibilities',
+      bestFor: 'Morning practice, starting new journeys, clarity seeking',
+      sampleQuestions: [
+        'How can I align my energy for this sacred day?',
+        'What intention wants to guide me today?',
+        'Help me create a morning practice that honors my soul'
+      ],
       color: 'from-yellow-400 to-orange-400'
     },
     { 
-      id: 'heart-temple',
-      symbol: '💖', 
-      name: 'Heart Temple Sanctuary',
-      title: 'Sacred Heart Opening',
-      description: 'Gentle practices for healing, feeling, and opening to love',
-      energy: 'Compassion & Healing',
-      practiceType: 'Heart-Centered Meditation',
-      duration: '10-20 minutes',
-      todaysInvitation: 'What is your heart longing to feel today?',
+      id: 'heart-healer',
+      symbol: '💝', 
+      name: 'Heart Healer',
+      title: 'Emotional & Relationship Wisdom',
+      description: 'Gentle guidance for healing wounds, opening to love, and navigating relationships',
+      specialty: 'Emotional healing, self-love, relationships, inner child work',
+      guidance: 'Heart Opening & Emotional Alchemy',
+      personality: 'Compassionate, nurturing, deeply feeling',
+      bestFor: 'Relationship challenges, self-worth, emotional processing',
+      sampleQuestions: [
+        'How can I heal this pain in my heart?',
+        'Help me understand this relationship dynamic',
+        'How do I practice radical self-love?'
+      ],
       color: 'from-pink-400 to-rose-400'
     },
     { 
-      id: 'wisdom-grove',
-      symbol: '🌳', 
-      name: 'Ancient Wisdom Grove',
-      title: 'Timeless Spiritual Teachings',
-      description: 'Connect with the eternal wisdom that flows through all awakening souls',
-      energy: 'Ancient Knowledge & Understanding',
-      practiceType: 'Contemplative Study',
-      duration: '15-30 minutes',
-      todaysInvitation: 'What ancient wisdom is calling to you?',
-      color: 'from-green-400 to-emerald-400'
+      id: 'wisdom-keeper',
+      symbol: '📜', 
+      name: 'Wisdom Keeper',
+      title: 'Ancient Teachings & Spiritual Insights',
+      description: 'Connect with timeless wisdom traditions and deep spiritual understanding',
+      specialty: 'Spiritual philosophy, ancient teachings, consciousness exploration',
+      guidance: 'Sacred Knowledge & Understanding',
+      personality: 'Deep, contemplative, mystically wise',
+      bestFor: 'Spiritual study, philosophical questions, consciousness work',
+      sampleQuestions: [
+        'What does this spiritual teaching mean for my life?',
+        'Help me understand the nature of consciousness',
+        'How do ancient wisdoms apply to modern challenges?'
+      ],
+      color: 'from-purple-400 to-indigo-400'
     },
     { 
-      id: 'moon-chamber',
+      id: 'peace-keeper',
+      symbol: '🧘‍♀️', 
+      name: 'Peace Keeper',
+      title: 'Meditation & Inner Stillness',
+      description: 'Find deep peace through breathwork, meditation, and sacred silence',
+      specialty: 'Meditation techniques, breathwork, stress release, inner peace',
+      guidance: 'Stillness & Sacred Silence',
+      personality: 'Calm, centered, deeply peaceful',
+      bestFor: 'Anxiety, overwhelm, meditation practice, finding inner peace',
+      sampleQuestions: [
+        'Guide me to deeper meditation practice',
+        'How can I find peace in this chaos?',
+        'Teach me breathing techniques for anxiety'
+      ],
+      color: 'from-blue-400 to-cyan-400'
+    },
+    { 
+      id: 'dream-walker',
       symbol: '🌙', 
-      name: 'Moon Chamber Sanctuary',
-      title: 'Lunar Wisdom & Cycles',
-      description: 'Align with natural rhythms and the sacred feminine wisdom of the moon',
-      energy: 'Intuition & Sacred Timing',
-      practiceType: 'Lunar Attunement',
-      duration: '10-25 minutes',
-      todaysInvitation: 'How is the moon\'s energy moving through you?',
+      name: 'Dream Walker',
+      title: 'Sleep, Dreams & Subconscious Wisdom',
+      description: 'Navigate the mysterious realms of dreams, sleep, and unconscious wisdom',
+      specialty: 'Dream interpretation, sleep practices, shadow work, lunar cycles',
+      guidance: 'Subconscious & Night Wisdom',
+      personality: 'Mystical, intuitive, deeply knowing',
+      bestFor: 'Sleep issues, dream work, shadow healing, lunar attunement',
+      sampleQuestions: [
+        'What is my dream trying to tell me?',
+        'Help me improve my sleep practices',
+        'How can I work with my shadow self?'
+      ],
       color: 'from-indigo-400 to-purple-400'
     },
     { 
-      id: 'integration-space',
-      symbol: '🦋', 
-      name: 'Integration Sanctuary',
-      title: 'Gentle Processing & Integration',
-      description: 'Sacred space for processing spiritual experiences with tender care',
-      energy: 'Integration & Understanding',
-      practiceType: 'Gentle Integration Work',
-      duration: '15-45 minutes',
-      todaysInvitation: 'What spiritual experience wants gentle attention?',
-      color: 'from-purple-400 to-blue-400'
-    },
-    { 
-      id: 'evening-peace',
-      symbol: '✨', 
-      name: 'Evening Peace Sanctuary',
-      title: 'Sacred Closure & Gratitude',
-      description: 'End each day in peaceful reflection and gentle gratitude',
-      energy: 'Peace & Completion',
-      practiceType: 'Evening Reflection',
-      duration: '5-20 minutes',
-      todaysInvitation: 'What are you grateful for in your soul\'s journey today?',
-      color: 'from-purple-500 to-indigo-600'
+      id: 'life-weaver',
+      symbol: '🌿', 
+      name: 'Life Weaver',
+      title: 'Daily Integration & Practical Wisdom',
+      description: 'Weave spiritual practice into the sacred tapestry of daily life',
+      specialty: 'Life balance, spiritual integration, practical wisdom, daily practices',
+      guidance: 'Sacred Living & Integration',
+      personality: 'Practical, grounded, wisely integrated',
+      bestFor: 'Work-life balance, integrating spirituality, practical guidance',
+      sampleQuestions: [
+        'How do I stay spiritual in my daily work?',
+        'Help me balance my spiritual and practical life',
+        'What practices fit my busy schedule?'
+      ],
+      color: 'from-green-400 to-teal-400'
     }
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setPulsePhase(prev => (prev + 1) % 6);
-    }, 3000);
 
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
-      {/* Sacred Navigation with integrated auth */}
-      <SacredNavigation currentPage="Sacred Practice Sanctuaries" showSanctuaries={false} />
+      <SacredNavigation currentPage="Sacred Guide Gallery" showSanctuaries={false} />
       
-      {/* Sacred Circle Background */}
       <div className="absolute inset-0 flex items-center justify-center opacity-10">
         <div className="w-96 h-96 border border-purple-300 rounded-full animate-spin" style={{animationDuration: '60s'}}></div>
         <div className="absolute w-80 h-80 border border-indigo-300 rounded-full animate-spin" style={{animationDuration: '45s', animationDirection: 'reverse'}}></div>
         <div className="absolute w-64 h-64 border border-blue-300 rounded-full animate-spin" style={{animationDuration: '30s'}}></div>
       </div>
 
-      {/* Floating Community Elements */}
       <div className="absolute inset-0">
-        {[...Array(30)].map((_, i) => (
+        {[...Array(25)].map((_, i) => (
           <div
             key={i}
             className="absolute animate-pulse"
             style={{
               left: `${Math.random() * 100}%`,
-              top: `${20 + Math.random() * 70}%`, // Keep elements away from top nav area
+              top: `${20 + Math.random() * 70}%`,
               animationDelay: `${Math.random() * 4}s`,
-              animationDuration: `${3 + Math.random() * 2}s`
+              animationDuration: `${4 + Math.random() * 2}s`
             }}
           >
             💫
@@ -121,278 +141,116 @@ export default function SacredSanctuaries() {
         ))}
       </div>
 
-      {/* Main Content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-6 pt-20">
-        <div className="text-center max-w-4xl">
+        <div className="text-center max-w-6xl">
           
-          {/* Sacred Garden Symbol */}
-          <div className="text-6xl mb-6 animate-bounce">🌸</div>
-          
-          <h1 className="text-4xl font-light text-white mb-6">
-            Sacred Practice Sanctuaries
-          </h1>
-          
-          <p className="text-purple-200 text-lg mb-8 leading-relaxed max-w-2xl mx-auto">
-            Sacred spaces for daily spiritual practice, gentle self-communion, and conscious awakening.
-          </p>
-          
-          <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-purple-300 to-transparent mx-auto mb-8"></div>
-          
-          {/* Sacred Garden Circles Visualization */}
-          <div className="relative mb-12">
-            <div className="flex items-center justify-center">
-              <div className="relative w-96 h-96">
-                {/* Center Sacred Heart */}
-                <div 
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-gradient-to-r from-purple-400 to-indigo-400 rounded-full transition-all duration-3000"
-                  style={{ 
-                    boxShadow: '0 0 60px rgba(139, 92, 246, 0.6)',
-                    transition: 'all 3s ease-in-out'
-                  }}
-                >
-                  <div className="w-full h-full rounded-full bg-white/20 animate-pulse flex items-center justify-center">
-                    <div className="text-2xl">💝</div>
-                  </div>
-                </div>
+          {!selectedGuide ? (
+            <>
+              <div className="text-6xl mb-6 animate-bounce">🌸</div>
+              
+              <h1 className="text-4xl font-light text-white mb-6">
+                Sacred Guide Gallery
+              </h1>
+              
+              <p className="text-purple-200 text-lg mb-8 leading-relaxed max-w-3xl mx-auto">
+                Choose your spiritual companion based on what your soul needs today. Each guide offers specialized wisdom and gentle support for your unique journey.
+              </p>
+              
+              <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-purple-300 to-transparent mx-auto mb-12"></div>
 
-                {/* Sacred Garden Circles */}
-                {sacredSanctuaries.map((sanctuary, index) => {
-                  const angle = (index * 360) / sacredSanctuaries.length;
-                  const x = Math.cos((angle - 90) * Math.PI / 180) * 140;
-                  const y = Math.sin((angle - 90) * Math.PI / 180) * 140;
-                  
-                  return (
-                    <Link
-                      key={sanctuary.id}
-                      href={`/community/${sanctuary.id}`}
-                      className="absolute transform -translate-x-1/2 -translate-y-1/2 transition-all duration-3000 cursor-pointer group"
-                      style={{
-                        left: `calc(50% + ${x}px)`,
-                        top: `calc(50% + ${y}px)`,
-                        opacity: pulsePhase === index ? 1 : 0.7,
-                        scale: pulsePhase === index ? 1.3 : 1
-                      }}
-                    >
-                      <div className="relative">
-                        <div className="text-4xl group-hover:animate-bounce group-hover:scale-110 transition-transform">{sanctuary.symbol}</div>
-                        <div className={`absolute inset-0 rounded-full bg-gradient-to-r ${sanctuary.color} opacity-20 blur-lg group-hover:opacity-40 transition-all duration-300`}></div>
-                        
-                        {/* Tooltip on hover */}
-                        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <div className="bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                            {sanctuary.name}
-                          </div>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {/* Sacred Garden Circles */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-            {sacredSanctuaries.map((sanctuary, index) => (
-              <Link
-                key={sanctuary.id}
-                href={`/community/${sanctuary.id}`}
-                className={`bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 transition-all duration-500 hover:bg-white/15 hover:scale-105 hover:shadow-xl cursor-pointer group block ${
-                  pulsePhase === index ? 'bg-white/20 border-purple-300/50 shadow-lg' : ''
-                }`}
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="text-3xl group-hover:animate-pulse group-hover:scale-110 transition-transform">{sanctuary.symbol}</div>
-                    <div>
-                      <div className="text-purple-100 font-medium group-hover:text-white transition-colors">{sanctuary.name}</div>
-                      <div className="text-purple-300 text-sm">{sanctuary.title}</div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                {sacredGuides.map((guide) => (
+                  <div 
+                    key={guide.id}
+                    onClick={() => setSelectedGuide(guide.id)}
+                    className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 hover:bg-white/15 transition-all duration-300 cursor-pointer group transform hover:scale-105"
+                  >
+                    <div className="text-5xl mb-4 group-hover:animate-pulse">{guide.symbol}</div>
+                    <h3 className="text-xl text-white mb-2">{guide.name}</h3>
+                    <p className="text-purple-100 text-sm mb-3">{guide.title}</p>
+                    <p className="text-purple-200 text-xs mb-4">{guide.description}</p>
+                    <div className={`text-xs px-3 py-1 rounded-full bg-gradient-to-r ${guide.color} text-white font-medium`}>
+                      {guide.guidance}
                     </div>
                   </div>
-                  <div className="text-xs text-purple-400 group-hover:text-purple-300">
-                    {sanctuary.practiceType}
-                  </div>
-                </div>
-                
-                <p className="text-purple-200 text-sm mb-4 leading-relaxed group-hover:text-purple-100 transition-colors">
-                  {sanctuary.description}
-                </p>
-                
-                <div className="border-t border-purple-300/20 pt-4">
-                  <div className="text-xs text-purple-300 mb-2">Today&apos;s Sacred Invitation:</div>
-                  <div className="text-sm text-purple-100 italic">
-                    &ldquo;{sanctuary.todaysInvitation}&rdquo;
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-between mt-4">
-                  <div className="text-xs text-purple-400">
-                    Duration: {sanctuary.duration} • Energy: {sanctuary.energy}
-                  </div>
-                  <div className="text-xs text-purple-200 group-hover:text-white transition-colors font-medium">
-                    Enter Sacred Practice →
-                  </div>
-                </div>
-                
-                {/* Hover instruction */}
-                <div className="mt-3 p-2 bg-purple-500/20 rounded-lg border border-purple-400/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="text-xs text-purple-200 text-center">
-                    🌸 Click anywhere to enter this sacred practice space
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          {/* Sacred Practice Features */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-purple-300/30 mb-8">
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className="text-center">
-                <div className="text-3xl mb-3">🕯️</div>
-                <h3 className="text-purple-100 font-medium mb-2">Guided Practices</h3>
-                <p className="text-purple-300 text-sm">Step-by-step spiritual practices designed for gentle awakening and integration</p>
+                ))}
               </div>
-              <div className="text-center">
-                <div className="text-3xl mb-3">🌱</div>
-                <h3 className="text-purple-100 font-medium mb-2">Personal Reflection</h3>
-                <p className="text-purple-300 text-sm">Private journaling spaces and contemplation prompts for your sacred journey</p>
+              
+              <div className="text-purple-300 text-sm italic max-w-2xl mx-auto">
+                Each guide draws from the same sacred message allowance (3 daily for Seekers, 777 monthly for Gardeners) while offering specialized wisdom for your journey.
               </div>
-              <div className="text-center">
-                <div className="text-3xl mb-3">🌙</div>
-                <h3 className="text-purple-100 font-medium mb-2">Sacred Timing</h3>
-                <p className="text-purple-300 text-sm">Practices aligned with natural rhythms, lunar cycles, and your soul&apos;s perfect timing</p>
-              </div>
-            </div>
-            
-            <div className="text-center">
-              <div className="text-purple-300 text-sm italic mb-4">
-                &ldquo;Each practice is a sacred doorway into deeper communion with your awakening soul. 
-                Enter gently, with reverence for your unique journey.&rdquo;
-              </div>
-              <div className="text-purple-400 text-xs">
-                ✧ Available to all Garden seekers - practice at your own sacred pace ✧
-              </div>
-            </div>
-          </div>
-
-          {/* Selected Sanctuary Details */}
-          {selectedCircle && (
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-purple-300/30 mb-8">
+            </>
+          ) : (
+            <>
               {(() => {
-                const sanctuary = sacredSanctuaries.find(s => s.id === selectedCircle);
-                if (!sanctuary) return null;
-                
-                return (
-                  <div>
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center space-x-4">
-                        <div className="text-4xl">{sanctuary.symbol}</div>
+                const guide = sacredGuides.find(g => g.id === selectedGuide);
+                return guide ? (
+                  <div className="max-w-4xl mx-auto">
+                    <button
+                      onClick={() => setSelectedGuide(null)}
+                      className="flex items-center text-purple-300 hover:text-white transition-colors mb-6"
+                    >
+                      <span className="mr-2">←</span>
+                      Back to Guide Gallery
+                    </button>
+                    
+                    <div className="text-6xl mb-6">{guide.symbol}</div>
+                    <h1 className="text-4xl font-light text-white mb-4">{guide.name}</h1>
+                    <p className="text-purple-100 text-xl mb-6">{guide.title}</p>
+                    
+                    <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-purple-300/20 mb-8">
+                      <div className="grid md:grid-cols-2 gap-8">
                         <div>
-                          <h3 className="text-2xl font-light text-white">{sanctuary.name}</h3>
-                          <div className="text-purple-300">{sanctuary.title}</div>
+                          <h3 className="text-purple-100 font-medium mb-3">Specializes In</h3>
+                          <p className="text-purple-200 text-sm mb-6">{guide.specialty}</p>
+                          
+                          <h3 className="text-purple-100 font-medium mb-3">Personality</h3>
+                          <p className="text-purple-200 text-sm mb-6">{guide.personality}</p>
+                          
+                          <h3 className="text-purple-100 font-medium mb-3">Best For</h3>
+                          <p className="text-purple-200 text-sm">{guide.bestFor}</p>
+                        </div>
+                        
+                        <div>
+                          <h3 className="text-purple-100 font-medium mb-3">Sample Questions</h3>
+                          <ul className="space-y-2">
+                            {guide.sampleQuestions.map((question, index) => (
+                              <li key={index} className="text-purple-200 text-sm flex items-start">
+                                <span className="text-purple-400 mr-2">•</span>
+                                <span>{question}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                       </div>
-                      <button
-                        onClick={() => setSelectedCircle(null)}
-                        className="text-purple-300 hover:text-purple-200 transition-colors"
-                      >
-                        ✕
-                      </button>
                     </div>
                     
-                    <div className="grid md:grid-cols-2 gap-8">
-                      <div>
-                        <h4 className="text-purple-100 font-medium mb-3">Sacred Practice Space</h4>
-                        <p className="text-purple-200 mb-6">{sanctuary.description}</p>
-                        
-                        <div className="bg-white/5 rounded-xl p-4 mb-4">
-                          <div className="text-purple-300 text-sm mb-2">Today&apos;s Sacred Invitation:</div>
-                          <div className="text-purple-100 italic">
-                            &ldquo;{sanctuary.todaysInvitation}&rdquo;
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center justify-between text-sm">
-                          <div className="text-purple-400">
-                            Duration: {sanctuary.duration}
-                          </div>
-                          <div className="text-purple-300">
-                            Energy: {sanctuary.energy}
-                          </div>
-                        </div>
-                      </div>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <Link 
+                        href={`/garden-guide?guide=${guide.id}`}
+                        className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105"
+                      >
+                        Begin Sacred Dialogue
+                      </Link>
                       
-                      <div>
-                        <h4 className="text-purple-100 font-medium mb-3">How This Practice Unfolds</h4>
-                        <div className="space-y-4 text-sm">
-                          <div className="bg-white/5 rounded-lg p-3">
-                            <div className="text-purple-200 font-medium mb-1">Guided Practice</div>
-                            <div className="text-purple-300">Gentle instructions and sacred timing</div>
-                          </div>
-                          <div className="bg-white/5 rounded-lg p-3">
-                            <div className="text-purple-200 font-medium mb-1">Personal Reflection</div>
-                            <div className="text-purple-300">Private journaling space for insights</div>
-                          </div>
-                          <div className="bg-white/5 rounded-lg p-3">
-                            <div className="text-purple-200 font-medium mb-1">Weekly Intention</div>
-                            <div className="text-purple-300">Collective energy holding and prayer</div>
-                          </div>
-                        </div>
-                        
-                        <div className="mt-6 p-4 bg-purple-500/10 rounded-lg border border-purple-400/20">
-                          <div className="text-purple-200 text-sm font-medium mb-2">
-                            🌸 Sacred Circle Guidelines
-                          </div>
-                          <div className="text-purple-300 text-xs space-y-1">
-                            <div>• Witness with love, respond with presence</div>
-                            <div>• Share from the heart, not the mind</div>
-                            <div>• Honor all paths and sacred timing</div>
-                            <div>• Hold space without trying to fix</div>
-                          </div>
-                        </div>
-                      </div>
+                      <button
+                        onClick={() => setSelectedGuide(null)}
+                        className="border border-purple-400 text-purple-200 hover:bg-purple-600/20 px-8 py-3 rounded-full transition-all duration-300"
+                      >
+                        Choose Different Guide
+                      </button>
                     </div>
                   </div>
-                );
+                ) : null;
               })()}
-            </div>
+            </>
           )}
-
-          {/* Sacred Navigation */}
-          <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <Link 
-              href="/garden-guide"
-              className="px-6 py-3 bg-purple-500/30 hover:bg-purple-500/50 text-purple-100 rounded-xl transition-all duration-300 text-sm"
-            >
-              Commune with Garden Guide
-            </Link>
-            <Link 
-              href="/garden"
-              className="px-6 py-3 bg-white/10 hover:bg-white/20 text-purple-200 rounded-xl transition-all duration-300 text-sm"
-            >
-              Return to Sacred Garden
-            </Link>
-          </div>
         </div>
       </div>
 
-      {/* Floating Garden Elements */}
-      <div className="absolute bottom-10 left-10 text-2xl animate-float">🌻</div>
-      <div className="absolute top-32 right-20 text-2xl animate-float" style={{animationDelay: '1s'}}>🦋</div>
-      <div className="absolute bottom-32 right-10 text-2xl animate-float" style={{animationDelay: '2s'}}>🌙</div>
-      <div className="absolute top-40 left-20 text-2xl animate-float" style={{animationDelay: '3s'}}>🌸</div>
-      <div className="absolute bottom-20 left-1/2 text-2xl animate-float" style={{animationDelay: '4s'}}>✨</div>
-      <div className="absolute top-1/4 right-10 text-2xl animate-float" style={{animationDelay: '5s'}}>🕯️</div>
-      
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-      `}</style>
+      <div className="absolute bottom-10 left-10 text-2xl animate-pulse">🌸</div>
+      <div className="absolute top-32 right-20 text-2xl animate-pulse" style={{animationDelay: '1s'}}>✨</div>
+      <div className="absolute bottom-32 right-10 text-2xl animate-pulse" style={{animationDelay: '2s'}}>🌿</div>
     </div>
   );
 }

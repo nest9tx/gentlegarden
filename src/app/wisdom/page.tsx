@@ -359,6 +359,24 @@ export default function WisdomGrove() {
         </Link>
       </div>
 
+      {/* Welcome Banner for Visitors */}
+      {subscriptionTier === 'seeker' && (
+        <div className="absolute top-6 right-6 z-40">
+          <div className="bg-white/10 backdrop-blur-sm border border-purple-300/30 rounded-xl p-4 max-w-xs">
+            <div className="text-center">
+              <div className="text-lg mb-2">🌱</div>
+              <div className="text-purple-200 text-sm mb-2">Welcome, Sacred Seeker</div>
+              <div className="text-purple-300 text-xs mb-3">
+                Foundation teachings are freely available. 
+                <Link href="/enter" className="text-purple-200 hover:text-white underline ml-1">
+                  Join the garden
+                </Link> for personalized guidance.
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Main Content */}
       <div className="relative z-10 flex items-center justify-center min-h-screen px-6 pt-20">
         <div className="text-center max-w-3xl">

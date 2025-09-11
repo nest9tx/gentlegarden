@@ -41,16 +41,63 @@ export default function Home() {
             <span className="text-purple-300">Where seeds of consciousness bloom into divine remembrance.</span>
           </p>
 
-          {/* Journey Begins */}
-          <div className="space-y-6">
-            <Link href="/enter">
-              <button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-8 py-4 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-purple-500/25">
-                Begin Your Sacred Journey
-              </button>
+          {/* Sacred Offerings Preview */}
+          <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl">
+            {/* Meditation Garden Preview */}
+            <Link href="/meditations" className="group">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
+                <div className="text-3xl mb-3">🧘‍♀️</div>
+                <h3 className="text-lg font-medium text-white mb-2">Meditation Garden</h3>
+                <p className="text-purple-300 text-sm">Sacred breathing practices and guided stillness</p>
+                <div className="text-xs text-purple-400 mt-3">✨ Free to explore</div>
+              </div>
             </Link>
+
+            {/* Wisdom Grove Preview */}
+            <Link href="/wisdom" className="group">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
+                <div className="text-3xl mb-3">📜</div>
+                <h3 className="text-lg font-medium text-white mb-2">Ancient Wisdom Grove</h3>
+                <p className="text-purple-300 text-sm">Sacred teachings and contemplative practices</p>
+                <div className="text-xs text-purple-400 mt-3">✨ Foundation teachings freely available</div>
+              </div>
+            </Link>
+
+            {/* Community Preview */}
+            <Link href="/community" className="group">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
+                <div className="text-3xl mb-3">🏛️</div>
+                <h3 className="text-lg font-medium text-white mb-2">Sacred Practice Sanctuaries</h3>
+                <p className="text-purple-300 text-sm">Community spaces for shared awakening</p>
+                <div className="text-xs text-purple-400 mt-3">✨ View sanctuary previews</div>
+              </div>
+            </Link>
+          </div>
+
+          {/* Journey Begins - Now with Context */}
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <p className="text-purple-200 text-lg mb-4">
+                Explore freely, then choose your path of deepening...
+              </p>
+            </div>
             
-            <div className="text-purple-300 text-sm">
-              <p>✧ Voice-guided meditations ✧ Gentle awakening wisdom ✧ 24/7 AI companion ✧</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Link href="/enter">
+                <button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-8 py-4 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-purple-500/25">
+                  Enter the Sacred Garden
+                </button>
+              </Link>
+              
+              <div className="text-purple-400 text-sm">
+                or continue exploring above ↑
+              </div>
+            </div>
+
+            <div className="text-purple-300 text-sm space-y-1">
+              <div>✨ Meditation & Wisdom teachings freely available</div>
+              <div>🌱 No email required to explore • Join when ready</div>
+              <div>💚 Sacred AI Guide available to registered gardeners</div>
             </div>
           </div>
 

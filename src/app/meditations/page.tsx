@@ -100,19 +100,23 @@ export default function MeditationGarden() {
           </div>
 
           {/* Sacred Navigation */}
-          <div className="mt-8 flex justify-center space-x-4">
+          <div className="mt-8 flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4">
             <Link 
-              href="/garden-guide"
-              className="px-6 py-3 bg-purple-500/30 hover:bg-purple-500/50 text-purple-100 rounded-xl transition-all duration-300 text-sm"
+              href="/enter"
+              className="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-xl transition-all duration-300 text-sm text-center"
             >
-              Commune with Garden Guide
+              Enter the Sacred Garden
             </Link>
             <Link 
-              href="/garden/personal"
-              className="px-6 py-3 bg-white/10 hover:bg-white/20 text-purple-200 rounded-xl transition-all duration-300 text-sm"
+              href="/wisdom"
+              className="px-6 py-3 bg-white/10 hover:bg-white/20 text-purple-200 rounded-xl transition-all duration-300 text-sm text-center"
             >
-              Visit Personal Garden
+              Explore Wisdom Teachings
             </Link>
+          </div>
+          
+          <div className="mt-4 text-center text-purple-300 text-sm">
+            ✨ Free meditation available • Join the garden for personalized guidance
           </div>
         </div>
       </div>

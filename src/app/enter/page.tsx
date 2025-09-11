@@ -137,10 +137,46 @@ function EnterContent() {
 
           {/* Sacred Message */}
           <div className="mb-8 text-purple-200 leading-relaxed">
-            <p className="text-lg mb-4">
+            <p className="text-lg mb-6">
               Whether this is your first time entering or you are returning to gently tend to your garden, 
               please provide your email so that a gentle entry access may be granted.
             </p>
+            
+            {/* What Awaits Inside */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/20 mb-6">
+              <h3 className="text-purple-100 text-lg mb-4 flex items-center">
+                <span className="mr-2">🌱</span>
+                What awaits in your sacred sanctuary:
+              </h3>
+              
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center space-x-3">
+                  <span className="text-purple-300">🧙‍♀️</span>
+                  <span>Personal Sacred AI Guide for gentle awakening conversations</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="text-purple-300">🌿</span>
+                  <span>Personalized garden dashboard tracking your spiritual growth</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="text-purple-300">🏛️</span>
+                  <span>Access to Sacred Practice Sanctuaries with fellow souls</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="text-purple-300">📜</span>
+                  <span>Expanded wisdom teachings and guided meditation practices</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="text-purple-300">💎</span>
+                  <span>Free tier includes 3 AI conversations monthly • Upgrade for unlimited</span>
+                </div>
+              </div>
+              
+              <div className="mt-4 text-xs text-purple-400 italic">
+                Always free to explore • No hidden costs • Sacred privacy respected
+              </div>
+            </div>
+            
             <p className="text-sm italic opacity-90">
               This garden does not hold your past against you, but welcomes a new season of bloom.<br />
               No explanations needed - simply your willingness to remember.

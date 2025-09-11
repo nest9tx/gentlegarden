@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import SacredAuth from '../../components/SacredAuth';
 // Fixed scroll count display - showing teachings count properly
 
 export default function WisdomGrove() {
@@ -312,6 +313,9 @@ export default function WisdomGrove() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+      {/* Sacred Auth Status */}
+      <SacredAuth position="corner" />
+      
       {/* Ancient Scroll Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         {[...Array(20)].map((_, i) => (

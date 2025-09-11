@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import SacredAuth from '../../components/SacredAuth';
 
 export default function MeditationGarden() {
   const [breathingPhase, setBreathingPhase] = useState('inhale');
@@ -16,6 +17,9 @@ export default function MeditationGarden() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+      {/* Sacred Auth Status */}
+      <SacredAuth position="corner" />
+      
       {/* Gentle Twinkling Stars */}
       <div className="absolute inset-0">
         {[...Array(30)].map((_, i) => (

@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import SacredAuth from '../../components/SacredAuth';
 
 function EnterContent() {
   const [email, setEmail] = useState('');
@@ -99,6 +100,9 @@ function EnterContent() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+      {/* Sacred Auth Status */}
+      <SacredAuth position="corner" />
+      
       {/* Twinkling Stars Background */}
       <div className="absolute inset-0">
         {[...Array(30)].map((_, i) => (

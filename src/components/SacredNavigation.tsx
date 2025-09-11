@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { User } from '@supabase/auth-helpers-nextjs';
 
 interface SacredNavigationProps {
   currentPage?: string;
@@ -15,6 +17,66 @@ export default function SacredNavigation({
   showSanctuaries = true 
 }: SacredNavigationProps) {
   const pathname = usePathname();
+  const [user, setUser] = useState<User | null>(null);
+  const [subscriptionTier, setSubscriptionTier] = useState<string>('seeker');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadAuth = async () => {
+      try {
+        const { createClient } = await import('../../lib/supabase');
+        const supabase = createClient();
+        
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session?.user) {
+          setUser(session.user);
+          
+          // Load subscription tier
+          const { data: usageData } = await supabase
+            .from('garden_guide_usage')
+            .select('subscription_tier')
+            .eq('user_id', session.user.id)
+            .single();
+
+          if (usageData) {
+            setSubscriptionTier(usageData.subscription_tier || 'seeker');
+          }
+        }
+      } catch (error) {
+        console.log('Auth check error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    loadAuth();
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      const { createClient } = await import('../../lib/supabase');
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      setUser(null);
+      setSubscriptionTier('seeker');
+      window.location.href = '/';
+    } catch (error) {
+      console.log('Sign out error:', error);
+    }
+  };
+
+  const getTierDisplay = () => {
+    if (subscriptionTier === 'gardener') return '🌿 Sacred Gardener';
+    if (subscriptionTier === 'guardian') return '✨ Garden Guardian';
+    return '🌱 Gentle Seeker';
+  };
+
+  const getTierColor = () => {
+    if (subscriptionTier === 'gardener') return 'text-green-300';
+    if (subscriptionTier === 'guardian') return 'text-yellow-300';
+    return 'text-purple-300';
+  };
   
   const sanctuaryLinks = [
     { name: 'Morning Light', href: '/community/morning-light', symbol: '🌅' },
@@ -58,38 +120,73 @@ export default function SacredNavigation({
             </div>
           )}
 
-          {/* Right - Quick Sanctuary Links */}
-          {showSanctuaries && (
-            <div className="hidden md:flex items-center space-x-2">
-              {sanctuaryLinks.map((sanctuary) => (
-                <Link
-                  key={sanctuary.href}
-                  href={sanctuary.href}
-                  className={`p-2 rounded-lg transition-all duration-300 hover:bg-white/20 group relative ${
-                    pathname === sanctuary.href ? 'bg-white/20 text-white' : 'text-purple-300 hover:text-white'
-                  }`}
-                  title={sanctuary.name}
-                >
-                  <span className="text-lg">{sanctuary.symbol}</span>
-                  
-                  {/* Tooltip */}
-                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                      {sanctuary.name}
+          {/* Right - Auth Status & Quick Links */}
+          <div className="flex items-center space-x-4">
+            {/* Quick Sanctuary Links */}
+            {showSanctuaries && (
+              <div className="hidden lg:flex items-center space-x-2">
+                {sanctuaryLinks.slice(0, 4).map((sanctuary) => (
+                  <Link
+                    key={sanctuary.href}
+                    href={sanctuary.href}
+                    className={`p-2 rounded-lg transition-all duration-300 hover:bg-white/20 group relative ${
+                      pathname === sanctuary.href ? 'bg-white/20 text-white' : 'text-purple-300 hover:text-white'
+                    }`}
+                    title={sanctuary.name}
+                  >
+                    <span className="text-sm">{sanctuary.symbol}</span>
+                    
+                    {/* Tooltip */}
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
+                        {sanctuary.name}
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+                  </Link>
+                ))}
+              </div>
+            )}
 
-          {/* Mobile Menu Toggle */}
-          <div className="md:hidden">
-            <button className="p-2 text-purple-300 hover:text-white transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
+            {/* Authentication Status */}
+            {!loading && (
+              <div className="flex items-center space-x-3">
+                {user ? (
+                  <>
+                    <div className="text-right hidden sm:block">
+                      <div className={`text-sm font-medium ${getTierColor()}`}>
+                        {getTierDisplay()}
+                      </div>
+                      <div className="text-purple-300 text-xs opacity-75">
+                        {user.email}
+                      </div>
+                    </div>
+                    <button 
+                      onClick={handleSignOut}
+                      className="p-2 text-purple-300 hover:text-purple-100 transition-colors rounded-lg hover:bg-white/10"
+                      title="Leave garden gently"
+                    >
+                      🚪
+                    </button>
+                  </>
+                ) : (
+                  <Link 
+                    href="/enter"
+                    className="bg-purple-600/30 hover:bg-purple-600/50 text-purple-100 px-3 py-1.5 rounded-full text-sm transition-colors border border-purple-400/30"
+                  >
+                    Enter Garden
+                  </Link>
+                )}
+              </div>
+            )}
+
+            {/* Mobile Menu Toggle */}
+            <div className="md:hidden">
+              <button className="p-2 text-purple-300 hover:text-white transition-colors">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>

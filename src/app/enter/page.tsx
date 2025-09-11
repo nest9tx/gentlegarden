@@ -172,7 +172,7 @@ function EnterContent() {
                 </div>
                 <div className="flex items-center space-x-3">
                   <span className="text-purple-300">💎</span>
-                  <span>Free tier includes 3 AI conversations monthly • Upgrade for unlimited</span>
+                  <span>Free tier includes 3 AI conversations daily • Upgrade for unlimited</span>
                 </div>
               </div>
               

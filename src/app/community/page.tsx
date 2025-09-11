@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import SacredNavigation from '@/components/SacredNavigation';
-import SacredAuth from '../../components/SacredAuth';
 
 export default function SacredSanctuaries() {
   const [pulsePhase, setPulsePhase] = useState(0);
@@ -94,10 +93,7 @@ export default function SacredSanctuaries() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
-      {/* Sacred Auth Status */}
-      <SacredAuth position="corner" />
-      
-      {/* Sacred Navigation */}
+      {/* Sacred Navigation with integrated auth */}
       <SacredNavigation currentPage="Sacred Practice Sanctuaries" showSanctuaries={false} />
       
       {/* Sacred Circle Background */}

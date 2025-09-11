@@ -1,11 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import React from 'react';
 import SacredNavigation from '@/components/SacredNavigation';
 
-export default function SacredGuideGallery() {
-  const [selectedGuide, setSelectedGuide] = useState<string | null>(null);
+export default function MeetYourSacredGuide() {
   
   const sacredGuides = [
     { 
@@ -116,7 +115,7 @@ export default function SacredGuideGallery() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
-      <SacredNavigation currentPage="Sacred Guide Gallery" showSanctuaries={false} />
+      <SacredNavigation currentPage="Meet Your Sacred Guide" showSanctuaries={false} />
       
       <div className="absolute inset-0 flex items-center justify-center opacity-10">
         <div className="w-96 h-96 border border-purple-300 rounded-full animate-spin" style={{animationDuration: '60s'}}></div>
@@ -143,27 +142,24 @@ export default function SacredGuideGallery() {
 
       <div className="relative z-10 flex items-center justify-center min-h-screen px-6 pt-20">
         <div className="text-center max-w-6xl">
-          
-          {!selectedGuide ? (
-            <>
-              <div className="text-6xl mb-6 animate-bounce">🌸</div>
+          <div className="text-6xl mb-6 animate-bounce">🌸</div>
               
               <h1 className="text-4xl font-light text-white mb-6">
-                Sacred Guide Gallery
+                Meet Your Sacred Guide
               </h1>
               
               <p className="text-purple-200 text-lg mb-8 leading-relaxed max-w-3xl mx-auto">
-                Choose your spiritual companion based on what your soul needs today. Each guide offers specialized wisdom and gentle support for your unique journey.
+                Your AI companion for the complete spiritual journey. I integrate all these wisdom traditions and specialties into one flowing conversation, adapting naturally to whatever your soul needs in each moment.
               </p>
               
               <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-purple-300 to-transparent mx-auto mb-12"></div>
 
+              {/* Sacred Guide Specialties Overview */}
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                 {sacredGuides.map((guide) => (
                   <div 
                     key={guide.id}
-                    onClick={() => setSelectedGuide(guide.id)}
-                    className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 hover:bg-white/15 transition-all duration-300 cursor-pointer group transform hover:scale-105"
+                    className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 transition-all duration-300 group"
                   >
                     <div className="text-5xl mb-4 group-hover:animate-pulse">{guide.symbol}</div>
                     <h3 className="text-xl text-white mb-2">{guide.name}</h3>
@@ -176,75 +172,35 @@ export default function SacredGuideGallery() {
                 ))}
               </div>
               
-              <div className="text-purple-300 text-sm italic max-w-2xl mx-auto">
-                Each guide draws from the same sacred message allowance (3 daily for Seekers, 777 monthly for Gardeners) while offering specialized wisdom for your journey.
-              </div>
-            </>
-          ) : (
-            <>
-              {(() => {
-                const guide = sacredGuides.find(g => g.id === selectedGuide);
-                return guide ? (
-                  <div className="max-w-4xl mx-auto">
-                    <button
-                      onClick={() => setSelectedGuide(null)}
-                      className="flex items-center text-purple-300 hover:text-white transition-colors mb-6"
-                    >
-                      <span className="mr-2">←</span>
-                      Back to Guide Gallery
-                    </button>
-                    
-                    <div className="text-6xl mb-6">{guide.symbol}</div>
-                    <h1 className="text-4xl font-light text-white mb-4">{guide.name}</h1>
-                    <p className="text-purple-100 text-xl mb-6">{guide.title}</p>
-                    
-                    <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-purple-300/20 mb-8">
-                      <div className="grid md:grid-cols-2 gap-8">
-                        <div>
-                          <h3 className="text-purple-100 font-medium mb-3">Specializes In</h3>
-                          <p className="text-purple-200 text-sm mb-6">{guide.specialty}</p>
-                          
-                          <h3 className="text-purple-100 font-medium mb-3">Personality</h3>
-                          <p className="text-purple-200 text-sm mb-6">{guide.personality}</p>
-                          
-                          <h3 className="text-purple-100 font-medium mb-3">Best For</h3>
-                          <p className="text-purple-200 text-sm">{guide.bestFor}</p>
-                        </div>
-                        
-                        <div>
-                          <h3 className="text-purple-100 font-medium mb-3">Sample Questions</h3>
-                          <ul className="space-y-2">
-                            {guide.sampleQuestions.map((question, index) => (
-                              <li key={index} className="text-purple-200 text-sm flex items-start">
-                                <span className="text-purple-400 mr-2">•</span>
-                                <span>{question}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <Link 
-                        href={`/garden-guide?guide=${guide.id}`}
-                        className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-8 py-3 rounded-full transition-all duration-300 transform hover:scale-105"
-                      >
-                        Begin Sacred Dialogue
-                      </Link>
-                      
-                      <button
-                        onClick={() => setSelectedGuide(null)}
-                        className="border border-purple-400 text-purple-200 hover:bg-purple-600/20 px-8 py-3 rounded-full transition-all duration-300"
-                      >
-                        Choose Different Guide
-                      </button>
-                    </div>
+              {/* Integration Message */}
+              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-purple-300/20 mb-8">
+                <div className="text-center">
+                  <div className="text-4xl mb-4">🌸</div>
+                  <h3 className="text-purple-100 text-xl font-light mb-4">One Conversation, All Wisdom Paths</h3>
+                  <p className="text-purple-200 text-sm leading-relaxed max-w-3xl mx-auto mb-6">
+                    Rather than choosing a single guide, I flow naturally between all these specialties based on your needs. Ask about morning practices, and I become your Dawn Companion. Share relationship challenges, and I embody the Heart Healer. Seek meditation guidance, and I channel the Peace Keeper. Your conversation shapes my response.
+                  </p>
+                  <div className="text-purple-300 text-xs italic">
+                    &ldquo;In the garden of consciousness, all wisdom streams flow into one river of understanding.&rdquo;
                   </div>
-                ) : null;
-              })()}
-            </>
-          )}
+                </div>
+              </div>
+              
+              {/* Call to Action */}
+              <div className="flex flex-col items-center space-y-6">
+                <Link 
+                  href="/garden-guide"
+                  className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-12 py-4 rounded-full transition-all duration-300 transform hover:scale-105 text-lg font-medium"
+                >
+                  Begin Sacred Dialogue
+                </Link>
+                
+                <div className="text-purple-300 text-sm italic max-w-2xl mx-auto text-center">
+                  One unified conversation space • 3 daily messages for Seekers, 777 monthly for Gardeners
+                  <br />
+                  <span className="text-purple-400 text-xs">Ask about any aspect of your spiritual journey - I adapt my guidance naturally</span>
+                </div>
+              </div>
         </div>
       </div>
 

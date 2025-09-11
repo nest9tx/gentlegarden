@@ -199,15 +199,15 @@ export default function GardenDashboard() {
             </Link>
 
             {/* Garden Guide */}
-            <Link href="/garden-guide">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-purple-300/30 hover:bg-white/15 transition-all duration-300 group cursor-pointer">
-                <div className="text-3xl mb-4 group-hover:animate-pulse">🤖</div>
-                <h3 className="text-xl text-white mb-2">Garden Guide</h3>
+            <Link href="/community">
+              <div className="bg-purple-500/30 hover:bg-purple-500/50 p-6 rounded-2xl transition-all duration-300 cursor-pointer border border-purple-400/30 hover:border-purple-400/50">
+                <div className="text-3xl mb-4 group-hover:animate-pulse">🌸</div>
+                <h3 className="text-xl text-white mb-2">Meet Your Sacred Guide</h3>
                 <p className="text-purple-200 text-sm">
-                  Your gentle AI companion, available anytime you need support.
+                  Discover your AI companion&apos;s full wisdom capabilities and specialties.
                 </p>
                 <div className="mt-4 text-purple-300 text-xs">
-                  → Begin sacred dialogue
+                  → Learn about your guide
                 </div>
               </div>
             </Link>

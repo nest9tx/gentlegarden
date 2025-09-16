@@ -646,101 +646,40 @@ export default function PersonalGarden() {
           {/* Right Column - Garden Preferences */}
           <div className="space-y-8">
             
-            {/* Garden Preferences */}
+            {/* Sacred Symbol Selector */}
             <div className="bg-white/10 backdrop-blur-sm border border-purple-300/30 rounded-2xl p-6">
               <h3 className="text-lg font-light text-purple-100 mb-4 flex items-center">
-                <span className="mr-2">⚙️</span>
-                Garden Preferences
+                <span className="mr-2">🌸</span>
+                Sacred Symbol
               </h3>
               
-              <div className="space-y-4">
-                {/* Sacred Symbol */}
-                <div>
-                  <label className="block text-xs text-purple-300 mb-2">
-                    Sacred Symbol
-                  </label>
-                  <div className="flex flex-wrap gap-2">
-                    {sacredSymbols.map((symbol) => (
-                      <button
-                        key={symbol}
-                        onClick={() => {
-                          const updatedData = {
-                            ...gardenData,
-                            preferences: {
-                              ...gardenData.preferences,
-                              sacredSymbol: symbol
-                            }
-                          };
-                          setGardenData(updatedData);
-                        }}
-                        className={`w-10 h-10 rounded-lg text-lg transition-all ${
-                          gardenData.preferences.sacredSymbol === symbol
-                            ? 'bg-purple-500/50 border-2 border-purple-300'
-                            : 'bg-white/10 border-2 border-transparent hover:bg-white/20'
-                        }`}
-                      >
-                        {symbol}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Default Frequency */}
-                <div>
-                  <label className="block text-xs text-purple-300 mb-2">
-                    Preferred Sacred Frequency
-                  </label>
-                  <select
-                    value={gardenData.preferences.frequencyDefault}
-                    onChange={(e) => {
-                      const updatedData = {
-                        ...gardenData,
-                        preferences: {
-                          ...gardenData.preferences,
-                          frequencyDefault: e.target.value
-                        }
-                      };
-                      setGardenData(updatedData);
-                    }}
-                    className="w-full bg-white/10 border border-purple-300/30 rounded-lg px-3 py-2 text-sm text-purple-100"
-                  >
-                    <option value="432hz">432Hz - Nature&apos;s Harmony</option>
-                    <option value="528hz">528Hz - Love Frequency</option>
-                    <option value="741hz">741Hz - Awakening</option>
-                    <option value="harmonicFlow">Harmonic Flow</option>
-                  </select>
-                </div>
-
-                {/* Meditation Reminders */}
-                <div className="flex items-center justify-between">
-                  <label className="text-xs text-purple-300">
-                    Gentle Reminders
-                  </label>
-                  <button
-                    onClick={() => {
-                      const updatedData = {
-                        ...gardenData,
-                        preferences: {
-                          ...gardenData.preferences,
-                          meditationReminders: !gardenData.preferences.meditationReminders
-                        }
-                      };
-                      setGardenData(updatedData);
-                    }}
-                    className={`w-12 h-6 rounded-full transition-all ${
-                      gardenData.preferences.meditationReminders
-                        ? 'bg-purple-500'
-                        : 'bg-white/20'
-                    }`}
-                  >
-                    <div
-                      className={`w-5 h-5 bg-white rounded-full transition-transform ${
-                        gardenData.preferences.meditationReminders
-                          ? 'translate-x-6'
-                          : 'translate-x-0.5'
+              <div>
+                <label className="block text-xs text-purple-300 mb-3">
+                  Choose your personal sacred symbol
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {sacredSymbols.map((symbol) => (
+                    <button
+                      key={symbol}
+                      onClick={() => {
+                        const updatedData = {
+                          ...gardenData,
+                          preferences: {
+                            ...gardenData.preferences,
+                            sacredSymbol: symbol
+                          }
+                        };
+                        setGardenData(updatedData);
+                      }}
+                      className={`w-10 h-10 rounded-lg text-lg transition-all ${
+                        gardenData.preferences.sacredSymbol === symbol
+                          ? 'bg-purple-500/50 border-2 border-purple-300'
+                          : 'bg-white/10 border-2 border-transparent hover:bg-white/20'
                       }`}
-                    />
-                  </button>
+                    >
+                      {symbol}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>

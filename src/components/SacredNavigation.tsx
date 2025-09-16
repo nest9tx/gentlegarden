@@ -78,13 +78,14 @@ export default function SacredNavigation({
     return 'text-purple-300';
   };
   
+  // Core quick sanctuary shortcuts (can later source from config) now pointing to new /sanctuaries structure
   const sanctuaryLinks = [
-    { name: 'Morning Light', href: '/community/morning-light', symbol: '🌅' },
-    { name: 'Heart Temple', href: '/community/heart-temple', symbol: '💖' },
-    { name: 'Wisdom Grove', href: '/community/wisdom-grove', symbol: '🌳' },
-    { name: 'Moon Chamber', href: '/community/moon-chamber', symbol: '🌙' },
-    { name: 'Integration', href: '/community/integration', symbol: '🔄' },
-    { name: 'Evening Peace', href: '/community/evening-peace', symbol: '🌙' }
+    { name: 'Morning Light', href: '/sanctuaries/morning-light', symbol: '🌅' },
+    { name: 'Chakras', href: '/sanctuaries/chakras', symbol: '�️' },
+    { name: 'Sacred Geometry', href: '/sanctuaries/sacred-geometries', symbol: '🔷' },
+    { name: 'Communion', href: '/sanctuaries/communion', symbol: '🤲' },
+    { name: 'Healing', href: '/sanctuaries/healing', symbol: '🌿' },
+    { name: 'Light Work', href: '/sanctuaries/light-work', symbol: '💡' }
   ];
 
   return (
@@ -105,7 +106,7 @@ export default function SacredNavigation({
             )}
             
             <Link 
-              href="/community"
+              href="/sanctuaries"
               className="flex items-center space-x-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-purple-300/30 rounded-xl text-purple-200 hover:bg-white/20 hover:text-white transition-all duration-300 text-sm"
             >
               <span>🏛️</span>

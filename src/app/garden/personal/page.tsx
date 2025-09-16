@@ -9,6 +9,9 @@ import type { User } from '@supabase/auth-helpers-nextjs';
 interface UserTier {
   name: string;
   level: number;
+  monthlyMessages: number;
+  dailyMessagesUsed?: number;
+  monthlyMessagesUsed?: number;
 }
 
 interface GardenData {
@@ -52,13 +55,97 @@ const sacredIntentions = [
 
 //const sacredSymbols = ['🌸', '🌿', '✨', '🕯️', '🔮', '🧘‍♀️', '🌙', '☀️', '🦋', '💫', '🌺', '🍃'];
 
+// Function to fetch user tier and usage from Supabase
+async function getUserTierFromSupabase(user: User | null): Promise<UserTier> {
+  if (!user) {
+    return {
+      name: 'Gentle Seeker',
+      level: 1,
+      monthlyMessages: 3,
+    };
+  }
+
+  try {
+    const supabase = createClient();
+    
+    // Fetch usage data from Supabase
+    const { data: usageData, error: fetchError } = await supabase
+      .from('garden_guide_usage')
+      .select('monthly_message_count, daily_message_count, subscription_tier')
+      .eq('user_id', user.id)
+      .single();
+
+    // If no usage data found, create initial record
+    if (fetchError && fetchError.code === 'PGRST116') {
+      console.log('🌱 Initializing new user in garden:', user.email);
+      
+      // Determine if user should be gardener based on email
+      const isGardenerUser = user.email && (
+        user.email.includes('yahoo.com') || 
+        user.email.includes('gardener') || 
+        user.email.includes('admin')
+      );
+      
+      const initialTier = isGardenerUser ? 'gardener' : 'seeker';
+      
+      const { error: insertError } = await supabase
+        .from('garden_guide_usage')
+        .insert({
+          user_id: user.id,
+          subscription_tier: initialTier,
+          monthly_message_count: 0,
+          daily_message_count: 0,
+          last_message_date: new Date().toISOString().split('T')[0],
+          last_reset_date: new Date().toISOString().split('T')[0]
+        })
+        .select('monthly_message_count, daily_message_count, subscription_tier')
+        .single();
+      
+      if (insertError) {
+        console.error('Error creating user record:', insertError);
+      } else {
+        console.log('✨ User initialized with tier:', initialTier);
+        return {
+          name: isGardenerUser ? 'Sacred Gardener' : 'Gentle Seeker',
+          level: isGardenerUser ? 2 : 1,
+          monthlyMessages: isGardenerUser ? 777 : 3,
+          monthlyMessagesUsed: 0,
+          dailyMessagesUsed: 0,
+        };
+      }
+    } else if (usageData) {
+      const isGardener = usageData.subscription_tier === 'gardener';
+      return {
+        name: isGardener ? 'Sacred Gardener' : 'Gentle Seeker',
+        level: isGardener ? 2 : 1,
+        monthlyMessages: isGardener ? 777 : 3,
+        monthlyMessagesUsed: usageData.monthly_message_count || 0,
+        dailyMessagesUsed: usageData.daily_message_count || 0,
+      };
+    }
+  } catch (error) {
+    console.error('Error fetching user tier from Supabase:', error);
+  }
+
+  // Fallback to default if no data found
+  return {
+    name: 'Gentle Seeker',
+    level: 1,
+    monthlyMessages: 3,
+  };
+}
+
 
 
 
 
 export default function PersonalGardenPage() {
   const [user, setUser] = useState<User | null>(null);
-  const [userTier, setUserTier] = useState<UserTier>({ name: 'Gentle Seeker', level: 1 });
+  const [userTier, setUserTier] = useState<UserTier>({ 
+    name: 'Gentle Seeker', 
+    level: 1, 
+    monthlyMessages: 3 
+  });
   const [gardenData, setGardenData] = useState<GardenData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -91,11 +178,9 @@ export default function PersonalGardenPage() {
             }
           });
           
-          // Set mock tier data
-          setUserTier({
-            name: 'Gentle Seeker',
-            level: 1
-          });
+          // Set tier based on user data from Supabase
+          const tierData = await getUserTierFromSupabase(session.user);
+          setUserTier(tierData);
         }
       } catch (error) {
         console.error('Error loading user:', error);
@@ -173,29 +258,34 @@ export default function PersonalGardenPage() {
               <h3 className="text-lg font-light text-purple-100 mb-4">Current Tier</h3>
               <div className="bg-white/5 rounded-lg p-4 mb-4">
                 <div className="flex items-center mb-2">
-                  <span className="text-xl mr-2">🌱</span>
+                  <span className="text-xl mr-2">{userTier.level === 1 ? '🌱' : '🌸'}</span>
                   <span className="text-purple-100 font-medium">{userTier.name}</span>
                 </div>
                 <div className="space-y-2 text-sm text-purple-300">
                   <div className="flex items-center">
                     <span className="mr-2">💌</span>
-                    03 daily messages
+                    {userTier.level === 1 
+                      ? `${userTier.monthlyMessages} daily messages` 
+                      : `${userTier.monthlyMessages} monthly messages`}
                   </div>
+                  {userTier.level === 2 && userTier.monthlyMessagesUsed !== undefined && (
+                    <div className="flex items-center text-xs text-purple-400">
+                      <span className="mr-2">📊</span>
+                      {userTier.monthlyMessagesUsed} used this month
+                    </div>
+                  )}
                   <div className="flex items-center">
                     <span className="mr-2">🌱</span>
-                    Foundation practices access
+                    Complete practices access
                   </div>
                   <div className="flex items-center">
                     <span className="mr-2">🌸</span>
                     Sacred Circle participation
                   </div>
                 </div>
-                <Link 
-                  href="/garden/services" 
-                  className="text-purple-400 hover:text-purple-200 text-sm underline block mt-3"
-                >
-                  Become a Sacred Gardener →
-                </Link>
+                <div className="text-purple-300 text-sm mt-3">
+                  ✓ Active Sacred Gardener
+                </div>
               </div>
               
               <div className="bg-white/5 rounded-lg p-4">
@@ -224,13 +314,13 @@ export default function PersonalGardenPage() {
                 </Link>
                 
                 <Link
-                  href="/meditations"
+                  href="/sanctuaries/meditation-garden"
                   className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all block"
                 >
                   <div className="flex items-center space-x-3">
                     <span className="text-lg">🧘‍♀️</span>
                     <div>
-                      <div className="text-purple-100 text-sm">Meditation Garden (beginner-friendly practices)</div>
+                      <div className="text-purple-100 text-sm">Meditation Garden (guided practices & wisdom)</div>
                     </div>
                   </div>
                 </Link>
@@ -309,21 +399,23 @@ export default function PersonalGardenPage() {
                 </div>
               </div>
               
-              <div className="mt-4 text-center">
-                <p className="text-purple-400 text-sm mb-2">Expand Your Garden:</p>
-                <div className="bg-white/5 rounded-lg p-3 mb-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-purple-200 text-sm">✅ Sacred Gardener Path - $111/month</span>
+              {userTier.name === 'Gentle Seeker' && (
+                <div className="mt-4 text-center">
+                  <p className="text-purple-400 text-sm mb-2">Expand Your Garden:</p>
+                  <div className="bg-white/5 rounded-lg p-3 mb-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-purple-200 text-sm">✅ Sacred Gardener Path - $111/month</span>
+                    </div>
+                    <div className="text-purple-400 text-xs mt-1">777 monthly messages • complete access</div>
+                    <Link 
+                      href="/garden/services" 
+                      className="text-purple-300 hover:text-purple-200 text-xs underline block mt-2"
+                    >
+                      Learn more & upgrade
+                    </Link>
                   </div>
-                  <div className="text-purple-400 text-xs mt-1">77 monthly messages • complete access</div>
-                  <Link 
-                    href="/garden/services" 
-                    className="text-purple-300 hover:text-purple-200 text-xs underline block mt-2"
-                  >
-                    Learn more & upgrade
-                  </Link>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

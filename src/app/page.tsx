@@ -1,9 +1,36 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { createClient } from '../../lib/supabase';
 import SacredNavigation from '../components/SacredNavigation';
+import type { User } from '@supabase/auth-helpers-nextjs';
 
 export default function Home() {
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    async function loadUser() {
+      try {
+        const supabase = createClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        setUser(session?.user ?? null);
+      } catch (error) {
+        console.error('Error loading user:', error);
+      }
+    }
+
+    loadUser();
+  }, []);
+
+  useEffect(() => {
+    const supabase = createClient();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
       {/* Sacred Navigation */}
@@ -48,12 +75,29 @@ export default function Home() {
               Get personalized guidance, daily practices, and sacred support whenever you need it.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Link 
-                href="/enter" 
-                className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-8 py-3 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg"
-              >
-                ✨ Meet Your Guide
-              </Link>
+              {user ? (
+                <>
+                  <Link 
+                    href="/garden/personal" 
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white px-8 py-3 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  >
+                    🌸 My Garden
+                  </Link>
+                  <Link 
+                    href="/garden-guide" 
+                    className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-8 py-3 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  >
+                    ✨ Meet Your Guide
+                  </Link>
+                </>
+              ) : (
+                <Link 
+                  href="/enter" 
+                  className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-8 py-3 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg"
+                >
+                  ✨ Meet Your Guide
+                </Link>
+              )}
               <Link 
                 href="/about" 
                 className="text-purple-300 hover:text-purple-100 underline transition-colors"

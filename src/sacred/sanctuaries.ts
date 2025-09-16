@@ -15,18 +15,33 @@ export interface SanctuaryMeta {
 // Core sanctuaries (initial 6). More can be appended without code changes elsewhere.
 export const SANCTUARIES: SanctuaryMeta[] = [
   {
-    slug: 'chakras',
-    title: 'Chakra Sanctum',
-    icon: '🕉️',
-    description: 'Explore and balance the sacred energy centers flowing through your subtle body.',
-    gradient: { from: 'from-fuchsia-500', to: 'to-violet-600' },
-    invocation: 'May the inner wheels of light turn in harmony.',
-    tone: 'Healing',
+    slug: 'meditation-garden',
+    title: 'Meditation Garden',
+    icon: '🧘‍♀️',
+    description: 'A gentle introduction to mindfulness and meditation practice, perfect for beginners seeking inner peace.',
+    gradient: { from: 'from-teal-500', to: 'to-cyan-600' },
+    tone: 'Grounding',
     element: 'Aether',
     access: 'public',
     sections: [
-      { id: 'overview', title: 'What Are Chakras?', summary: 'An introduction to the seven primary centers and beyond.' },
-      { id: 'attunement', title: 'Attuning Practice', summary: 'A simple daily scan and breath alignment ritual.' },
+      { id: 'foundations', title: 'Gentle Beginnings', summary: 'Starting your meditation journey with compassion and patience.' },
+      { id: 'breath', title: 'Breath Awareness', summary: 'Simple breathing practices for centering and calm.' },
+      { id: 'mindfulness', title: 'Present Moment', summary: 'Cultivating awareness in daily life.' },
+      { id: 'communion', title: 'Sacred Listening', summary: 'Meditation as communion with the deeper self.' }
+    ]
+  },
+  {
+    slug: 'chakras',
+    title: 'Chakra Sanctuary',
+    icon: '🕉️',
+    description: 'Attune to the subtle centers that orchestrate physical and energetic well-being.',
+    gradient: { from: 'from-purple-600', to: 'to-indigo-700' },
+    tone: 'Integrative',
+    element: 'Aether',
+    access: 'public',
+    sections: [
+      { id: 'overview', title: 'Living Spectrum', summary: 'Feeling chakras as relational intelligence fields.' },
+      { id: 'attunement', title: 'Gentle Attunement', summary: 'Breath, color, sound and mindful awareness.' },
       { id: 'healing', title: 'Healing Flow', summary: 'Working with blockages gently and compassionately.' }
     ]
   },

@@ -247,9 +247,26 @@ export default function PersonalGarden() {
   if (!gardenData) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
-        <div className="text-center text-purple-200">
-          <div className="text-4xl mb-4">🌱</div>
-          <div>Unable to load your personal garden</div>
+        <div className="text-center text-purple-200 max-w-md mx-auto px-6">
+          <div className="text-6xl mb-6 animate-bounce">🌱</div>
+          <h2 className="text-2xl font-light text-white mb-4">Your Personal Garden Awaits</h2>
+          <p className="text-purple-300 mb-8 leading-relaxed">
+            To access your personal garden space, you&apos;ll need to create your sacred garden account first.
+          </p>
+          <Link 
+            href="/enter"
+            className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white px-8 py-3 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg inline-block"
+          >
+            ✨ Enter the Sacred Garden
+          </Link>
+          <div className="mt-6">
+            <Link 
+              href="/"
+              className="text-purple-400 hover:text-purple-200 text-sm underline"
+            >
+              ← Return to welcome page
+            </Link>
+          </div>
         </div>
       </div>
     );

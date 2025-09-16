@@ -115,7 +115,7 @@ export default function MeetYourSacredGuide() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative overflow-hidden">
-      <SacredNavigation currentPage="Meet Your Sacred Guide" showSanctuaries={false} />
+      <SacredNavigation currentPage="Meet Your Sacred Guide" showBackToGarden={true} showSanctuaries={true} />
       
       <div className="absolute inset-0 flex items-center justify-center opacity-10">
         <div className="w-96 h-96 border border-purple-300 rounded-full animate-spin" style={{animationDuration: '60s'}}></div>

@@ -64,7 +64,7 @@ export default function HeartTempleSanctuary() {
               </ul>
             </div>
             <Link 
-              href="/community"
+              href="/sanctuaries"
               className="inline-block px-6 py-3 bg-rose-500/30 hover:bg-rose-500/50 text-rose-100 rounded-xl transition-all duration-300"
             >
               Explore Other Sanctuaries
@@ -74,7 +74,7 @@ export default function HeartTempleSanctuary() {
           {/* Gentle Return Options */}
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
             <Link 
-              href="/community/morning-light"
+              href="/sanctuaries/morning-light"
               className="px-6 py-3 bg-yellow-500/30 hover:bg-yellow-500/50 text-yellow-100 rounded-xl transition-all duration-300 text-sm"
             >
               🌅 Visit Morning Light Sanctuary

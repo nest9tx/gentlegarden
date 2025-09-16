@@ -282,7 +282,7 @@ export default function MorningLightSanctuary() {
                     </button>
                     
                     <Link 
-                      href="/community"
+                      href="/sanctuaries"
                       className="bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 text-white px-6 py-3 rounded-full font-medium transition-all duration-300"
                     >
                       Explore Other Sanctuaries

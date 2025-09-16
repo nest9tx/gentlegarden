@@ -5,10 +5,14 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/community',
-        destination: '/meet-guide',
-        permanent: false
+        destination: '/sanctuaries',
+        permanent: true,
       },
-      // If any old direct sanctuary route patterns existed, map them here later.
+      {
+        source: '/community/guide',
+        destination: '/meet-guide',
+        permanent: true,
+      },
     ];
   }
 };

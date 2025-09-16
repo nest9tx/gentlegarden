@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import SacredFrequencies from '@/components/SacredFrequencies';
+import SacredNavigation from '@/components/SacredNavigation';
 
 interface SacredSharing {
   id: string;
@@ -187,6 +188,9 @@ export default function EarthKeepers() {
             </div>
           </div>
         </div>
+
+        {/* Sacred Navigation */}
+        <SacredNavigation currentPage="Earth Keepers" showBackToGarden={true} showSanctuaries={true} />
 
         {/* Sacred Tabs Navigation */}
         <div className="flex justify-center mb-8">

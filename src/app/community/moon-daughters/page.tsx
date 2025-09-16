@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import SacredFrequencies from '@/components/SacredFrequencies';
+import SacredNavigation from '@/components/SacredNavigation';
 
 interface SacredSharing {
   id: string;
@@ -139,15 +139,7 @@ export default function MoonDaughters() {
       </div>
 
       {/* Navigation */}
-      <div className="absolute top-6 left-6 z-40">
-        <Link 
-          href="/community"
-          className="flex items-center space-x-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-purple-300/30 rounded-xl text-purple-200 hover:bg-white/20 transition-all duration-300"
-        >
-          <span>←</span>
-          <span>Return to Sacred Circles</span>
-        </Link>
-      </div>
+      <SacredNavigation currentPage="Moon Daughters" showBackToGarden={true} showSanctuaries={true} />
 
       <div className="relative z-10 container mx-auto px-6 py-12 max-w-6xl">
         

@@ -103,11 +103,11 @@ export default function StarRemeberersCircle() {
       {/* Navigation */}
       <div className="absolute top-6 left-6 z-40">
         <Link 
-          href="/community"
+          href="/sanctuaries"
           className="flex items-center space-x-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-indigo-300/30 rounded-xl text-indigo-200 hover:bg-white/20 transition-all duration-300"
         >
           <span>←</span>
-          <span>Return to Sacred Circles</span>
+          <span>Return to Sanctuaries</span>
         </Link>
       </div>
 

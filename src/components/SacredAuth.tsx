@@ -90,7 +90,7 @@ export default function SacredAuth({
 
   if (loading) {
     return (
-      <div className={`${className} ${position === 'corner' ? 'fixed top-4 right-4 z-50' : ''}`}>
+      <div className={`${className} ${position === 'corner' ? 'fixed top-20 right-4 z-40' : ''}`}>
         <div className="flex items-center text-purple-300 text-sm">
           <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse mr-2"></div>
           Connecting to garden...
@@ -102,7 +102,7 @@ export default function SacredAuth({
   // Guest (not signed in) display
   if (!user) {
     return (
-      <div className={`${className} ${position === 'corner' ? 'fixed top-4 right-4 z-50' : ''}`}>
+      <div className={`${className} ${position === 'corner' ? 'fixed top-20 right-4 z-40' : ''}`}>
         <div className="flex items-center gap-3">
           {position === 'header' && (
             <div className="text-purple-300 text-sm flex items-center">
@@ -122,7 +122,7 @@ export default function SacredAuth({
 
   // Authenticated user display
   return (
-    <div className={`${className} ${position === 'corner' ? 'fixed top-4 right-4 z-50' : ''}`}>
+    <div className={`${className} ${position === 'corner' ? 'fixed top-20 right-4 z-40' : ''}`}>
       <div className="flex items-center gap-3">
         {/* User Status */}
         <div className="text-sm">

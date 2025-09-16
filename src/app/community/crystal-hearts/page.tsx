@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import SacredNavigation from '@/components/SacredNavigation';
 
 export default function CrystalHeartsCircle() {
   const [activeTab, setActiveTab] = useState('reflection');
@@ -66,6 +67,8 @@ export default function CrystalHeartsCircle() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+      <SacredNavigation currentPage="Crystal Hearts" showBackToGarden={true} showSanctuaries={true} />
+
       {/* Floating Crystal Elements */}
       <div className="absolute inset-0">
         {[...Array(20)].map((_, i) => (
@@ -103,11 +106,11 @@ export default function CrystalHeartsCircle() {
       {/* Navigation */}
       <div className="absolute top-6 left-6 z-40">
         <Link 
-          href="/community"
+          href="/sanctuaries"
           className="flex items-center space-x-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-cyan-300/30 rounded-xl text-cyan-200 hover:bg-white/20 transition-all duration-300"
         >
           <span>←</span>
-          <span>Return to Sacred Circles</span>
+          <span>Return to Sanctuaries</span>
         </Link>
       </div>
 

@@ -81,36 +81,50 @@ export default function SacredNavigation({
   // Core quick sanctuary shortcuts (can later source from config) now pointing to new /sanctuaries structure
   const sanctuaryLinks = [
     { name: 'Morning Light', href: '/sanctuaries/morning-light', symbol: '🌅' },
-    { name: 'Chakras', href: '/sanctuaries/chakras', symbol: '�️' },
+    { name: 'Chakras', href: '/sanctuaries/chakras', symbol: '🕉️' },
     { name: 'Sacred Geometry', href: '/sanctuaries/sacred-geometries', symbol: '🔷' },
     { name: 'Communion', href: '/sanctuaries/communion', symbol: '🤲' },
     { name: 'Healing', href: '/sanctuaries/healing', symbol: '🌿' },
     { name: 'Light Work', href: '/sanctuaries/light-work', symbol: '💡' }
   ];
 
+  const getReturnLink = () => {
+    if (pathname.startsWith('/garden/personal')) {
+      return '/garden/personal';
+    }
+    return '/garden';
+  };
+
   return (
     <div className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-purple-900/80 to-indigo-900/80 backdrop-blur-sm border-b border-purple-300/20">
       <div className="max-w-7xl mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          
           {/* Left Navigation */}
           <div className="flex items-center space-x-4">
-            {showBackToGarden && (
+            <Link 
+              href="/"
+              className="flex items-center space-x-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-purple-300/30 rounded-xl text-purple-200 hover:bg-white/20 hover:text-white transition-all duration-300 text-sm"
+            >
+              <span>🌱</span>
+              <span>Home</span>
+            </Link>
+
+            {showBackToGarden && user && (
               <Link 
-                href="/garden"
+                href={getReturnLink()}
                 className="flex items-center space-x-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-purple-300/30 rounded-xl text-purple-200 hover:bg-white/20 hover:text-white transition-all duration-300 text-sm"
               >
                 <span>🌸</span>
-                <span>Sacred Garden</span>
+                <span>My Garden</span>
               </Link>
             )}
-            
+
             <Link 
               href="/sanctuaries"
               className="flex items-center space-x-2 px-4 py-2 bg-white/10 backdrop-blur-sm border border-purple-300/30 rounded-xl text-purple-200 hover:bg-white/20 hover:text-white transition-all duration-300 text-sm"
             >
               <span>🏛️</span>
-              <span>All Sanctuaries</span>
+              <span>Sanctuaries</span>
             </Link>
           </div>
 
@@ -136,13 +150,6 @@ export default function SacredNavigation({
                     title={sanctuary.name}
                   >
                     <span className="text-sm">{sanctuary.symbol}</span>
-                    
-                    {/* Tooltip */}
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <div className="bg-black/80 text-white text-xs px-2 py-1 rounded whitespace-nowrap">
-                        {sanctuary.name}
-                      </div>
-                    </div>
                   </Link>
                 ))}
               </div>
@@ -154,12 +161,8 @@ export default function SacredNavigation({
                 {user ? (
                   <>
                     <div className="text-right hidden sm:block">
-                      <div className={`text-sm font-medium ${getTierColor()}`}>
-                        {getTierDisplay()}
-                      </div>
-                      <div className="text-purple-300 text-xs opacity-75">
-                        {user.email}
-                      </div>
+                      <div className={`text-sm font-medium ${getTierColor()}`}>{getTierDisplay()}</div>
+                      <div className="text-purple-300 text-xs opacity-75">{user.email}</div>
                     </div>
                     <button 
                       onClick={handleSignOut}

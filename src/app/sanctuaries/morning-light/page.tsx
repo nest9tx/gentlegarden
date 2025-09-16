@@ -303,7 +303,7 @@ export default function MorningLightSanctuary() {
             <div>
               <h4 className="text-white font-medium mb-3">Natural Rhythms</h4>
               <ul className="text-white/80 text-sm space-y-2">
-                <li className="flex items-start"><span className="text-amber-400 mr-2">•</span>Honor your body's natural sleep-wake cycles</li>
+                <li className="flex items-start"><span className="text-amber-400 mr-2">•</span>Honor your body&apos;s natural sleep-wake cycles</li>
                 <li className="flex items-start"><span className="text-amber-400 mr-2">•</span>Work with sunrise timing when possible</li>
                 <li className="flex items-start"><span className="text-amber-400 mr-2">•</span>Adjust practices to season and location</li>
                 <li className="flex items-start"><span className="text-amber-400 mr-2">•</span>Trust your energy levels and capacity</li>

@@ -404,7 +404,7 @@ export default function PersonalGardenPage() {
                   <p className="text-purple-400 text-sm mb-2">Expand Your Garden:</p>
                   <div className="bg-white/5 rounded-lg p-3 mb-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-purple-200 text-sm">✅ Sacred Gardener Path - $111/month</span>
+                      <span className="text-purple-200 text-sm">✅ Sacred Gardener Path - $11.11/month</span>
                     </div>
                     <div className="text-purple-400 text-xs mt-1">777 monthly messages • complete access</div>
                     <Link 

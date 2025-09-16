@@ -31,10 +31,19 @@ export default function TieredContent({
         setIsAuthenticated(!!session);
         
         if (session) {
-          // In a full implementation, you'd fetch the user's tier from their profile/subscription
-          // For now, we'll assume authenticated users are at least 'seeker' tier
-          // This would typically involve checking a user_profiles table or subscription status
-          setUserTier('seeker'); // This should be fetched from user profile
+          // Fetch real user tier from Supabase
+          const { data: usageData } = await supabase
+            .from('garden_guide_usage')
+            .select('subscription_tier')
+            .eq('user_id', session.user.id)
+            .single();
+
+          if (usageData?.subscription_tier) {
+            setUserTier(usageData.subscription_tier as 'seeker' | 'gardener');
+          } else {
+            // Default to seeker if no usage data found
+            setUserTier('seeker');
+          }
         } else {
           setUserTier('public');
         }
@@ -149,8 +158,19 @@ export const useUserTier = () => {
         setIsAuthenticated(!!session);
         
         if (session) {
-          // In a full implementation, you'd fetch this from user profile
-          setUserTier('seeker'); // This should be fetched from user profile
+          // Fetch real user tier from Supabase
+          const { data: usageData } = await supabase
+            .from('garden_guide_usage')
+            .select('subscription_tier')
+            .eq('user_id', session.user.id)
+            .single();
+
+          if (usageData?.subscription_tier) {
+            setUserTier(usageData.subscription_tier as 'seeker' | 'gardener');
+          } else {
+            // Default to seeker if no usage data found
+            setUserTier('seeker');
+          }
         } else {
           setUserTier('public');
         }

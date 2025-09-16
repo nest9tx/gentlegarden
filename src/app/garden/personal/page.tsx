@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import SacredFrequencies from '../../../components/SacredFrequencies';
 import Link from 'next/link';
 import SacredAuth from '../../../components/SacredAuth';
 
@@ -276,9 +275,6 @@ export default function PersonalGarden() {
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative">
       {/* Sacred Auth Status */}
       <SacredAuth position="corner" />
-      
-      {/* Sacred Frequencies */}
-      <SacredFrequencies defaultEnabled={false} />
 
       {/* Navigation */}
       <div className="absolute top-6 left-6 z-40">
@@ -375,16 +371,28 @@ export default function PersonalGarden() {
                       🤖 Garden Guide Chat
                     </Link>
                     <Link 
-                      href="/community/wisdom-grove" 
+                      href="/sanctuaries/meditation-garden" 
                       className="block text-xs text-purple-300 hover:text-purple-200 p-2 bg-white/5 rounded-lg transition-all"
                     >
-                      🌳 Ancient Wisdom Grove (contemplative practices)
+                      🧘‍♀️ Meditation Garden (beginner-friendly practices)
                     </Link>
                     <Link 
-                      href="/community" 
+                      href="/sanctuaries/chakras" 
                       className="block text-xs text-purple-300 hover:text-purple-200 p-2 bg-white/5 rounded-lg transition-all"
                     >
-                      🌸 Sacred Garden Circles
+                      🕉️ Chakra Sanctuary (energy center guidance)
+                    </Link>
+                    <Link 
+                      href="/sanctuaries" 
+                      className="block text-xs text-purple-300 hover:text-purple-200 p-2 bg-white/5 rounded-lg transition-all"
+                    >
+                      ✨ All Learning Sanctuaries
+                    </Link>
+                    <Link 
+                      href="/garden/services" 
+                      className="block text-xs text-purple-300 hover:text-purple-200 p-2 bg-white/5 rounded-lg transition-all"
+                    >
+                      🎋 Sacred Services & Support
                     </Link>
                     {subscriptionTier === 'gardener' && (
                       <div className="text-xs text-green-300 p-2 bg-green-500/10 rounded-lg">
@@ -399,52 +407,49 @@ export default function PersonalGarden() {
                   <h3 className="text-purple-100 font-medium mb-3">Sacred Services</h3>
                   <div className="space-y-2 text-xs">
                     
-                    {/* Personal Services Available to All */}
-                    <div className="space-y-1">
-                      <button 
-                        onClick={() => window.open('https://buy.stripe.com/eVq5kD2R4a9GgdU2Q5fIs05', '_blank')}
-                        className="w-full text-left p-2 bg-emerald-500/10 hover:bg-emerald-500/20 rounded-lg transition-all border border-emerald-500/20"
-                      >
-                        <div className="text-emerald-300 font-medium">Sacred Reflection - $33</div>
-                        <div className="text-emerald-400 text-xs">30min • Zoom/Phone • Life pattern exploration</div>
-                      </button>
-                      
-                      <button 
-                        onClick={() => window.open('https://buy.stripe.com/7sY9AT8bo4Pm4vc2Q5fIs04', '_blank')}
-                        className="w-full text-left p-2 bg-blue-500/10 hover:bg-blue-500/20 rounded-lg transition-all border border-blue-500/20"
-                      >
-                        <div className="text-blue-300 font-medium">Energy Alignment - $55</div>
-                        <div className="text-blue-400 text-xs">45min • Remote energy work • Chakra healing</div>
-                      </button>
-                      
-                      <button 
-                        onClick={() => window.open('https://buy.stripe.com/14A8wPbnA95C5zg62hfIs02', '_blank')}
-                        className="w-full text-left p-2 bg-purple-500/10 hover:bg-purple-500/20 rounded-lg transition-all border border-purple-500/20"
-                      >
-                        <div className="text-purple-300 font-medium">Mentoring Session - $77</div>
-                        <div className="text-purple-400 text-xs">60min • Zoom • Personalized spiritual guidance</div>
-                      </button>
-                      
-                      <button 
-                        onClick={() => window.open('https://buy.stripe.com/14AaEX63g0z6e5M3U9fIs03', '_blank')}
-                        className="w-full text-left p-2 bg-indigo-500/10 hover:bg-indigo-500/20 rounded-lg transition-all border border-indigo-500/20"
-                      >
-                        <div className="text-indigo-300 font-medium">Akashic Reading - $111</div>
-                        <div className="text-indigo-400 text-xs">90min • Remote connection • Soul records exploration</div>
-                      </button>
+                    {/* Service Overview Link */}
+                    <Link 
+                      href="/garden/services"
+                      className="w-full block p-3 bg-gradient-to-r from-purple-500/20 to-indigo-500/20 hover:from-purple-500/30 hover:to-indigo-500/30 rounded-lg transition-all border border-purple-500/30"
+                    >
+                      <div className="text-purple-200 font-medium flex items-center justify-between">
+                        <span>🎋 View All Sacred Services</span>
+                        <span>→</span>
+                      </div>
+                      <div className="text-purple-300 text-xs mt-1">Detailed descriptions, processes & booking</div>
+                    </Link>
+
+                    {/* Quick Service Preview */}
+                    <div className="grid grid-cols-2 gap-2 mt-3">
+                      <div className="p-2 bg-emerald-500/10 rounded-lg border border-emerald-500/20">
+                        <div className="text-emerald-300 font-medium text-xs">Sacred Reflection</div>
+                        <div className="text-emerald-400 text-[10px]">$33 • 30min</div>
+                      </div>
+                      <div className="p-2 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                        <div className="text-blue-300 font-medium text-xs">Energy Alignment</div>
+                        <div className="text-blue-400 text-[10px]">$55 • 45min</div>
+                      </div>
+                      <div className="p-2 bg-purple-500/10 rounded-lg border border-purple-500/20">
+                        <div className="text-purple-300 font-medium text-xs">Mentoring Session</div>
+                        <div className="text-purple-400 text-[10px]">$77 • 60min</div>
+                      </div>
+                      <div className="p-2 bg-indigo-500/10 rounded-lg border border-indigo-500/20">
+                        <div className="text-indigo-300 font-medium text-xs">Akashic Reading</div>
+                        <div className="text-indigo-400 text-[10px]">$111 • 90min</div>
+                      </div>
                     </div>
 
                     {/* Subscription Options */}
                     {subscriptionTier === 'seeker' && (
                       <div className="mt-3 pt-3 border-t border-purple-400/20">
                         <div className="text-purple-300 text-xs mb-2">Expand Your Garden:</div>
-                        <button 
-                          onClick={() => window.open('https://buy.stripe.com/fZu8wP4ZcbdK8Ls9etfIs06', '_blank')}
-                          className="w-full text-left p-2 bg-green-500/10 hover:bg-green-500/20 rounded-lg transition-all border border-green-500/20"
+                        <Link 
+                          href="/garden/services"
+                          className="w-full text-left p-2 bg-green-500/10 hover:bg-green-500/20 rounded-lg transition-all border border-green-500/20 block"
                         >
                           <div className="text-green-300 font-medium">🌿 Sacred Gardener Path - $11.11/month</div>
-                          <div className="text-green-400 text-xs">777 monthly messages + complete access</div>
-                        </button>
+                          <div className="text-green-400 text-xs">Learn more & upgrade</div>
+                        </Link>
                       </div>
                     )}
                   </div>
@@ -761,32 +766,6 @@ export default function PersonalGarden() {
                 </Link>
                 
                 <Link
-                  href="/meditations"
-                  className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all block"
-                >
-                  <div className="flex items-center space-x-3">
-                    <span className="text-lg">🧘‍♀️</span>
-                    <div>
-                      <div className="text-purple-100 text-sm">Meditation Garden</div>
-                      <div className="text-purple-300 text-xs">Guided inner journeys</div>
-                    </div>
-                  </div>
-                </Link>
-                
-                <Link
-                  href="/community/wisdom-grove"
-                  className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all block"
-                >
-                  <div className="flex items-center space-x-3">
-                    <span className="text-lg">🌳</span>
-                    <div>
-                      <div className="text-purple-100 text-sm">Ancient Wisdom Grove</div>
-                      <div className="text-purple-300 text-xs">Contemplative practices</div>
-                    </div>
-                  </div>
-                </Link>
-                
-                <Link
                   href="/garden/services"
                   className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all block"
                 >
@@ -795,6 +774,32 @@ export default function PersonalGarden() {
                     <div>
                       <div className="text-purple-100 text-sm">Sacred Services</div>
                       <div className="text-purple-300 text-xs">Personal guidance & support</div>
+                    </div>
+                  </div>
+                </Link>
+                
+                <Link
+                  href="/sanctuaries"
+                  className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all block"
+                >
+                  <div className="flex items-center space-x-3">
+                    <span className="text-lg">✨</span>
+                    <div>
+                      <div className="text-purple-100 text-sm">Learning Sanctuaries</div>
+                      <div className="text-purple-300 text-xs">Meditation, chakras & wisdom</div>
+                    </div>
+                  </div>
+                </Link>
+                
+                <Link
+                  href="/community"
+                  className="w-full text-left p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-all block"
+                >
+                  <div className="flex items-center space-x-3">
+                    <span className="text-lg">�</span>
+                    <div>
+                      <div className="text-purple-100 text-sm">Sacred Garden Circles</div>
+                      <div className="text-purple-300 text-xs">Community connections</div>
                     </div>
                   </div>
                 </Link>
